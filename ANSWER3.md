@@ -178,8 +178,15 @@
 **C) Detailed answer:**
 > "I'd treat this as a variance-decomposition/regression-attribution problem:
 > 1. Build a panel of all trades for the PM group with candidate explanatory factors: order size (relative to ADV), urgency/algo type, broker, time-of-day, instrument, volatility regime.
-> 2. Regress realized slippage (bps) on these factors: $\text{slippage}_i = \beta_0 + \beta_1 \text{size}_i + \beta_2 \text{urgency}_i + \gamma_{\text{broker}} + \gamma_{\text{time-of-day}} + \varepsilon_i$, using fixed effects for categorical drivers (broker, time bucket).
+> 
+> 2. Regress realized slippage (bps) on these factors:
+> 
+> $$\text{slippage}_i = \beta_0 + \beta_1 \text{size}_i + \beta_2 \text{urgency}_i + \gamma_{\text{broker}} + \gamma_{\text{time-of-day}} + \varepsilon_i$$
+> 
+> , using fixed effects for categorical drivers (broker, time bucket).
+> 
 > 3. Check which coefficient is both statistically significant *and* economically large (not just significant given large N) — e.g., if one broker's fixed effect is a persistent +3bps versus peers after controlling for size/urgency, that's the systemic driver, not noise.
+> 
 > 4. Cross-validate the finding by checking if it holds across sub-periods (not a one-off event) and across other PM groups using the same broker (isolating broker-attributable vs. PM-attributable cost)."
 
 **D) Feynman summary:** You're doing the same thing a doctor does isolating what's making a patient sick when there are multiple plausible causes — control for the known, benign explanations (size, urgency) statistically, and see what's left over that's systematically, not randomly, elevated.
