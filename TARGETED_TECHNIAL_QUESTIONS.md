@@ -3299,7 +3299,9 @@ $$\overline{\text{IS}} = \frac{\sum_{i=1}^N q_i \cdot \text{IS}_i}{\sum_{i=1}^N 
 
 To monitor engine health, pipeline latency is split into venue transit $L_{\text{net}}$ and engine processing $L_{\text{engine}}$:
 
-$$L_{\text{net}} = t_{\text{ingest}} - t_{\text{venue}}, \quad L_{\text{engine}} = t_{\text{kdb\_ack}} - t_{\text{ingest}}$$
+```math
+L_{\text{net}} = t_{\text{ingest}} - t_{\text{venue}}, \quad L_{\text{engine}} = t_{\text{kdb\_ack}} - t_{\text{ingest}}
+```
 
 Throughput $T_{\text{throughput}}$ and tail latencies $L_p$ are calculated across rolling sliding windows:
 
