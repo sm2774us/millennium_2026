@@ -2491,7 +2491,9 @@ if __name__ == "__main__":
 
 Basis Trading at Index Close (BTIC) enables traders to execute equity index futures contracts relative to the official closing cash index value $I_{close}$ :
 
-$$P_{futures\_exec} = I_{close} + \text{BTIC\_Basis}$$
+```math
+P_{futures\_exec} = I_{close} + \text{BTIC\_Basis}
+```
 
 #### Theoretical Fair Value Basis Derivation
 
