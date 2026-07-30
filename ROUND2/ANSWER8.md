@@ -1207,7 +1207,7 @@ $$\text{FWER} = 1 - (1 - \alpha)^N, \quad \alpha_{\text{Bonf}} = \frac{\alpha}{N
 ### D) Architectural & Algorithmic ASCII Diagram
 
 ```
-CANDIDATE FEATURES ($N$ tests) ──► [Bonferroni / Holm Correction] ──► Adjusted Threshold ($\alpha / N$)
+CANDIDATE FEATURES (N tests) ──► [Bonferroni / Holm Correction] ──► Adjusted Threshold (α / N)
                                  ──► Filtered Robust Alpha/Cost Features
 
 ```
