@@ -233,7 +233,13 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\hat{\beta} = (X^T X)^{-1} X^T y, \quad \text{where } X = \begin{bmatrix} 1 & \log(\text{Volume}_i) \\ \vdots & \vdots \end{bmatrix}$$
+$$
+\hat{\beta} = (X^T X)^{-1} X^T y, \quad \text{where } X = 
+\begin{bmatrix}
+1 & \log(\text{Volume}_i) \\
+\vdots & \vdots
+\end{bmatrix}
+$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
