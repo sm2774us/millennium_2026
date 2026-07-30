@@ -869,7 +869,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\operatorname{Query}(t_{\text{start}}, t_{\text{end}}) = \begin{cases} \operatorname{RDB}(t_{\text{start}}, t_{\text{end}}) & \text{if } t_{\text{end}} = \text{Today} \\ \operatorname{HDB}(t_{\text{start}}, t_{\text{end}}) & \text{if } t_{\text{end}} < \text{Today} \\ \operatorname{RDB}(\text{Today}) \cup \operatorname{HDB}(t_{\text{start}}, \text{Yesterday}) & \text{otherwise} \end{cases}$$
+$$\text{Query}(t_{\text{start}}, t_{\text{end}}) = \begin{cases} \text{RDB}(t_{\text{start}}, t_{\text{end}}) & \text{if } t_{\text{end}} = \text{Today} \\ \text{HDB}(t_{\text{start}}, t_{\text{end}}) & \text{if } t_{\text{end}} < \text{Today} \\ \text{RDB}(\text{Today}) \cup \text{HDB}(t_{\text{start}}, \text{Yesterday}) & \text{otherwise} \end{cases}$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
@@ -1330,7 +1330,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\operatorname{ScoreOrders}(\mathcal{M}, \mathcal{D}) = \mathcal{M}.\operatorname{predict\_impact\_bps}(\mathcal{D}) \quad \forall \mathcal{M} \in \operatorname{Protocol}(\text{CostModel})$$
+$$\text{ScoreOrders}(\mathcal{M}, \mathcal{D}) = \mathcal{M}.\text{predict\_impact\_bps}(\mathcal{D}) \quad \forall \mathcal{M} \in \text{Protocol}(\text{CostModel})$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 

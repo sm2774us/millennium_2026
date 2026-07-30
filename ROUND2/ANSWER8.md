@@ -502,7 +502,7 @@ sys.exit(1)
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\text{Expected Test Error} = \operatorname{Bias}(\hat{f}(x))^2 + \operatorname{Var}(\hat{f}(x)) + \sigma^2$$
+$$\text{Expected Test Error} = \text{Bias}(\hat{f}(x))^2 + \text{Var}(\hat{f}(x)) + \sigma^2$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
