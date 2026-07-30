@@ -955,9 +955,23 @@ $$Z(t) = \frac{S_{\text{realized}}(t) - S_{\text{expected}}(t)}{\sigma_{\text{sl
 
 Routing logic transitions execution states based on Z-score thresholds:
 
-1. $Z(t) \le 1.0 \implies \text{PASSIVE\_VWAP}$
-2. $1.0 < Z(t) \le 2.5 \implies \text{ADAPTIVE\_IS}$
-3. $Z(t) > 2.5 \implies \text{TACTICAL\_LIQUIDITY\_SEEKER}$
+1. 
+
+```math
+Z(t) \le 1.0 \implies \text{PASSIVE\_VWAP}
+```
+
+2.
+
+```math
+1.0 < Z(t) \le 2.5 \implies \text{ADAPTIVE\_IS}
+```
+
+3.
+
+```math
+Z(t) > 2.5 \implies \text{TACTICAL\_LIQUIDITY\_SEEKER}
+```
 
 #### Standalone Self-Validating q Script (`algoSwitcher.q`)
 
@@ -1300,7 +1314,9 @@ $$\text{Slippage}_{\text{total}} = S \cdot \left( P_{\text{exec}} - P_{\text{dec
 
 Decomposing into three additive sub-components:
 
-$$\text{Slippage}_{\text{total}} = \underbrace{S \cdot \left( P_{\text{arrival}} - P_{\text{decision}} \right)}_{\text{Decision Delay Cost}} + \underbrace{S \cdot \left( P_{\text{first\_fill}} - P_{\text{arrival}} \right)}_{\text{Market Trend Cost}} + \underbrace{S \cdot \left( P_{\text{exec}} - P_{\text{first\_fill}} \right)}_{\text{Microstructure Impact Cost}}$$
+```math
+\text{Slippage}_{\text{total}} = \underbrace{S \cdot \left( P_{\text{arrival}} - P_{\text{decision}} \right)}_{\text{Decision Delay Cost}} + \underbrace{S \cdot \left( P_{\text{first\_fill}} - P_{\text{arrival}} \right)}_{\text{Market Trend Cost}} + \underbrace{S \cdot \left( P_{\text{exec}} - P_{\text{first\_fill}} \right)}_{\text{Microstructure Impact Cost}}
+```
 
 Verifying total sum parity:
 
