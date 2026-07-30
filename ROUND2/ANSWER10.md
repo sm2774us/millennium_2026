@@ -58,24 +58,24 @@ $$\text{NetAlpha}_t = \text{GrossAlpha}_t - \text{ExpectedImpact}(Q_t, \sigma_t)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                     RESEARCH LAYER (Python 3.13)                          │
-│  - Signal hypothesis formulation, feature engineering                     │
+│                     RESEARCH LAYER (Python 3.13)                        │
+│  - Signal hypothesis formulation, feature engineering                   │
 │  - CPCV / walk-forward validation & cost-model calibration              │
 └──────────────────────────────┬──────────────────────────────────────────┘
                                 │  validated signal spec, calibrated params
                                 ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                   PRODUCTION LAYER (C++26 hot path / Q IPC)              │
-│  - Mechanical-sympathy signal computation at live tick rates             │
-│  - Real-time feature computation feeding execution decisions             │
+│                   PRODUCTION LAYER (C++26 hot path / Q IPC)             │
+│  - Mechanical-sympathy signal computation at live tick rates            │
+│  - Real-time feature computation feeding execution decisions            │
 └──────────────────────────────┬──────────────────────────────────────────┘
                                 │  live signal + expected execution cost
                                 ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                    EXECUTION / TCA FEEDBACK LOOP                           │
-│  - Orders scheduled per Almgren-Chriss / dynamic scheduling framework   │
+┌───────────────────────────────────────────────────────────────────────────┐
+│                    EXECUTION / TCA FEEDBACK LOOP                          │
+│  - Orders scheduled per Almgren-Chriss / dynamic scheduling framework     │
 │  - Realized slippage fed back to research layer to recalibrate cost models│
-└─────────────────────────────────────────────────────────────────────────┘
+└───────────────────────────────────────────────────────────────────────────┘
 
 ```
 
