@@ -189,7 +189,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear time over price arrays.
   * **Space Complexity:** $\mathcal{O}(N)$ memory buffer allocation.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized array operations.
   * **Space Complexity:** $\mathcal{O}(N)$ NumPy array storage.
@@ -350,7 +349,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -508,7 +506,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -662,7 +659,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ hashing join.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -812,7 +808,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -961,7 +956,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$ metadata inspection.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -1107,7 +1101,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1259,7 +1252,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1405,7 +1397,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1549,7 +1540,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.

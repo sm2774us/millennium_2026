@@ -753,7 +753,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ where $N$ is the number of tick records, dominated by hash-grouping and sorting operations executed in optimized C within the KDB+ interpreter.
   * **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory to store the filtered subset and intermediate aggregation buffers.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for pandas grouping and sorting operations, plus IPC serialization overhead $\mathcal{O}(N)$ when transmitting over TCP sockets.
   * **Space Complexity:** $\mathcal{O}(N)$ memory overhead to duplicate and store intermediate dataframe views.
@@ -908,7 +907,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ where $N$ is update count.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1069,7 +1067,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1209,7 +1206,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1355,7 +1351,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1497,7 +1492,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1649,7 +1643,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1795,7 +1788,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1944,7 +1936,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -2087,7 +2078,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log W)$ where $W$ is window size.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log W)$.
   * **Space Complexity:** $\mathcal{O}(N)$.

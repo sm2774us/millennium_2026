@@ -194,7 +194,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N + M)$ linear aggregation and hashing join over orders and fills.
   * **Space Complexity:** $\mathcal{O}(N + M)$ output buffer storage.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N + M)$ vectorized pandas merge and grouping.
   * **Space Complexity:** $\mathcal{O}(N + M)$ DataFrame memory footprint.
@@ -350,7 +349,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear scan and grouping over trade records.
   * **Space Complexity:** $\mathcal{O}(N)$ aggregated output buffer storage.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized pandas operations.
   * **Space Complexity:** $\mathcal{O}(N)$ DataFrame memory footprint.
@@ -489,7 +487,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$ analytical evaluation.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -644,7 +641,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear grouping and arithmetic.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized pandas transform.
   * **Space Complexity:** $\mathcal{O}(N)$ DataFrame series allocation.
@@ -785,7 +781,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -925,7 +920,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -1076,7 +1070,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ due to sorting.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ sorting and grouping.
   * **Space Complexity:** $\mathcal{O}(N)$ DataFrame allocation.
@@ -1220,7 +1213,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear comparison.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy comparison.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1366,7 +1358,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear rolling scan.
   * **Space Complexity:** $\mathcal{O}(N)$ rolling buffer storage.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ pandas rolling operations.
   * **Space Complexity:** $\mathcal{O}(N)$ Series allocation.
@@ -1505,7 +1496,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.

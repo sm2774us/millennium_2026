@@ -205,7 +205,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear time over incoming record rows.
   * **Space Complexity:** $\mathcal{O}(N)$ memory allocation for normalized table structures.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized DataFrame manipulation.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint for pandas DataFrames.
@@ -364,7 +363,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$ metadata inspection.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -523,7 +521,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$ row count check.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -686,7 +683,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized vector arithmetic.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -842,7 +838,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1007,7 +1002,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$ date boundary comparisons.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -1152,7 +1146,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$ metadata inspection.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -1300,7 +1293,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ grouping operations.
   * **Space Complexity:** $\mathcal{O}(N)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1468,7 +1460,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized calculations across order rows.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1610,7 +1601,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.

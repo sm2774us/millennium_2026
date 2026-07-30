@@ -281,7 +281,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ where $N$ is the number of tick records, dominated by hash-grouping and sorting operations executed in optimized C within the KDB+ interpreter.
   * **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory to store the filtered subset and intermediate aggregation buffers.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for pandas grouping and sorting operations, plus IPC serialization overhead $\mathcal{O}(N)$ when transmitting over TCP sockets.
   * **Space Complexity:** $\mathcal{O}(N)$ memory overhead to duplicate and store intermediate dataframe views (`clean_trades`, `bucket_time`, group indices).
@@ -505,7 +504,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N + M \log M)$ to sort trade and quote tables, followed by $\mathcal{O}(N + M)$ linear-time as-of join scan.
   * **Space Complexity:** $\mathcal{O}(N + M)$ auxiliary storage for sorted index pointers and the joined output table.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N + M \log N)$ for Pandas sorting and binary search index matching in `merge_asof`.
   * **Space Complexity:** $\mathcal{O}(N + M)$ memory overhead for intermediate dataframes and merged columns.
@@ -696,7 +694,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for sorting and $\mathcal{O}(N)$ for moving sum evaluations across symbols.
   * **Space Complexity:** $\mathcal{O}(N)$ storage for log return vectors and rolling accumulators.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for Pandas sorting and groupby operations.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint for intermediate series (`log_ret`, `squared_ret`, `rolling_rv`).
@@ -859,7 +856,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ to sort and write splayed column files to disk.
   * **Space Complexity:** $\mathcal{O}(N)$ serialization memory buffer.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for grouping and parquet encoding.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint during dataframe parquet buffering.
@@ -1013,7 +1009,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for sorting keys and calculating group differentials.
   * **Space Complexity:** $\mathcal{O}(N)$ temporary memory for grouping columns.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for Pandas sorting and grouping routines.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint for intermediate boolean masks and delta series.
@@ -1170,7 +1165,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ for vectorized arrays; $\mathcal{O}(N)$ with extreme constant overhead for `each`.
   * **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory allocation.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ for NumPy vectorization versus Python interpreter loop overhead.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
@@ -1349,7 +1343,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for hashing, grouping, and joining order tables.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \log N)$ for Pandas grouping and merge operations.
   * **Space Complexity:** $\mathcal{O}(N)$ storage for intermediate dataframes.
@@ -1523,7 +1516,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear scan and filtering operations based on timestamp predicates.
   * **Space Complexity:** $\mathcal{O}(N)$ memory storage for active buffer partitions.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ for boolean indexing and dataframe concatenation.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint for open and finalized buffer partitions.
@@ -1681,7 +1673,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear aggregation over columnar arrays.
   * **Space Complexity:** $\mathcal{O}(N)$ output buffer storage.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized grouping and arithmetic averaging.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint for intermediate series.
@@ -1820,7 +1811,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(\log P + K)$ with partition pruning (where $P$ is partitions and $K$ matching rows), versus $\mathcal{O}(N)$ full-scan penalty without pruning.
   * **Space Complexity:** $\mathcal{O}(K)$ result set memory footprint.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(\log P + K)$ leveraging PyArrow dataset partition filtering and predicate pushdown.
   * **Space Complexity:** $\mathcal{O}(K)$ filtered memory buffers.

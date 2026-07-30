@@ -177,7 +177,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \cdot M)$ matrix multiplication over $N$ rows and $M$ features.
   * **Space Complexity:** $\mathcal{O}(N)$ for prediction output vectors.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N \cdot M)$ vectorized NumPy dot product.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
@@ -330,7 +329,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear transformations over columnar data arrays.
   * **Space Complexity:** $\mathcal{O}(N)$ memory allocation for newly derived feature columns.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy operations.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint for DataFrame copies.
@@ -483,7 +481,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N + T \cdot W)$ where $T$ is test indices and $W$ is purge window.
   * **Space Complexity:** $\mathcal{O}(N)$ for filtered index arrays.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N + T \cdot W)$ using hash-set lookups.
   * **Space Complexity:** $\mathcal{O}(N + T \cdot W)$ for exclusion sets.
@@ -627,7 +624,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -769,7 +765,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(K)$ for $K$ eigenvalues.
   * **Space Complexity:** $\mathcal{O}(K)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(K)$.
   * **Space Complexity:** $\mathcal{O}(K)$.
@@ -907,7 +902,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -1045,7 +1039,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(1)$.
   * **Space Complexity:** $\mathcal{O}(1)$.
@@ -1188,7 +1181,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(M)$ for $M$ features.
   * **Space Complexity:** $\mathcal{O}(M)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(M)$.
   * **Space Complexity:** $\mathcal{O}(M)$.
@@ -1332,7 +1324,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ for $N$ p-values.
   * **Space Complexity:** $\mathcal{O}(N)$ boolean masks.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.
@@ -1478,7 +1469,6 @@ sys.exit(1)
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ over paired orders.
   * **Space Complexity:** $\mathcal{O}(N)$ for delta arrays.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$.
   * **Space Complexity:** $\mathcal{O}(N)$.

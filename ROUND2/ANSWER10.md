@@ -1138,7 +1138,6 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear scan.
   * **Space Complexity:** $\mathcal{O}(1)$.
-*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized summation.
   * **Space Complexity:** $\mathcal{O}(N)$ array allocation.
