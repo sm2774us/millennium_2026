@@ -64,8 +64,10 @@
 > Ordinary OLS standard errors assume $\text{Var}(\varepsilon_i) = \sigma^2$ (homoskedastic) — under heteroskedasticity, OLS coefficients remain unbiased but the standard errors are wrong (typically understated), inflating false confidence (Type I error).
 >
 > Trading-cost data is *also* typically **autocorrelated** — consecutive orders during a persistent liquidity regime have correlated costs — so a simple heteroskedasticity-robust (White) correction isn't enough; **Newey-West** corrects for both simultaneously:
+>
 > $$\hat{V}_{NW} = \hat{V}_{OLS} + \sum_{l=1}^{L} w_l \left( \hat{\Gamma}_l + \hat{\Gamma}_l' \right)$$
-> where $\hat\Gamma_l$ is the lag-$l$ autocovariance of the score/residual terms, $w_l = 1 - \frac{l}{L+1}$ (Bartlett kernel weights), and $L$ is the chosen maximum lag (rule of thumb: $L \approx 4(n/100)^{2/9}$, or set by the expected autocorrelation horizon in the data, e.g., the roll-window length)."
+>
+> where $\hat\Gamma_l$ is the lag-`l` autocovariance of the score/residual terms, $w_l = 1 - \frac{l}{L+1}$ (Bartlett kernel weights), and $L$ is the chosen maximum lag (rule of thumb: $L \approx 4(n/100)^{2/9}$, or set by the expected autocorrelation horizon in the data, e.g., the roll-window length)."
 
 **D) Feynman summary:** Regular OLS standard errors assume every observation's noise is equally sized and independent of its neighbors — trading-cost data violates both: big orders are noisier than small ones, and a bad liquidity day makes today's cost *and* tomorrow's cost both elevated together. Newey-West is a correction that widens your error bars appropriately for both violations so you don't fool yourself into false confidence.
 
