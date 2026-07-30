@@ -2,6 +2,12 @@
 **Execution Dynamics** expected knowledge for a **Senior Quantitative Researcher**.
 
 ---
+---
+
+[↩️ Back to README.md](./README.md)
+
+---
+---
 
 ## 📑 Table of Contents
 
