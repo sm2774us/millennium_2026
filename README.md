@@ -5,6 +5,66 @@
 ---
 ---
 
+## 📑 Awkard Questions
+
+### §1 · **Q1. Why Leave Balyasny After ~1 Year?**
+
+Fit, not frustration. Two things, said quickly:
+
+**1. My work has narrowed toward execution**
+Over the past year my strongest research kept landing on the same territory: transaction cost modeling, market impact, execution quality across futures, equities, and FX. That's a specialist discipline, not a generalist one. Millennium's Execution Services team is built around exactly that mandate — TCA, futures market structure, trading metrics — as the primary job, not a secondary input to something else.
+
+**2. I want to own that scope directly**
+Balyasny is a strong platform, but execution research there sits in support of signal work. I want the reverse: execution as the core deliverable, advising PMs directly on cost and market structure. That's the role in front of me.
+
+*Not a knock on Balyasny, not about comp — it's a better match for what I actually want to be doing day to day.*
+
+### §2 · **Q2. Why Millennium over the competition (Citadel, Point72, etc)?**
+
+The honest comparison:
+
+```
+                MILLENNIUM    CITADEL      BALYASNY     POINT72/
+                                                         CUBIST
+                ──────────    ────────     ────────     ────────
+Research        Broad mix,    Prop data    Broad mix    Public data
+edge            deep exec     advantage                 focus
+                infra
+
+Infrastructure  Top-tier      Top-tier     Good, not    Institutional
+depth           (decades      (decades     the same     grade, still
+                old)          old)         depth        building
+
+Desk            High          Lower        High         High
+autonomy                      (more        (but macro
+                               central      is smaller
+                               oversight)   sleeve)
+
+Execution/TCA   CORE          Significant  Mix of       Adjacent to
+mandate         MANDATE       but broader  disc + sys   signal work
+                              (central     execution
+                              trading)
+
+Stage of        Building      Established  Established  Building
+futures exec    roadmap
+product         NOW
+
+```
+
+Why Millennium specifically:
+
+1. **Platform quality with a real mandate to build.** The Execution Services team isn't retrofitting a legacy TCA process — I'd be defining and driving the futures central trading product roadmap directly, with the infrastructure and risk discipline of a top-tier platform behind it.
+2. **Execution as a core mandate, not a supporting function.** The team owns transaction cost analysis, execution mechanics, and trading metrics as the primary deliverable — not as a secondary input to someone else's signal research. That's the work I want to be doing.
+3. **The feedback loop.** Execution research has a tight, measurable link between analysis and PM outcomes — slippage, cost, market impact. I can see directly whether the work moves the needle, and iterate fast. In more opaque setups, that loop is muddier.
+4. **Millennium's risk culture.** Millennium's well-documented discipline around risk management and operational rigor is exactly the environment where execution research compounds — not where it gets lost in noise.
+
+> [!NOTE]
+> *The closing statement for the screening interviewer:*
+> **The reason I'm here specifically is that I think the execution research I want to do at the highest level lives at Millennium. I can bring strong quantitative research, production-grade analytical tooling, and cross-asset market structure expertise to a team that's actively building out the futures central trading product — where those contributions matter most. I want to help build something that scales, not just maintain what's already there.**
+
+---
+---
+
 ## 📑 Advanced Rounds
 
 - **[Round2 - Technical Interview](./ROUND2/README.md)**
