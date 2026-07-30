@@ -34,7 +34,9 @@
 
 **C) Detailed answer — write on mathcha:**
 > "If assignment is **randomized/paired** (e.g., an A/B test alternating algo choice for similar order characteristics), a **paired t-test** on the slippage difference is appropriate:
+> 
 > $$t = \frac{\bar{d}}{s_d/\sqrt{n}}, \quad d_i = \text{slippage}_{A,i} - \text{slippage}_{B,i}$$
+> 
 > where $\bar d$ is the mean paired difference and $s_d$ its sample standard deviation.
 >
 > If assignment is **observational** (algos used non-randomly, e.g., algo choice correlated with order size/urgency), a raw two-sample t-test is confounded — instead I'd run a regression controlling for order characteristics:
