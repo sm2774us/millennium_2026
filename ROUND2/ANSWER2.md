@@ -47,7 +47,11 @@
 ### C) Mathematical Derivation (MathJax)
 
 ```math
-\text{Slippage}_{\text{bps}} = 10{,}000 \times \text{side\_sign} \times \frac{\bar{P}_{\text{fill}} - P_{\text{arrival}}}{P_{\text{arrival}}}, \quad \text{side\_sign} = \begin{cases} +1 & \text{if } \text{side} = \text{buy} \\ -1 & \text{if } \text{side} = \text{sell} \end{cases}
+\text{Slippage}_{\text{bps}} = 10{,}000 \times \text{side\_sign} \times \frac{\bar{P}_{\text{fill}} - P_{\text{arrival}}}{P_{\text{arrival}}}, \quad \text{side\_sign} = 
+\begin{cases}
++1 & \text{if } \text{side} = \text{buy} \\
+-1 & \text{if } \text{side} = \text{sell}
+\end{cases}
 ```
 
 Where $\bar{P}_{\text{fill}}$ is the volume-weighted average fill price for order $i$.
