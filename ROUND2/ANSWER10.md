@@ -205,7 +205,7 @@ if __name__ == "__main__":
 
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear element-wise vector arithmetic.
-  * **Space Complexity:** $\mathcal{O}(N)$ output buffer allocation)$.
+  * **Space Complexity:** $\mathcal{O}(N)$ output buffer allocation.
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy SIMD execution.
   * **Space Complexity:** $\mathcal{O}(N)$ array memory footprint.
@@ -367,7 +367,7 @@ if __name__ == "__main__":
 
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(k^2 N + k^3)$ where $k$ is regressors and $N$ observations.
-  * **Space Complexity:** $\mathcal{O}(k^2 + k N)$ matrix storage)$.
+  * **Space Complexity:** $\mathcal{O}(k^2 + k N)$ matrix storage.
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(k^2 N + k^3)$ BLAS-optimized matrix operations.
   * **Space Complexity:** $\mathcal{O}(k^2 + k N)$ memory footprint.
@@ -536,7 +536,7 @@ if __name__ == "__main__":
 
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(T)$ linear time over schedule buckets.
-  * **Space Complexity:** $\mathcal{O}(T)$ fill price vector storage)$.
+  * **Space Complexity:** $\mathcal{O}(T)$ fill price vector storage.
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(T)$ vectorized NumPy operations.
   * **Space Complexity:** $\mathcal{O}(T)$ memory footprint.
@@ -693,7 +693,7 @@ if __name__ == "__main__":
 
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear time rolling aggregation.
-  * **Space Complexity:** $\mathcal{O}(N)$ output buffer)$.
+  * **Space Complexity:** $\mathcal{O}(N)$ output buffer.
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ optimized rolling window scan.
   * **Space Complexity:** $\mathcal{O}(N)$ Series memory footprint.
@@ -1292,7 +1292,7 @@ if __name__ == "__main__":
 
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear vector arithmetic.
-  * **Space Complexity:** $\mathcal{O}(N)$ output buffer)$.
+  * **Space Complexity:** $\mathcal{O}(N)$ output buffer.
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy operations.
   * **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
