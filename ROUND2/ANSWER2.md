@@ -470,7 +470,7 @@ RAW FEEDS (CME, SIP, Vendor) ──> Map Syms & Assign Venue Ranks
                             Sort by Price, Size, Timestamp & Venue Rank
                                          │
                                          ▼
-                            Collapse within $\epsilon$ Tolerance
+                            Collapse within ε Tolerance
 
 ```
 
@@ -1020,7 +1020,7 @@ RETURNS & COST PANELS ──> Deduct Basis Point Costs (Cost / 10000)
                    Rolling Mean / Rolling Standard Deviation
                                    │
                                    ▼
-                   Annualize by multiplying by $\sqrt{252}$
+                   Annualize by multiplying by √252
 
 ```
 
