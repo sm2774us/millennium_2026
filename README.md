@@ -5,6 +5,13 @@
 ---
 ---
 
+## 📑 Advanced Rounds
+
+- **[Round2 - Technical Interview](./ROUND2/README.md)**
+
+---
+---
+
 ## 📑 Table of Contents
 
 ### 📑 Questions
