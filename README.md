@@ -59,8 +59,11 @@ Why Millennium specifically:
 4. **Millennium's risk culture.** Millennium's well-documented discipline around risk management and operational rigor is exactly the environment where execution research compounds — not where it gets lost in noise.
 
 > [!NOTE]
+>
 > *The closing statement for the screening interviewer:*
+>
 > **The reason I'm here specifically is that I think the execution research I want to do at the highest level lives at Millennium. I can bring strong quantitative research, production-grade analytical tooling, and cross-asset market structure expertise to a team that's actively building out the futures central trading product — where those contributions matter most. I want to help build something that scales, not just maintain what's already there.**
+>
 
 ---
 ---
