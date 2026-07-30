@@ -72,7 +72,7 @@
 **D) Feynman summary:** Regular OLS standard errors assume every observation's noise is equally sized and independent of its neighbors — trading-cost data violates both: big orders are noisier than small ones, and a bad liquidity day makes today's cost *and* tomorrow's cost both elevated together. Newey-West is a correction that widens your error bars appropriately for both violations so you don't fool yourself into false confidence.
 
 **E) Follow-ups:**
-- *"How do you choose the lag length $L$ in practice?"* → Start with the rule-of-thumb formula, but sanity-check against the data's actual autocorrelation function (e.g., ACF of residuals) — if cost autocorrelation persists further out (e.g., multi-day liquidity regimes), extend $L$ accordingly.
+- **"How do you choose the lag length $L$ in practice?"** → Start with the rule-of-thumb formula, but sanity-check against the data's actual autocorrelation function (e.g., ACF of residuals) — if cost autocorrelation persists further out (e.g., multi-day liquidity regimes), extend $L$ accordingly.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -90,7 +90,7 @@
 **D) Feynman summary:** Don't just assume the textbook exponent is correct for your data — treat it as a hypothesis to test, fit the exponent freely, and let the data tell you if this market's impact curve is flatter or steeper than the textbook 0.5.
 
 **E) Follow-ups:**
-- *"What if the fitted $\beta$ is close to 1 (linear)?"* → Investigate whether the sample is dominated by a regime with unusually thin liquidity (impact doesn't saturate/diminish as quickly) or whether there's a data issue (e.g., large orders systematically executed during adverse conditions, biasing the fit) before accepting a linear-like result.
+- **"What if the fitted $\beta$ is close to 1 (linear)?"** → Investigate whether the sample is dominated by a regime with unusually thin liquidity (impact doesn't saturate/diminish as quickly) or whether there's a data issue (e.g., large orders systematically executed during adverse conditions, biasing the fit) before accepting a linear-like result.
 
 [🔝 Back to Top](#-table-of-contents)
 
