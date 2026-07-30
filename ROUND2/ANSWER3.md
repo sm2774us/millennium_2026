@@ -1054,7 +1054,7 @@ if __name__ == "__main__":
 ### A) Time Budget & Objectives
 
 * **Time Budget:** 5 minutes
-* **Objective:** Incorporate time-varying intraday spread seasonality ($\eta(t)$) into execution scheduling frameworks.
+* **Objective:** Incorporate time-varying intraday spread seasonality ( $\eta(t)$ ) into execution scheduling frameworks.
 
 ### B) Interviewer Dialogue & Systematic Macro Pod Context
 
