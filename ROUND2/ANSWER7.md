@@ -1330,7 +1330,9 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\text{ScoreOrders}(\mathcal{M}, \mathcal{D}) = \mathcal{M}.\text{predict\_impact\_bps}(\mathcal{D}) \quad \forall \mathcal{M} \in \text{Protocol}(\text{CostModel})$$
+```math
+\text{ScoreOrders}(\mathcal{M}, \mathcal{D}) = \mathcal{M}.\text{predict\_impact\_bps}(\mathcal{D}) \quad \forall \mathcal{M} \in \text{Protocol}(\text{CostModel})
+```
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
