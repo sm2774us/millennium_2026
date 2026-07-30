@@ -2509,15 +2509,21 @@ Where $r$ is the risk-free rate, $q$ is the index dividend yield, and $T-t$ is m
 
 Basis Trading at Index Close (BTIC) pricing sets futures execution prices relative to cash close $I_{\text{close}}$:
 
-$$P_{\text{futures}} = I_{\text{close}} + \text{BTIC\_Basis}$$
+```math
+P_{\text{futures}} = I_{\text{close}} + \text{BTIC\_Basis}
+```
 
 Cost-of-carry theoretical fair value basis $B_{\text{FV}}$ over maturity $T-t$, risk-free rate $r$, and dividend yield $q$ is derived as:
 
-$$B_{\text{FV}} = I_t \cdot \left( e^{(r - q)(T - t)} - 1 \right)$$
+```math
+B_{\text{FV}} = I_t \cdot \left( e^{(r - q)(T - t)} - 1 \right)
+```
 
 Index arbitrage triggers when market BTIC spreads diverge from theoretical fair values:
 
-$$\text{Mispricing} = |\text{BTIC\_Basis}_{\text{market}} - B_{\text{FV}}| > \text{Transaction\_Cost}$$
+```math
+\text{Mispricing} = |\text{BTIC\_Basis}_{\text{market}} - B_{\text{FV}}| > \text{Transaction\_Cost}
+```
 
 #### Standalone Self-Validating q Script (`bticEngine.q`)
 
@@ -2632,9 +2638,13 @@ $$S_{\text{bid}}^{\text{implied}} = F_{\text{bid}}^{\text{far}} - F_{\text{ask}}
 
 Synthetic legging arbitrage signals trigger when direct exchange calendar spread quotes ($S_{\text{direct}}$) diverge from implied synthetic quotes:
 
-$$\text{Arb}_{\text{buy\_direct}} = S_{\text{bid}}^{\text{implied}} - S_{\text{ask}}^{\text{direct}} > 0$$
+```math
+\text{Arb}_{\text{buy\_direct}} = S_{\text{bid}}^{\text{implied}} - S_{\text{ask}}^{\text{direct}} > 0
+```
 
-$$\text{Arb}_{\text{sell\_direct}} = S_{\text{bid}}^{\text{direct}} - S_{\text{ask}}^{\text{implied}} > 0$$
+```math
+\text{Arb}_{\text{sell\_direct}} = S_{\text{bid}}^{\text{direct}} - S_{\text{ask}}^{\text{implied}} > 0
+```
 
 #### Standalone Self-Validating q Script (`calendarSpread.q`)
 
