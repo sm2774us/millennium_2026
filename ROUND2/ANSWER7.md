@@ -228,7 +228,9 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\text{Table}_{\text{global}} = \bigcup_{a \in \text{AssetClasses}} \text{FactTable}_a \quad \text{s.t.} \quad \operatorname{Schema}(\text{FactTable}_a) \equiv \text{Const}$$
+```math
+\text{Table}_{\text{global}} = \bigcup_{a \in \text{AssetClasses}} \text{FactTable}_a \quad \text{s.t.} \quad \text{Schema}(\text{FactTable}_a) \equiv \text{Const}
+```
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
