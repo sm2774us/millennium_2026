@@ -1063,8 +1063,7 @@ if __name__ == "__main__":
 ### B) Interviewer Dialogue & Systematic Macro Pod Context
 
 > "The boundary crossing itself is the most common hidden cost in hybrid pipelines — checking how much data crosses the Python/kdb+ boundary and pushing aggregation down into q before profiling either side individually."
-> 
-> 
+>
 
 ### C) Mathematical Derivation (MathJax)
 
@@ -1109,10 +1108,9 @@ exit 0;
 
 * **High-Performance Query Simulation**: Measures computational throughput using built-in q primitives.
 
-
-
 ### G) Standalone Self-Validating Python 3.13 Module (`hybrid_profile_engine.py`)
 
+```python
 """High-performance hybrid pipeline profiling engine with Q IPC."""
 
 from **future** import annotations
@@ -1128,59 +1126,54 @@ from qpython import QConnection
 logger = logging.getLogger(**name**)
 
 class HybridProfileEngine:
-"""Profiles hybrid pipelines via KDB+ IPC or Python timing."""
+    """Profiles hybrid pipelines via KDB+ IPC or Python timing."""
 
-```
-def __init__(self, q_host: str = "localhost", q_port: int = 5000) -> None:
-    self.q_host: Final[str] = q_host
-    self.q_port: Final[int] = q_port
+    ```
+    def __init__(self, q_host: str = "localhost", q_port: int = 5000) -> None:
+        self.q_host: Final[str] = q_host
+        self.q_port: Final[int] = q_port
 
-def profile_via_q(self, n: int) -> float:
-    """Invokes the native q benchmarkQuery function over KDB+ IPC and measures latency."""
-    with QConnection(host=self.q_host, port=self.q_port) as q_conn:
-        q_conn.open()
-        q_conn.sync(".q.n", n)
+    def profile_via_q(self, n: int) -> float:
+        """Invokes the native q benchmarkQuery function over KDB+ IPC and measures latency."""
+        with QConnection(host=self.q_host, port=self.q_port) as q_conn:
+            q_conn.open()
+            q_conn.sync(".q.n", n)
+            start_time = time.perf_counter_ns()
+            q_conn.sync("benchmarkQuery[n]")
+            duration_ms = (time.perf_counter_ns() - start_time) / 1_000_000
+            logger.info("Successfully executed hybrid benchmark via Q IPC in %.3f ms.", duration_ms)
+            return duration_ms
+
+    def profile_native(self, n: int) -> float:
+        """Re-implements benchmark natively in Python 3.13."""
         start_time = time.perf_counter_ns()
-        q_conn.sync("benchmarkQuery[n]")
-        duration_ms = (time.perf_counter_ns() - start_time) / 1_000_000
-        logger.info("Successfully executed hybrid benchmark via Q IPC in %.3f ms.", duration_ms)
-        return duration_ms
-
-def profile_native(self, n: int) -> float:
-    """Re-implements benchmark natively in Python 3.13."""
-    start_time = time.perf_counter_ns()
-    _ = np.sum(np.arange(n))
-    return (time.perf_counter_ns() - start_time) / 1_000_000
-
-```
+        _ = np.sum(np.arange(n))
+        return (time.perf_counter_ns() - start_time) / 1_000_000
 
 def run_self_validation() -> None:
-"""Executes standalone self-validation assertions for HybridProfileEngine."""
-logging.basicConfig(level=logging.INFO)
-logger.info("Running HybridProfileEngine standalone validation suite...")
+    """Executes standalone self-validation assertions for HybridProfileEngine."""
+    logging.basicConfig(level=logging.INFO)
+    logger.info("Running HybridProfileEngine standalone validation suite...")
 
-```
-engine = HybridProfileEngine()
-dur_native = engine.profile_native(1_000_000)
-assert dur_native > 0, "Native profiling duration invalid"
+    engine = HybridProfileEngine()
+    dur_native = engine.profile_native(1_000_000)
+    assert dur_native > 0, "Native profiling duration invalid"
 
-try:
-    dur_q = engine.profile_via_q(1_000_000)
-    assert dur_q > 0, "Q IPC profiling duration invalid"
-except Exception as e:
-    logger.info("Q IPC server not detected (expected in isolated test environments): %s", e)
+    try:
+        dur_q = engine.profile_via_q(1_000_000)
+        assert dur_q > 0, "Q IPC profiling duration invalid"
+    except Exception as e:
+        logger.info("Q IPC server not detected (expected in isolated test environments): %s", e)
 
-logger.info("SUCCESS: HybridProfileEngine passed all validation assertions.")
+    logger.info("SUCCESS: HybridProfileEngine passed all validation assertions.")
 
-```
-
-if **name** == "**main**":
-try:
-run_self_validation()
-sys.exit(0)
-except Exception as e:
-logger.error("FAILURE in HybridProfileEngine execution: %s", e)
-sys.exit(1)
+if __name__ == "__main__":
+    try:
+        run_self_validation()
+        sys.exit(0)
+    except Exception as e:
+        logger.error("FAILURE in HybridProfileEngine execution: %s", e)
+        sys.exit(1)
 
 ```
 
