@@ -113,8 +113,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$ where $N$ is the number of discrete time steps in the execution horizon.
-* **Space Complexity:** $\mathcal{O}(N)$ for vector storage.
+  * **Time Complexity:** $\mathcal{O}(N)$ where $N$ is the number of discrete time steps in the execution horizon.
+  * **Space Complexity:** $\mathcal{O}(N)$ for vector storage.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -228,8 +228,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$ for evaluating grid points.
-* **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory.
+  * **Time Complexity:** $\mathcal{O}(N)$ for evaluating grid points.
+  * **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -310,8 +310,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ for grouping and regression.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ for grouping and regression.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -409,8 +409,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ for grouping and covariance computation.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ for grouping and covariance computation.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -485,8 +485,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$ linear scan over records.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$ linear scan over records.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -571,8 +571,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$ for OLS matrix inversion.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N)$ for OLS matrix inversion.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -646,8 +646,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -735,8 +735,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -802,8 +802,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -891,8 +891,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -965,8 +965,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1042,8 +1042,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ for sorting and bucketing.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ for sorting and bucketing.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1105,8 +1105,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1184,8 +1184,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1249,8 +1249,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1337,8 +1337,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1401,8 +1401,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1486,8 +1486,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1554,8 +1554,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1653,8 +1653,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 

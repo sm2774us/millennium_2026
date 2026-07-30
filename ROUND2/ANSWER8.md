@@ -175,11 +175,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N \cdot M)$ matrix multiplication over $N$ rows and $M$ features.
-* **Space Complexity:** $\mathcal{O}(N)$ for prediction output vectors.
+  * **Time Complexity:** $\mathcal{O}(N \cdot M)$ matrix multiplication over $N$ rows and $M$ features.
+  * **Space Complexity:** $\mathcal{O}(N)$ for prediction output vectors.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N \cdot M)$ vectorized NumPy dot product.
-* **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
+  * **Time Complexity:** $\mathcal{O}(N \cdot M)$ vectorized NumPy dot product.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -327,11 +328,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ linear transformations over columnar data arrays.
-* **Space Complexity:** $\mathcal{O}(N)$ memory allocation for newly derived feature columns.
+  * **Time Complexity:** $\mathcal{O}(N)$ linear transformations over columnar data arrays.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory allocation for newly derived feature columns.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy operations.
-* **Space Complexity:** $\mathcal{O}(N)$ memory footprint for DataFrame copies.
+  * **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy operations.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory footprint for DataFrame copies.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -479,11 +481,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N + T \cdot W)$ where $T$ is test indices and $W$ is purge window.
-* **Space Complexity:** $\mathcal{O}(N)$ for filtered index arrays.
+  * **Time Complexity:** $\mathcal{O}(N + T \cdot W)$ where $T$ is test indices and $W$ is purge window.
+  * **Space Complexity:** $\mathcal{O}(N)$ for filtered index arrays.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N + T \cdot W)$ using hash-set lookups.
-* **Space Complexity:** $\mathcal{O}(N + T \cdot W)$ for exclusion sets.
+  * **Time Complexity:** $\mathcal{O}(N + T \cdot W)$ using hash-set lookups.
+  * **Space Complexity:** $\mathcal{O}(N + T \cdot W)$ for exclusion sets.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -622,11 +625,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -763,11 +767,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(K)$ for $K$ eigenvalues.
-* **Space Complexity:** $\mathcal{O}(K)$.
+  * **Time Complexity:** $\mathcal{O}(K)$ for $K$ eigenvalues.
+  * **Space Complexity:** $\mathcal{O}(K)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(K)$.
-* **Space Complexity:** $\mathcal{O}(K)$.
+  * **Time Complexity:** $\mathcal{O}(K)$.
+  * **Space Complexity:** $\mathcal{O}(K)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -900,11 +905,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1037,11 +1043,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1179,11 +1186,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(M)$ for $M$ features.
-* **Space Complexity:** $\mathcal{O}(M)$.
+  * **Time Complexity:** $\mathcal{O}(M)$ for $M$ features.
+  * **Space Complexity:** $\mathcal{O}(M)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(M)$.
-* **Space Complexity:** $\mathcal{O}(M)$.
+  * **Time Complexity:** $\mathcal{O}(M)$.
+  * **Space Complexity:** $\mathcal{O}(M)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1322,11 +1330,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ for $N$ p-values.
-* **Space Complexity:** $\mathcal{O}(N)$ boolean masks.
+  * **Time Complexity:** $\mathcal{O}(N)$ for $N$ p-values.
+  * **Space Complexity:** $\mathcal{O}(N)$ boolean masks.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1467,11 +1476,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ over paired orders.
-* **Space Complexity:** $\mathcal{O}(N)$ for delta arrays.
+  * **Time Complexity:** $\mathcal{O}(N)$ over paired orders.
+  * **Space Complexity:** $\mathcal{O}(N)$ for delta arrays.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 

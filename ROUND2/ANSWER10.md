@@ -204,19 +204,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ linear element-wise vector arithmetic.
-* **Space Complexity:** $\mathcal{O}(N)$ output buffer allocation.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$ linear element-wise vector arithmetic.
+  * **Space Complexity:** $\mathcal{O}(N)$ output buffer allocation.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy SIMD execution.
-* **Space Complexity:** $\mathcal{O}(N)$ array memory footprint.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy SIMD execution.
+  * **Space Complexity:** $\mathcal{O}(N)$ array memory footprint.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -374,19 +366,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(k^2 N + k^3)$ where $k$ is regressors and $N$ observations.
-* **Space Complexity:** $\mathcal{O}(k^2 + k N)$ matrix storage.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(k^2 N + k^3)$ where $k$ is regressors and $N$ observations.
+  * **Space Complexity:** $\mathcal{O}(k^2 + k N)$ matrix storage.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(k^2 N + k^3)$ BLAS-optimized matrix operations.
-* **Space Complexity:** $\mathcal{O}(k^2 + k N)$ memory footprint.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(k^2 N + k^3)$ BLAS-optimized matrix operations.
+  * **Space Complexity:** $\mathcal{O}(k^2 + k N)$ memory footprint.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -551,19 +535,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(T)$ linear time over schedule buckets.
-* **Space Complexity:** $\mathcal{O}(T)$ fill price vector storage.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(T)$ linear time over schedule buckets.
+  * **Space Complexity:** $\mathcal{O}(T)$ fill price vector storage.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(T)$ vectorized NumPy operations.
-* **Space Complexity:** $\mathcal{O}(T)$ memory footprint.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(T)$ vectorized NumPy operations.
+  * **Space Complexity:** $\mathcal{O}(T)$ memory footprint.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -716,19 +692,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ linear time rolling aggregation.
-* **Space Complexity:** $\mathcal{O}(N)$ output buffer.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$ linear time rolling aggregation.
+  * **Space Complexity:** $\mathcal{O}(N)$ output buffer.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ optimized rolling window scan.
-* **Space Complexity:** $\mathcal{O}(N)$ Series memory footprint.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$ optimized rolling window scan.
+  * **Space Complexity:** $\mathcal{O}(N)$ Series memory footprint.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -875,19 +843,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$ scalar arithmetic evaluation.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$ scalar arithmetic evaluation.
+  * **Space Complexity:** $\mathcal{O}(1)$.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1031,19 +991,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1186,6 +1138,7 @@ if __name__ == "__main__":
 * **q Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ linear scan.
   * **Space Complexity:** $\mathcal{O}(1)$.
+*
 * **Python 3.13 Solution Complexity:**
   * **Time Complexity:** $\mathcal{O}(N)$ vectorized summation.
   * **Space Complexity:** $\mathcal{O}(N)$ array allocation.
@@ -1338,19 +1291,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ linear vector arithmetic.
-* **Space Complexity:** $\mathcal{O}(N)$ output buffer.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$ linear vector arithmetic.
+  * **Space Complexity:** $\mathcal{O}(N)$ output buffer.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy operations.
-* **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$ vectorized NumPy operations.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory footprint.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1493,19 +1438,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1648,15 +1585,11 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 
 

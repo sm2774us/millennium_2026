@@ -193,13 +193,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(k^2 n + k^3)$ where $n$ is sample size and $k$ is the number of regressors, dominated by matrix multiplication and inversion.
-* **Space Complexity:** $\mathcal{O}(n k)$ to store design matrices and intermediate cross-products.
-
-
+  * **Time Complexity:** $\mathcal{O}(k^2 n + k^3)$ where $n$ is sample size and $k$ is the number of regressors, dominated by matrix multiplication and inversion.
+  * **Space Complexity:** $\mathcal{O}(n k)$ to store design matrices and intermediate cross-products.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(k^2 n + k^3)$ for BLAS-accelerated matrix operations.
-* **Space Complexity:** $\mathcal{O}(n k)$ auxiliary memory overhead.
+  * **Time Complexity:** $\mathcal{O}(k^2 n + k^3)$ for BLAS-accelerated matrix operations.
+  * **Space Complexity:** $\mathcal{O}(n k)$ auxiliary memory overhead.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -375,13 +374,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(T k^2 + k^3)$ where $T$ is the number of time periods.
-* **Space Complexity:** $\mathcal{O}(k^2 + Tk)$ for matrix storage.
-
-
+  * **Time Complexity:** $\mathcal{O}(T k^2 + k^3)$ where $T$ is the number of time periods.
+  * **Space Complexity:** $\mathcal{O}(k^2 + Tk)$ for matrix storage.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(T k^2 + L T k)$ where $L$ is lag length.
-* **Space Complexity:** $\mathcal{O}(T k)$ auxiliary memory.
+  * **Time Complexity:** $\mathcal{O}(T k^2 + L T k)$ where $L$ is lag length.
+  * **Space Complexity:** $\mathcal{O}(T k)$ auxiliary memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -551,13 +549,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N k^2 + k^3)$ where $N$ is execution count.
-* **Space Complexity:** $\mathcal{O}(N k)$ memory.
-
-
+  * **Time Complexity:** $\mathcal{O}(N k^2 + k^3)$ where $N$ is execution count.
+  * **Space Complexity:** $\mathcal{O}(N k)$ memory.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N k^2 + k^3)$.
-* **Space Complexity:** $\mathcal{O}(N k)$.
+  * **Time Complexity:** $\mathcal{O}(N k^2 + k^3)$.
+  * **Space Complexity:** $\mathcal{O}(N k)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -717,13 +714,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(k N^2)$ where $k$ is feature count and $N$ is sample size.
-* **Space Complexity:** $\mathcal{O}(N k)$.
-
-
+  * **Time Complexity:** $\mathcal{O}(k N^2)$ where $k$ is feature count and $N$ is sample size.
+  * **Space Complexity:** $\mathcal{O}(N k)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(k N^2)$.
-* **Space Complexity:** $\mathcal{O}(N k)$.
+  * **Time Complexity:** $\mathcal{O}(k N^2)$.
+  * **Space Complexity:** $\mathcal{O}(N k)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -885,13 +881,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N k^2 + k^3)$.
-* **Space Complexity:** $\mathcal{O}(N k)$.
+  * **Time Complexity:** $\mathcal{O}(N k^2 + k^3)$.
+  * **Space Complexity:** $\mathcal{O}(N k)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1046,13 +1041,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1212,13 +1206,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N \cdot \text{lags})$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N \cdot \text{lags})$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1385,13 +1378,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(T S^2)$ where $T$ is time steps and $S$ is hidden states.
-* **Space Complexity:** $\mathcal{O}(T S)$.
-
-
+  * **Time Complexity:** $\mathcal{O}(T S^2)$ where $T$ is time steps and $S$ is hidden states.
+  * **Space Complexity:** $\mathcal{O}(T S)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(I \cdot T S^2)$ where $I$ is EM iterations.
-* **Space Complexity:** $\mathcal{O}(T S)$.
+  * **Time Complexity:** $\mathcal{O}(I \cdot T S^2)$ where $I$ is EM iterations.
+  * **Space Complexity:** $\mathcal{O}(T S)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1554,13 +1546,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N \log N)$ for sorting p-values.
-* **Space Complexity:** $\mathcal{O}(N)$.
-
-
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ for sorting p-values.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N \log N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1734,13 +1725,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
-
-
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(B \cdot N k^2)$ where $B$ is bootstrap iterations and $N$ is sample size.
-* **Space Complexity:** $\mathcal{O}(N k + B)$.
+  * **Time Complexity:** $\mathcal{O}(B \cdot N k^2)$ where $B$ is bootstrap iterations and $N$ is sample size.
+  * **Space Complexity:** $\mathcal{O}(N k + B)$.
 
 [🔝 Back to Top](#-table-of-contents)
 

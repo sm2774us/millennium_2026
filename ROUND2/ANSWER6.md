@@ -187,11 +187,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ linear time over price arrays.
-* **Space Complexity:** $\mathcal{O}(N)$ memory buffer allocation.
+  * **Time Complexity:** $\mathcal{O}(N)$ linear time over price arrays.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory buffer allocation.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$ vectorized array operations.
-* **Space Complexity:** $\mathcal{O}(N)$ NumPy array storage.
+  * **Time Complexity:** $\mathcal{O}(N)$ vectorized array operations.
+  * **Space Complexity:** $\mathcal{O}(N)$ NumPy array storage.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -347,11 +348,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -504,13 +506,12 @@ sys.exit(1)
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
-
-
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -659,11 +660,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N \log N)$ hashing join.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ hashing join.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N \log N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -808,11 +810,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -956,11 +959,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$ metadata inspection.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$ metadata inspection.
+  * **Space Complexity:** $\mathcal{O}(1)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(1)$.
-* **Space Complexity:** $\mathcal{O}(1)$.
+  * **Time Complexity:** $\mathcal{O}(1)$.
+  * **Space Complexity:** $\mathcal{O}(1)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1101,11 +1105,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1252,11 +1257,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1397,11 +1403,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1540,11 +1547,12 @@ if __name__ == "__main__":
 ### I) Rigorous Time & Space Complexity Analysis
 
 * **q Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
+*
 * **Python 3.13 Solution Complexity:**
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 

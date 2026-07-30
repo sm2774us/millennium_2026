@@ -123,8 +123,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ where $N$ is the number of fill records, dominated by hashing and grouping operations in KDB+.
-* **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory for intermediate tables and join buffers.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ where $N$ is the number of fill records, dominated by hashing and grouping operations in KDB+.
+  * **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory for intermediate tables and join buffers.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -254,8 +254,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ for dataframe grouping and joining operations, plus IPC serialization overhead $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory for grouped and merged pandas DataFrames.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ for dataframe grouping and joining operations, plus IPC serialization overhead $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$ auxiliary memory for grouped and merged pandas DataFrames.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -330,8 +330,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$ where $N$ is the number of ticks, as `msum` executes in linear time.
-* **Space Complexity:** $\mathcal{O}(N)$ memory for rolling window buffers.
+  * **Time Complexity:** $\mathcal{O}(N)$ where $N$ is the number of ticks, as `msum` executes in linear time.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory for rolling window buffers.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -439,8 +439,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$ for linear rolling window aggregations.
-* **Space Complexity:** $\mathcal{O}(N)$ memory for rolling series.
+  * **Time Complexity:** $\mathcal{O}(N)$ for linear rolling window aggregations.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory for rolling series.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -530,8 +530,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ due to sorting.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ due to sorting.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -651,8 +651,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ due to sorting and grouping.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ due to sorting and grouping.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -716,8 +716,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -813,8 +813,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ for resampling and alignment.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ for resampling and alignment.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -882,8 +882,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -989,8 +989,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ for merges.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ for merges.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1059,8 +1059,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1153,8 +1153,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$ for rolling windows.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N)$ for rolling windows.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1217,8 +1217,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N)$ for hashing and grouping.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N \log N)$ for hashing and grouping.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1306,8 +1306,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1393,8 +1393,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N + M \log M + N \log M)$ due to explicit sorting (xasc) and binary search lookups.
-* **Space Complexity:** $\mathcal{O}(N + M)$ because internal sorted copies of both tables are generated during execution.
+  * **Time Complexity:** $\mathcal{O}(N \log N + M \log M + N \log M)$ due to explicit sorting (xasc) and binary search lookups.
+  * **Space Complexity:** $\mathcal{O}(N + M)$ because internal sorted copies of both tables are generated during execution.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1489,13 +1489,13 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N \log N + M \log M + N \log M)$.
+  * **Time Complexity:** $\mathcal{O}(N \log N + M \log M + N \log M)$.
   * Sorting Step — $\mathcal{O}(N \log N + M \log M)$ :
     * The code explicitly calls `.sort_values("time")` on both DataFrames before merging.
   * Matching Step — $\mathcal{O}(N \log M)$:
     * **[pd.merge_asof](https://pandas.pydata.org/docs/reference/api/pandas.merge_asof.html)** requires pre-sorted data. For each of the $N$ fills, it performs a binary search through the $M$ quotes to locate the closest backward timestamp. It evaluates the tolerance on that single matched record in constant time $\mathcal{O}(1)$.
 
-* **Space Complexity:** $\mathcal{O}(N + M)$ memory.
+  * **Space Complexity:** $\mathcal{O}(N + M)$ memory.
   * Calling `.sort_values()` creates entirely new copies of your DataFrames in memory. Furthermore, pd.merge_asof generates an entirely new merged DataFrame to return.
   * **The Output Size:** The final resulting DataFrame/table holds exactly N rows (the length of the fills), which scales at $\mathcal{O}(N)$. However, the temporary operational footprint requires holding all tables concurrently, resulting in an active peak space complexity of $\mathcal{O}(N + M)$.
 
@@ -1556,8 +1556,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(K)$ where $K$ is the number of records within the partitioned date range.
-* **Space Complexity:** $\mathcal{O}(K)$.
+  * **Time Complexity:** $\mathcal{O}(K)$ where $K$ is the number of records within the partitioned date range.
+  * **Space Complexity:** $\mathcal{O}(K)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1635,8 +1635,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(1)$ for mock mode, $\mathcal{O}(K)$ for IPC retrieval.
-* **Space Complexity:** $\mathcal{O}(K)$.
+  * **Time Complexity:** $\mathcal{O}(1)$ for mock mode, $\mathcal{O}(K)$ for IPC retrieval.
+  * **Space Complexity:** $\mathcal{O}(K)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1706,8 +1706,8 @@ exit 0;
 
 #### q Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$.
-* **Space Complexity:** $\mathcal{O}(N)$.
+  * **Time Complexity:** $\mathcal{O}(N)$.
+  * **Space Complexity:** $\mathcal{O}(N)$.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -1800,8 +1800,8 @@ if __name__ == "__main__":
 
 #### Python Solution Complexity Analysis
 
-* **Time Complexity:** $\mathcal{O}(N)$ for group-level bound checks.
-* **Space Complexity:** $\mathcal{O}(N)$ memory.
+  * **Time Complexity:** $\mathcal{O}(N)$ for group-level bound checks.
+  * **Space Complexity:** $\mathcal{O}(N)$ memory.
 
 [🔝 Back to Top](#-table-of-contents)
 
