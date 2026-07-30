@@ -1415,9 +1415,9 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-
-
-$$p_{(1)} \le p_{(2)} \le \dots \le p_{(m)}, \quad \text{reject } H_{0,(i)} \text{ for all } i \le \max\left\{i : p_{(i)} \le \frac{i}{m}\,q\right\}$$
+$$
+p_{(1)} \le p_{(2)} \le \dots \le p_{(m)}, \quad \text{reject } H_{0,(i)} \text{ for all } i \le \max \lbrace i : p_{(i)} \le \frac{i}{m}\,q \rbrace
+$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
