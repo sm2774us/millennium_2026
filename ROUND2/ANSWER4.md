@@ -221,9 +221,9 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-
-
-$$\hat{V}_{NW} = (X'X)^{-1}\left[\sum_{t}\hat{\varepsilon}_t^2 x_t x_t' + \sum_{\ell=1}^{L} w_\ell \sum_{t=\ell+1}^{T}\hat{\varepsilon}_t\hat{\varepsilon}_{t-\ell}(x_t x_{t-\ell}' + x_{t-\ell}x_t')\right](X'X)^{-1}$$
+```math
+\hat{V}_{NW} = (X'X)^{-1} \lbrack \sum_{t}\hat{\varepsilon}_t^2 x_t x_t' + \sum_{\ell=1}^{L} w_\ell \sum_{t=\ell+1}^{T}\hat{\varepsilon}_t\hat{\varepsilon}_{t-\ell}(x_t x_{t-\ell}' + x_{t-\ell}x_t') \rbrack (X'X)^{-1}
+```
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
