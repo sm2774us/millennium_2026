@@ -256,21 +256,21 @@ $$\Delta P = \lambda \cdot (Q_{\text{buy}} - Q_{\text{sell}}), \qquad \lambda = 
 ```
                     ALMGREN-CHRISS                    KYLE'S LAMBDA
 ────────────────    ──────────────────────────        ──────────────────────────
-WHAT IT MODELS       Optimal SCHEDULE given a cost      HOW price forms from
-                      function (impact assumed given)    order flow (impact itself)
+WHAT IT MODELS      Optimal SCHEDULE given a cost     HOW price forms from
+                    function (impact assumed given)   order flow (impact itself)
 
-TIME STRUCTURE        Multi-period, explicit horizon T   Often single-period /
-                                                          continuous linear model
+TIME STRUCTURE      Multi-period, explicit horizon T  Often single-period /
+                                                      continuous linear model
 
-IMPACT SHAPE           Separately parametrized temp        Single linear
-                       (η) vs permanent (γ) impact          coefficient λ
+IMPACT SHAPE        Separately parametrized temp      Single linear
+                    (η) vs permanent (γ) impact       coefficient λ
 
-BEST FUTURES USE       Scheduling a large macro futures    Estimating instantaneous
-                       position over hours/days              liquidity cost of one
-                                                              clip / one print
+BEST FUTURES USE    Scheduling a large macro futures  Estimating instantaneous
+                    position over hours/days          liquidity cost of one
+                                                      clip / one print
 
-RISK TREATMENT          Explicit mean-variance trade-off     No explicit risk-aversion
-                        via λ (risk aversion parameter)       term — pure price-formation
+RISK TREATMENT      Explicit mean-variance trade-off  No explicit risk-aversion
+                    via λ (risk aversion parameter)   term — pure price-formation
 ```
 
 ### E) Standalone Self-Validating q Script (`kylesLambda.q`)
