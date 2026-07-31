@@ -254,7 +254,6 @@ if __name__ == "__main__":
 >
 
 ---
----
 
 ### C) Mathematical Derivation (MathJax)
 
