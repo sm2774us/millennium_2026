@@ -247,9 +247,156 @@ if __name__ == "__main__":
 > *"Kyle's model says price impact is linear in signed net order flow, and lambda — the slope — is set by market makers as a function of the volatility of the asset's fundamental value relative to the volatility of uninformed liquidity trading."*
 > 
 
+---
+
 ### C) Mathematical Derivation (MathJax)
 
-$$\Delta P = \lambda \cdot (Q_{\text{buy}} - Q_{\text{sell}}), \qquad \lambda = \frac{\sigma_v}{\sigma_u}\cdot(\text{market-maker inverse-liquidity scaling})$$
+#### 1. Kyle's Lambda (1985): First-Principles Microstructure Equilibrium
+
+**Target Equation to Derive:**
+
+| Target Equation |
+| :-------------- |
+| $`\Delta P = \lambda y \qquad \text{where} \qquad \lambda = \frac{\sigma_v}{2\sigma_u}`$ |
+
+Kyle models a single-period rational expectations equilibrium among three market participants: an **informed trader**, **uninformed noise traders**, and competitive **market makers**.
+
+* **Asset Fundamental Value:** $v \sim \mathcal{N}(p_0, \sigma_v^2)$, where $p_0$ is the prior expected price and $\sigma_v^2$ is fundamental volatility.
+* **Noise Trader Order Flow:** $u \sim \mathcal{N}(0, \sigma_u^2)$, where $u$ is independent of $v$.
+* **Informed Order:** The informed trader knows $v$ and submits order $x(v)$.
+* **Total Order Flow:** $y = x + u$, observed by market makers (who cannot distinguish $x$ from $u$).
+
+**Step 1: Informed Trader Profit Maximization**
+
+Given a linear pricing function set by market makers, $P(y) = p_0 + \lambda y$, the informed trader maximizes expected profit $\pi(x)$:
+
+$$\pi(x) = E[(v - P(x + u)) x \mid v] = E[(v - p_0 - \lambda(x + u)) x \mid v] = (v - p_0 - \lambda x) x$$
+
+Taking the first-order condition with respect to $x$:
+
+$$\frac{d\pi}{dx} = v - p_0 - 2\lambda x = 0 \implies x(v) = \beta (v - p_0) \quad \text{where} \quad \beta = \frac{1}{2\lambda}$$
+
+**Step 2: Competitive Market Maker Efficiency Condition**
+
+Market makers are risk-neutral and competitive (zero expected economic profit), setting the price equal to the Bayesian conditional expectation of value given aggregate flow $y$:
+
+$$P(y) = E[v \mid y] = p_0 + \frac{\text{Cov}(v, y)}{\text{Var}(y)} (y - E[y])$$
+
+Evaluating the covariance and variance terms:
+
+$$\text{Cov}(v, y) = \text{Cov}(v, \beta(v - p_0) + u) = \beta \sigma_v^2$$
+
+$$\text{Var}(y) = \text{Var}(\beta(v - p_0) + u) = \beta^2 \sigma_v^2 + \sigma_u^2$$
+
+Equating the pricing slope parameter $\lambda$ to the linear regression coefficient:
+
+$$\lambda = \frac{\beta \sigma_v^2}{\beta^2 \sigma_v^2 + \sigma_u^2}$$
+
+**Step 3: Solving the Equilibrium System for $\lambda$**
+
+Substitute $\beta = \frac{1}{2\lambda}$ into the expression for $\lambda$:
+
+$$\lambda = \frac{\frac{1}{2\lambda} \sigma_v^2}{\frac{1}{4\lambda^2} \sigma_v^2 + \sigma_u^2} = \frac{2\lambda \sigma_v^2}{\sigma_v^2 + 4\lambda^2 \sigma_u^2}$$
+
+Dividing both sides by $\lambda$ (since $\lambda > 0$):
+
+$$1 = \frac{2\sigma_v^2}{\sigma_v^2 + 4\lambda^2 \sigma_u^2} \implies \sigma_v^2 + 4\lambda^2 \sigma_u^2 = 2\sigma_v^2 \implies 4\lambda^2 \sigma_u^2 = \sigma_v^2$$
+
+Solving for $\lambda$:
+
+$$\lambda^2 = \frac{\sigma_v^2}{4\sigma_u^2} \implies \boxed{\lambda = \frac{\sigma_v}{2\sigma_u}}$$
+
+Substituting $\lambda$ back into the pricing rule $P(y) = p_0 + \lambda y$ yields the final price impact equation:
+
+| |
+| :-------------- |
+| $`\Delta P = \lambda y \qquad \text{where} \qquad \lambda = \frac{\sigma_v}{2\sigma_u}`$ |
+
+$$\blacksquare$$
+
+> [!NOTE]
+>
+> **Key takeaway:** Kyle's $\lambda$ is directly proportional to fundamental asset risk ($\sigma_v$) and inversely proportional to noise trader volume ($\sigma_u$). Price impact reflects adverse selection risk.
+>
+
+---
+
+#### 2. Almgren-Chriss (2000): First-Principles Optimal Execution Trajectory
+
+**Target Equation to Derive:**
+
+| Target Equation |
+| :-------------- |
+| $`x(t) = X_0 \frac{\sinh(\kappa (T - t))}{\sinh(\kappa T)} \qquad \text{where} \qquad \kappa = \sqrt{\frac{\lambda_{\text{risk}} \sigma^2}{\eta}}`$ |
+
+Almgren-Chriss formulates optimal portfolio liquidation as a continuous dynamic trade-off between **market impact costs** and **volatility risk**.
+
+* **Inventory Trajectory:** $x(t)$ represents shares remaining at time $t \in [0, T]$, with boundary conditions $x(0) = X_0$ and $x(T) = 0$.
+* **Trading Rate:** $v(t) = -\dot{x}(t) = -\frac{dx}{dt}$.
+* **Execution Price:** Incorporates fundamental volatility $\sigma$, permanent impact $\gamma$, and temporary impact $\eta$:
+
+$$S(t) = S_0 + \sigma W(t) - \gamma(X_0 - x(t))$$
+
+$$\tilde{S}(t) = S(t) - \eta v(t) = S(t) + \eta \dot{x}(t)$$
+
+**Step 1: Expected Shortfall $E[\mathcal{C}]$ and Variance $V[\mathcal{C}]$**
+
+Total implementation shortfall relative to initial portfolio value $X_0 S_0$ is:
+
+$$\mathcal{C} = X_0 S_0 - \int_0^T v(t) \tilde{S}(t) dt = X_0 S_0 + \int_0^T \dot{x}(t) \tilde{S}(t) dt$$
+
+Taking expected shortfall across paths:
+
+$$E[\mathcal{C}] = \frac{1}{2}\gamma X_0^2 + \eta \int_0^T \dot{x}(t)^2 dt$$
+
+And total portfolio variance exposure across time:
+
+$$V[\mathcal{C}] = \sigma^2 \int_0^T x(t)^2 dt$$
+
+**Step 2: Functional Objective & Calculus of Variations**
+
+Minimizing expected utility $U[x] = E[\mathcal{C}] + \lambda_{\text{risk}} V[\mathcal{C}]$, where $\lambda_{\text{risk}}$ is trader risk aversion:
+
+$$U[x(t)] = \frac{1}{2}\gamma X_0^2 + \int_0^T \underbrace{\left( \eta \dot{x}(t)^2 + \lambda_{\text{risk}} \sigma^2 x(t)^2 \right)}_{L(x, \dot{x})} dt$$
+
+Applying the Euler-Lagrange equation $\frac{\partial L}{\partial x} - \frac{d}{dt}\left(\frac{\partial L}{\partial \dot{x}}\right) = 0$:
+
+$$\frac{\partial L}{\partial x} = 2 \lambda_{\text{risk}} \sigma^2 x(t)$$
+
+$$\frac{\partial L}{\partial \dot{x}} = 2 \eta \dot{x}(t) \implies \frac{d}{dt}\left(\frac{\partial L}{\partial \dot{x}}\right) = 2 \eta \ddot{x}(t)$$
+
+Equating the terms:
+
+$$2 \lambda_{\text{risk}} \sigma^2 x(t) - 2 \eta \ddot{x}(t) = 0 \implies \ddot{x}(t) = \kappa^2 x(t) \quad \text{where} \quad \kappa = \sqrt{\frac{\lambda_{\text{risk}} \sigma^2}{\eta}}$$
+
+**Step 3: Solving the ODE with Boundary Conditions**
+
+The general solution to the second-order linear ODE $\ddot{x}(t) - \kappa^2 x(t) = 0$ in hyperbolic form is:
+
+$$x(t) = A \cosh(\kappa (T - t)) + B \sinh(\kappa (T - t))$$
+
+Applying the terminal boundary condition $x(T) = 0$:
+
+$$x(T) = A \cosh(0) + B \sinh(0) = A \cdot 1 + 0 = 0 \implies A = 0$$
+
+So $x(t) = B \sinh(\kappa (T - t))$. Next, applying the initial boundary condition $x(0) = X_0$:
+
+$$x(0) = B \sinh(\kappa T) = X_0 \implies B = \frac{X_0}{\sinh(\kappa T)}$$
+
+Substituting $B$ back into the trajectory equation yields the exact solution:
+
+| |
+| :-------------- |
+| $`x(t) = X_0 \frac{\sinh(\kappa (T - t))}{\sinh(\kappa T)} \qquad \text{where} \qquad \kappa = \sqrt{\frac{\lambda_{\text{risk}} \sigma^2}{\eta}}`$ |
+
+$$\blacksquare$$
+
+> [!NOTE]
+>
+> **Key takeaway:** $\kappa$ governs trajectory curvature. High risk aversion ($\lambda_{\text{risk}} \to \infty$) forces front-loaded trading to minimize inventory variance; low risk aversion ($\lambda_{\text{risk}} \to 0$) yields a linear TWAP schedule ($\sinh(z) \approx z$) to minimize temporary impact.
+>
+
+---
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
