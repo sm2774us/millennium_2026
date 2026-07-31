@@ -140,12 +140,22 @@
 **B) Follow-ups:** none.
 
 **C) Detailed answer:**
-> "Not an either/or — kdb+/q for storage and heavy columnar aggregation over tick-scale data (Set 4 Q3, Q6), Python for statistics, ML, and reporting on the already-aggregated output, bridged via pykx (Set 5 Q6). Pure pandas struggles at true multi-year tick scale — memory and vectorized-but-still-in-Python overhead become real bottlenecks; pure q is extremely fast for its native domain but less ergonomic for the statistical/ML layer (Set 6) that a modern TCA framework needs. The right architecture pushes computation to where the data lives (q) and reserves Python for where its ecosystem genuinely wins (stats libraries, matplotlib/plotly, ML)."
+> "It is not a binary choice — it is a tiered architecture. **kdb+/q** remains the gold standard for real-time streaming, high-frequency tick capture (tickerplant/RDB/HDB), and microsecond-latency columnar operations like native `aj` (asof joins) across streaming and historical partitions.
+> 
+> **DuckDB** has emerged as the ideal open-source OLAP bridge for off-line historical tick research: it handles multi-terabyte Parquet archives out-of-core with zero-copy Apache Arrow integration, eliminating memory bottlenecks without requiring expensive kdb+ licenses for every research instance.
+> 
+> **Python (pandas/Polars/PyTorch)** stays strictly in its lane for stats, machine learning, and visualization (bridged via `pykx` for kdb+ or zero-copy Arrow queries for DuckDB).
+>
+> Pure pandas struggles at multi-year tick scale due to memory overhead and single-threaded GIL constraints; pure q is blazing fast but unergonomic for complex statistical and ML pipelines. The correct architecture pushes heavy columnar aggregations to where the data lives on disk/IPC—using **q** for real-time/low-latency streaming and **DuckDB** for out-of-core batch research on compressed Parquet—reserving Python for downstream research and visualization."
+>
+>
 
-**D) Feynman summary:** It's not a competition — kdb+ is the engine room for the data, Python is the bridge where humans actually reason about and present the results; a good architecture uses each for what it's genuinely best at.
+**D) Feynman summary:**
+Think of **kdb+** as the real-time F1 engine for live tick streams and low-latency tick queries, **DuckDB** as the heavy-duty tractor that effortlessly plows through terabytes of historical Parquet ticks on local SSDs or S3, and **Python** as the dashboard steering wheel where researchers model and visualize results.
 
 **E) Follow-ups:**
-- *"Have you seen teams get this wrong?"* → Yes — pulling raw ticks into pandas for aggregation that should have happened in q first (the anti-pattern flagged in Set 4 Q10/Q8) is the most common version of getting this balance wrong.
+- *"Have you seen teams get this wrong?"* → Yes. Pulling raw, unaggregated ticks into pandas dataframes (the classic memory-exhaustion anti-pattern) instead of performing windowed aggregations in q or DuckDB first (the anti-pattern flagged in Set 4 Q10/Q8).
+ - *"When would you choose DuckDB over KDB+?"* → For historical batch research, backtesting on static Parquet archives, and local research sandbox environments where deploying or licensing a dedicated kdb+ HDB process adds unnecessary operational overhead.
 
 [🔝 Back to Top](#-table-of-contents)
 
