@@ -81,6 +81,13 @@ Why Millennium specifically:
 ---
 ---
 
+## 📑 Additional Resources
+
+- **[Additional Resources](./ADDITIONAL_RESOURCES/README.md)**
+
+---
+---
+
 ## 📑 Table of Contents
 
 ### 📑 Questions
