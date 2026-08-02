@@ -810,7 +810,7 @@ class RealizedVolatilityCalculator:
 #        ).sum().reset_index(0, drop=True)
 #        df["annualized_vol"] = np.sqrt(df["rolling_rv"] * 252 * 23400 / window_ticks)
 #        return df
-required_cols = {"sym", "time", "price"}
+        required_cols = {"sym", "time", "price"}
         if not required_cols.issubset(ticks.columns):
             missing = required_cols - set(ticks.columns)
             raise KeyError(f"Missing required columns: {missing}")
