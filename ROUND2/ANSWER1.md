@@ -240,16 +240,46 @@ class VWAPEngine:
             raise KeyError(f"Missing required columns: {missing}")
 
         clean_trades = trades[trades["size"] > 0].copy()
-        time_sec = pd.to_numeric(clean_trades["time"]) // 10**9
+        if clean_trades.empty:
+            return pd.DataFrame(columns=["sym", "bucket_time", "vwap"])
+
+        t_col = clean_trades["time"]
+
+        # 1. Scale-aware time normalization supporting both datetime dtypes and raw numeric epochs
+        if pd.api.types.is_datetime64_any_dtype(t_col):
+            # Extract raw underlying integer representation
+            raw_ints = t_col.astype("int64")
+            
+            # Dynamically check pandas datetime resolution unit ([ns], [us], [ms], [s])
+            dtype_str = str(t_col.dtype)
+            if "ns" in dtype_str:
+                time_sec = raw_ints // 10**9
+            elif "us" in dtype_str:
+                time_sec = raw_ints // 10**6
+            elif "ms" in dtype_str:
+                time_sec = raw_ints // 1000
+            else:
+                time_sec = raw_ints
+        else:
+            # Handle raw numeric epoch inputs
+            val = t_col.iloc[0]
+            if val > 1e16:   # Nanoseconds epoch
+                time_sec = t_col // 10**9
+            elif val > 1e13: # Microseconds epoch
+                time_sec = t_col // 10**6
+            elif val > 1e10: # Milliseconds epoch
+                time_sec = t_col // 1000
+            else:            # Epoch seconds
+                time_sec = t_col
+
+        # 2. Tumbling bucket quantization & notional product
         clean_trades["bucket_time"] = (time_sec // bucket_seconds) * bucket_seconds
+        clean_trades["notional"] = clean_trades["price"] * clean_trades["size"]
 
-        grouped = clean_trades.groupby(["sym", "bucket_time"])
-        vwap_series = grouped.apply(
-            lambda g: np.sum(g["price"] * g["size"]) / np.sum(g["size"]),
-            include_groups=False
-        )
-        return vwap_series.reset_index(name="vwap")
-
+        # 3. Fully vectorized group aggregation
+        grouped = clean_trades.groupby(["sym", "bucket_time"])[["notional", "size"]].sum()
+        
+        return grouped.assign(vwap=lambda x: x["notional"] / x["size"])[["vwap"]].reset_index()
 
 def run_self_validation() -> None:
     """Executes standalone self-validation assertions for VWAPEngine."""
@@ -323,6 +353,7 @@ Here is a complete, line-by-line detailed explanation of the `compute_vwap_nativ
         Raises:
           KeyError: If required columns ('sym', 'time', 'price', 'size') are absent.
         """
+
 ```
 
 * **Purpose:** This method takes a raw trade log DataFrame and computes Volume-Weighted Average Price (VWAP) bars across tumbling time windows (defaulting to 300 seconds, or 5-minute buckets) in native Python/Pandas.
@@ -340,59 +371,68 @@ Here is a complete, line-by-line detailed explanation of the `compute_vwap_nativ
 * **Purpose:** Ensures the input dataset contains all mandatory fields before processing.
 * **Mechanism:** It defines a set of required column names and checks if they form a subset of the incoming `trades.columns`. If any columns are missing, it isolates the delta (`missing`) and raises a descriptive `KeyError`.
 
-##### Step 2: Filtering and Timestamp Quantization
+##### Step 2: Filtering, Scale-Aware Timestamp Normalization & Quantization
 
 ```python
         clean_trades = trades[trades["size"] > 0].copy()
-        time_sec = pd.to_numeric(clean_trades["time"]) // 10**9
+        if clean_trades.empty:
+            return pd.DataFrame(columns=["sym", "bucket_time", "vwap"])
+
+        t_col = clean_trades["time"]
+
+        if pd.api.types.is_datetime64_any_dtype(t_col):
+            raw_ints = t_col.astype("int64")
+            dtype_str = str(t_col.dtype)
+            if "ns" in dtype_str:
+                time_sec = raw_ints // 10**9
+            elif "us" in dtype_str:
+                time_sec = raw_ints // 10**6
+            elif "ms" in dtype_str:
+                time_sec = raw_ints // 1000
+            else:
+                time_sec = raw_ints
+        else:
+            val = t_col.iloc[0]
+            if val > 1e16:   
+                time_sec = t_col // 10**9
+            elif val > 1e13: 
+                time_sec = t_col // 10**6
+            elif val > 1e10: 
+                time_sec = t_col // 1000
+            else:            
+                time_sec = t_col
+
         clean_trades["bucket_time"] = (time_sec // bucket_seconds) * bucket_seconds
+        clean_trades["notional"] = clean_trades["price"] * clean_trades["size"]
 
 ```
 
-* **Data Cleaning (`size > 0`):** Filters out zero-size trades, odd-lot anomalies, or cancellation prints that would otherwise corrupt the volume denominator. `.copy()` ensures we avoid `SettingWithCopyWarning` when modifying the dataframe.
-* **Timestamp Normalization (`time_sec`):** Assumes timestamps are stored as nanoseconds (standard for high-frequency or modern tick databases). Dividing by $10^9$ (`10**9`) converts nanoseconds into standard integer **epoch seconds**.
+* **Data Cleaning (`size > 0` & Empty Guard):** Filters out zero-size trades, odd-lot anomalies, or cancellation prints that would otherwise corrupt the volume denominator. Includes an early exit guard if the resulting dataframe is empty.
+* **Universal Time Normalization (`time_sec`):** Implements scale-aware parsing to support both Pandas datetime objects (dynamically handling `ns`, `us`, `ms`, or `s` resolutions) and raw numeric epoch values by inspecting magnitude thresholds.
 * **Tumbling Bucket Floor Quantization (`bucket_time`):**
-  * `time_sec // bucket_seconds` performs integer division to find the discrete bucket index.
-  * Multiplying back by `bucket_seconds` snaps the timestamp down to the start boundary of that window (e.g., mapping any trade occurring between 10:00:00 and 10:04:59 to a uniform boundary of 10:00:00).
+* `time_sec // bucket_seconds` performs fast integer division to find the discrete bucket index.
+* Multiplying back by `bucket_seconds` snaps the timestamp down to the start boundary of that window.
 
-##### Step 3: Grouping by Asset and Time Window
+
+* **Vectorized Notional Calculation:** Precomputes the gross notional product (`price * size`) as a vectorized column to optimize subsequent aggregation.
+
+##### Step 3: Fast Native Grouped Aggregation (Replacing Slow Apply Loops)
 
 ```python
-        grouped = clean_trades.groupby(["sym", "bucket_time"])
+        grouped = clean_trades.groupby(["sym", "bucket_time"])[["notional", "size"]].sum()
 
 ```
 
-* **Purpose:** Partitions the cleaned trade dataset into independent groups for every unique combination of asset symbol (`sym`) and time bucket (`bucket_time`). This ensures Apple trades in the 10:05 window are calculated entirely separate from Microsoft trades or other time windows.
+* **Purpose:** Bypasses slow Python-level `.apply(lambda...)` iteration loops entirely. It partitions the dataset by `[sym, bucket_time]` and computes fast, C-optimized parallel sums for both `notional` and `size` simultaneously across the grouped views.
 
-##### Step 4: Vectorized VWAP Calculation via Aggregation
+##### Step 4: Vectorized VWAP Calculation & Schema Shaping
 
 ```python
-        vwap_series = grouped.apply(
-            lambda g: np.sum(g["price"] * g["size"]) / np.sum(g["size"]),
-            include_groups=False
-        )
+        return grouped.assign(vwap=lambda x: x["notional"] / x["size"])[["vwap"]].reset_index()
 
 ```
 
-* **Purpose:** Applies the core mathematical formula for VWAP:
-
-$$\text{VWAP} = \frac{\sum (\text{Price} \times \text{Size})}{\sum \text{Size}}$$
-
-* **Mechanism:**
-  * **`lambda g: ...`**: Evaluates each partitioned sub-dataframe (`g`) individually.
-  * **`np.sum(g["price"] * g["size"])`**: Computes the total gross notional traded within that specific bucket using fast NumPy vectorization.
-  * **`np.sum(g["size"])`**: Computes total cumulative volume.
-  * **`include_groups=False`**: A performance parameter that prevents Pandas from passing grouping keys into the lambda function, optimizing execution speed and avoiding legacy warnings. The output is a multi-indexed Pandas Series indexed by `[sym, bucket_time]`.
-
-##### Step 5: Flattening and Returning the Output DataFrame
-
-```python
-        return vwap_series.reset_index(name="vwap")
-
-```
-
-* **Purpose:** Converts the multi-indexed aggregation series back into a clean, flat two-dimensional tabular DataFrame.
-* **Mechanism:** `.reset_index()` pulls `sym` and `bucket_time` out of the index and turns them back into standard columns, while `name="vwap"` assigns the correct label to the calculated result column.
+* **Purpose:** Computes the final division ratio (`notional / size`) natively across the dataframe, isolates the resulting column, and flattens the multi-index back into a clean 3-column tabular structure (`sym`, `bucket_time`, `vwap`).
 
 ### I) Rigorous Time & Space Complexity Analysis
 
