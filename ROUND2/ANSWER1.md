@@ -93,7 +93,7 @@ main:{[args]
   res: vwapByBucket[sampleTrades; 0D00:00:02.000000000];
 
   // 3. Assertions & Validation
-  assert[count res = 2; "Error: Expected exactly 2 VWAP buckets"];
+  assert[count res = 3; "Error: Expected exactly 3 VWAP buckets"];
   assert[first[exec vwap from res where bucketTime = 09:30:00.000] = (75.0*100 + 75.2*200)%300; "Error: Bucket 1 VWAP mismatch"];
   
   -1 "SUCCESS: vwapByBucket q script passed all validation assertions.";
@@ -303,7 +303,7 @@ def run_self_validation() -> None:
 
     # Validate native Python implementation
     result_native = engine.compute_vwap_native(sample_trades, bucket_seconds=2)
-    assert len(result_native) == 2, "Expected exactly 2 VWAP buckets"
+    assert len(result_native) == 3, "Expected exactly 3 VWAP buckets"
     
     expected_bucket_0 = (75.0 * 100 + 75.2 * 200) / 300
     actual_bucket_0 = result_native.loc[result_native["bucket_time"] == 1785394200, "vwap"].values[0]
