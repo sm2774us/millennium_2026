@@ -54,9 +54,131 @@ $$\mathcal{L} = \sum_i L(y_i, \hat{y}_i) + \sum_k \Omega(f_k)$$
 $$\text{Gain} = \frac{1}{2}\left[\frac{G_L^2}{H_L+\lambda} + \frac{G_R^2}{H_R+\lambda} - \frac{G^2}{H+\lambda}\right] - \gamma$$
 
 ```python
+## ── quant_D_1_xgboost_alpha.py ────────────────────────────────────────────
+#"""XGBoost Cross-Sectional Alpha Model — Python 3.13+"""
+#
+#import numpy as np
+#import pandas as pd
+#import xgboost as xgb
+#import yfinance as yf
+#from sklearn.model_selection import TimeSeriesSplit
+#from sklearn.preprocessing import RobustScaler
+#from sklearn.metrics import mean_squared_error
+#from scipy.stats import spearmanr
+#
+#UNIVERSE = ["AAPL","MSFT","GOOGL","AMZN","META","NVDA","TSLA",
+#            "JPM","GS","MS","BAC","XOM","CVX","JNJ","PFE",
+#            "WMT","COST","HD","CAT","GE"]
+#
+#data   = yf.download(UNIVERSE, start="2017-01-01", end="2024-12-31",
+#                     auto_adjust=True, progress=False)
+#close  = data["Close"].dropna()
+#volume = data["Volume"].dropna()
+#high   = data["High"].dropna()
+#low    = data["Low"].dropna()
+#R      = np.log(close / close.shift(1)).dropna()
+#
+#def build_features_wide(close, volume, high, low, R):
+#    n_assets = len(close.columns)
+#    all_frames = []
+#    for ticker in close.columns:
+#        cl_, vo_, hi_, lo_ = (close[ticker], volume[ticker],
+#                               high[ticker], low[ticker])
+#        r_ = R[ticker]
+#        d  = pd.DataFrame(index=cl_.index)
+#        # Momentum
+#        for w in [5, 10, 21, 63, 126, 252]:
+#            d[f"mom_{w}"] = r_.rolling(w).sum()
+#        # Volatility
+#        for w in [10, 21, 63]:
+#            d[f"vol_{w}"] = r_.rolling(w).std() * np.sqrt(252)
+#        # Mean reversion
+#        d["rsi_14"]    = compute_rsi(r_)
+#        sma20 = cl_.rolling(20).mean()
+#        d["bb_z"]      = (cl_ - sma20) / cl_.rolling(20).std()
+#        d["roc_10"]    = cl_.pct_change(10)
+#        # Volume features
+#        d["vol_ratio"] = vo_ / vo_.rolling(21).mean()
+#        d["dollar_vol"]= (cl_ * vo_).rolling(5).mean().apply(np.log)
+#        # Price-based
+#        d["high_low"]  = np.log(hi_ / lo_)
+#        d["amihud"]    = r_.abs() / (cl_ * vo_ + 1) * 1e9
+#        d["garman_klass"] = np.sqrt(
+#            0.5 * np.log(hi_/lo_)**2
+#            - (2*np.log(2)-1) * np.log(cl_/cl_.shift(1))**2)
+#        # Target: 5-day forward return
+#        d["target"]   = r_.shift(-5).rolling(5).sum()
+#        d["ticker"]   = ticker
+#        all_frames.append(d)
+#    return pd.concat(all_frames).dropna()
+#
+#def compute_rsi(r, w=14):
+#    delta = r
+#    gain  = delta.clip(lower=0).ewm(com=w-1, adjust=False).mean()
+#    loss  = (-delta.clip(upper=0)).ewm(com=w-1, adjust=False).mean()
+#    return 100 - 100 / (1 + gain / (loss + 1e-10))
+#
+#df_all = build_features_wide(close, volume, high, low, R)
+#
+#FEATURE_COLS = [c for c in df_all.columns if c not in ["target","ticker"]]
+#X_all = df_all[FEATURE_COLS].to_numpy()
+#y_all = df_all["target"].to_numpy()
+#dates = df_all.index
+#
+## ── XGBoost with time-series CV ───────────────────────────────────────────
+#tscv    = TimeSeriesSplit(n_splits=5, gap=21)           # 21-day gap
+#scl     = RobustScaler()
+#ic_list = []
+#
+#params = {
+#    "n_estimators"      : 500,
+#    "max_depth"         : 5,
+#    "learning_rate"     : 0.02,
+#    "subsample"         : 0.8,
+#    "colsample_bytree"  : 0.7,
+#    "reg_alpha"         : 0.1,
+#    "reg_lambda"        : 1.0,
+#    "random_state"      : 42,
+#    "n_jobs"            : -1,
+#    "early_stopping_rounds": 30,
+#    "eval_metric"       : "rmse",
+#}
+#model  = xgb.XGBRegressor(**params)
+#
+#for fold, (tr, va) in enumerate(tscv.split(X_all)):
+#    X_tr = scl.fit_transform(X_all[tr])
+#    X_va = scl.transform(X_all[va])
+#    y_tr, y_va = y_all[tr], y_all[va]
+#    model.set_params(early_stopping_rounds=30)
+#    model.fit(X_tr, y_tr, eval_set=[(X_va, y_va)], verbose=False)
+#    pred = model.predict(X_va)
+#    ic, _ = spearmanr(pred, y_va)
+#    ic_list.append(ic)
+#    print(f"  Fold {fold+1}: IC={ic:.4f}, "
+#          f"RMSE={np.sqrt(mean_squared_error(y_va, pred)):.6f}")
+#
+#print(f"\nXGBoost Walk-Forward Results:")
+#print(f"  Mean IC : {np.mean(ic_list):.4f}")
+#print(f"  Std  IC : {np.std(ic_list):.4f}")
+#print(f"  ICIR    : {np.mean(ic_list)/np.std(ic_list):.4f}")
+#
+## ── Feature importance ────────────────────────────────────────────────────
+#fi   = model.feature_importances_
+#idx  = np.argsort(fi)[::-1][:12]
+#print(f"\nTop-12 Feature Importances:")
+#print(f"{'Feature':<18} {'Importance':>12} {'Bar':>20}")
+#print("-" * 55)
+#for i in idx:
+#    bar = "█" * int(fi[i] * 500)
+#    print(f"{FEATURE_COLS[i]:<18} {fi[i]:>12.6f}  {bar}")
+
 # ── quant_D_1_xgboost_alpha.py ────────────────────────────────────────────
 """XGBoost Cross-Sectional Alpha Model — Python 3.13+"""
 
+from __future__ import annotations
+
+import logging
+import sys
 import numpy as np
 import pandas as pd
 import xgboost as xgb
@@ -65,27 +187,35 @@ from sklearn.model_selection import TimeSeriesSplit
 from sklearn.preprocessing import RobustScaler
 from sklearn.metrics import mean_squared_error
 from scipy.stats import spearmanr
+import warnings
 
-UNIVERSE = ["AAPL","MSFT","GOOGL","AMZN","META","NVDA","TSLA",
-            "JPM","GS","MS","BAC","XOM","CVX","JNJ","PFE",
-            "WMT","COST","HD","CAT","GE"]
+warnings.filterwarnings("ignore")
 
-data   = yf.download(UNIVERSE, start="2017-01-01", end="2024-12-31",
-                     auto_adjust=True, progress=False)
-close  = data["Close"].dropna()
-volume = data["Volume"].dropna()
-high   = data["High"].dropna()
-low    = data["Low"].dropna()
-R      = np.log(close / close.shift(1)).dropna()
+logger = logging.getLogger(__name__)
 
-def build_features_wide(close, volume, high, low, R):
-    n_assets = len(close.columns)
+UNIVERSE = [
+    "AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "TSLA",
+    "JPM", "GS", "MS", "BAC", "XOM", "CVX", "JNJ", "PFE",
+    "WMT", "COST", "HD", "CAT", "GE"
+]
+
+
+def compute_rsi(r: pd.Series, w: int = 14) -> pd.Series:
+    """Computes the Relative Strength Index (RSI) vectoristically."""
+    delta = r
+    gain = delta.clip(lower=0).ewm(com=w - 1, adjust=False).mean()
+    loss = (-delta.clip(upper=0)).ewm(com=w - 1, adjust=False).mean()
+    return 100 - 100 / (1 + gain / (loss + 1e-10))
+
+
+def build_features_wide(close: pd.DataFrame, volume: pd.DataFrame, high: pd.DataFrame, low: pd.DataFrame, R: pd.DataFrame) -> pd.DataFrame:
+    """Builds multi-factor cross-sectional features and forward return targets."""
     all_frames = []
     for ticker in close.columns:
-        cl_, vo_, hi_, lo_ = (close[ticker], volume[ticker],
-                               high[ticker], low[ticker])
+        cl_, vo_, hi_, lo_ = close[ticker], volume[ticker], high[ticker], low[ticker]
         r_ = R[ticker]
-        d  = pd.DataFrame(index=cl_.index)
+        d = pd.DataFrame(index=cl_.index)
+        
         # Momentum
         for w in [5, 10, 21, 63, 126, 252]:
             d[f"mom_{w}"] = r_.rolling(w).sum()
@@ -93,114 +223,166 @@ def build_features_wide(close, volume, high, low, R):
         for w in [10, 21, 63]:
             d[f"vol_{w}"] = r_.rolling(w).std() * np.sqrt(252)
         # Mean reversion
-        d["rsi_14"]    = compute_rsi(r_)
+        d["rsi_14"] = compute_rsi(r_)
         sma20 = cl_.rolling(20).mean()
-        d["bb_z"]      = (cl_ - sma20) / cl_.rolling(20).std()
-        d["roc_10"]    = cl_.pct_change(10)
+        d["bb_z"] = (cl_ - sma20) / cl_.rolling(20).std()
+        d["roc_10"] = cl_.pct_change(10)
         # Volume features
         d["vol_ratio"] = vo_ / vo_.rolling(21).mean()
-        d["dollar_vol"]= (cl_ * vo_).rolling(5).mean().apply(np.log)
+        d["dollar_vol"] = (cl_ * vo_).rolling(5).mean().apply(np.log)
         # Price-based
-        d["high_low"]  = np.log(hi_ / lo_)
-        d["amihud"]    = r_.abs() / (cl_ * vo_ + 1) * 1e9
+        d["high_low"] = np.log(hi_ / lo_)
+        d["amihud"] = r_.abs() / (cl_ * vo_ + 1) * 1e9
         d["garman_klass"] = np.sqrt(
-            0.5 * np.log(hi_/lo_)**2
-            - (2*np.log(2)-1) * np.log(cl_/cl_.shift(1))**2)
+            0.5 * np.log(hi_ / lo_) ** 2
+            - (2 * np.log(2) - 1) * np.log(cl_ / cl_.shift(1)) ** 2
+        )
         # Target: 5-day forward return
-        d["target"]   = r_.shift(-5).rolling(5).sum()
-        d["ticker"]   = ticker
+        d["target"] = r_.shift(-5).rolling(5).sum()
+        d["ticker"] = ticker
         all_frames.append(d)
     return pd.concat(all_frames).dropna()
 
-def compute_rsi(r, w=14):
-    delta = r
-    gain  = delta.clip(lower=0).ewm(com=w-1, adjust=False).mean()
-    loss  = (-delta.clip(upper=0)).ewm(com=w-1, adjust=False).mean()
-    return 100 - 100 / (1 + gain / (loss + 1e-10))
 
-df_all = build_features_wide(close, volume, high, low, R)
+def run_xgboost_pipeline() -> tuple[xgb.XGBRegressor, list[float], list[str]]:
+    """Executes data retrieval, feature engineering, and walk-forward cross-validation.
 
-FEATURE_COLS = [c for c in df_all.columns if c not in ["target","ticker"]]
-X_all = df_all[FEATURE_COLS].to_numpy()
-y_all = df_all["target"].to_numpy()
-dates = df_all.index
+    Returns:
+        A tuple containing:
+            - model: Trained XGBoost regressor instance.
+            - ic_list: List of Information Coefficients across cross-validation folds.
+            - FEATURE_COLS: List of feature names used for modeling.
 
-# ── XGBoost with time-series CV ───────────────────────────────────────────
-tscv    = TimeSeriesSplit(n_splits=5, gap=21)           # 21-day gap
-scl     = RobustScaler()
-ic_list = []
+    Raises:
+        RuntimeError: If data downloading or model fitting fails.
+    """
+    logger.info("Downloading historical market data via yfinance...")
+    data = yf.download(
+        UNIVERSE, 
+        start="2017-01-01", 
+        end="2024-12-31",
+        auto_adjust=True, 
+        progress=False
+    )
+    close = data["Close"].dropna()
+    volume = data["Volume"].dropna()
+    high = data["High"].dropna()
+    low = data["Low"].dropna()
+    R = np.log(close / close.shift(1)).dropna()
 
-params = {
-    "n_estimators"      : 500,
-    "max_depth"         : 5,
-    "learning_rate"     : 0.02,
-    "subsample"         : 0.8,
-    "colsample_bytree"  : 0.7,
-    "reg_alpha"         : 0.1,
-    "reg_lambda"        : 1.0,
-    "random_state"      : 42,
-    "n_jobs"            : -1,
-    "early_stopping_rounds": 30,
-    "eval_metric"       : "rmse",
-}
-model  = xgb.XGBRegressor(**params)
+    logger.info("Constructing cross-sectional features...")
+    df_all = build_features_wide(close, volume, high, low, R)
 
-for fold, (tr, va) in enumerate(tscv.split(X_all)):
-    X_tr = scl.fit_transform(X_all[tr])
-    X_va = scl.transform(X_all[va])
-    y_tr, y_va = y_all[tr], y_all[va]
-    model.set_params(early_stopping_rounds=30)
-    model.fit(X_tr, y_tr, eval_set=[(X_va, y_va)], verbose=False)
-    pred = model.predict(X_va)
-    ic, _ = spearmanr(pred, y_va)
-    ic_list.append(ic)
-    print(f"  Fold {fold+1}: IC={ic:.4f}, "
-          f"RMSE={np.sqrt(mean_squared_error(y_va, pred)):.6f}")
+    FEATURE_COLS = [c for c in df_all.columns if c not in ["target", "ticker"]]
+    X_all = df_all[FEATURE_COLS].to_numpy()
+    y_all = df_all["target"].to_numpy()
 
-print(f"\nXGBoost Walk-Forward Results:")
-print(f"  Mean IC : {np.mean(ic_list):.4f}")
-print(f"  Std  IC : {np.std(ic_list):.4f}")
-print(f"  ICIR    : {np.mean(ic_list)/np.std(ic_list):.4f}")
+    # ── XGBoost with time-series CV ───────────────────────────────────────────
+    tscv = TimeSeriesSplit(n_splits=5, gap=21)  # 21-day gap
+    scl = RobustScaler()
+    ic_list = []
 
-# ── Feature importance ────────────────────────────────────────────────────
-fi   = model.feature_importances_
-idx  = np.argsort(fi)[::-1][:12]
-print(f"\nTop-12 Feature Importances:")
-print(f"{'Feature':<18} {'Importance':>12} {'Bar':>20}")
-print("-" * 55)
-for i in idx:
-    bar = "█" * int(fi[i] * 500)
-    print(f"{FEATURE_COLS[i]:<18} {fi[i]:>12.6f}  {bar}")
+    params = {
+        "n_estimators": 500,
+        "max_depth": 5,
+        "learning_rate": 0.02,
+        "subsample": 0.8,
+        "colsample_bytree": 0.7,
+        "reg_alpha": 0.1,
+        "reg_lambda": 1.0,
+        "random_state": 42,
+        "n_jobs": -1,
+        "early_stopping_rounds": 30,
+        "eval_metric": "rmse",
+    }
+    model = xgb.XGBRegressor(**params)
+
+    logger.info("Executing TimeSeriesSplit walk-forward training...")
+    for fold, (tr, va) in enumerate(tscv.split(X_all)):
+        X_tr = scl.fit_transform(X_all[tr])
+        X_va = scl.transform(X_all[va])
+        y_tr, y_va = y_all[tr], y_all[va]
+        model.set_params(early_stopping_rounds=30)
+        model.fit(X_tr, y_tr, eval_set=[(X_va, y_va)], verbose=False)
+        pred = model.predict(X_va)
+        ic, _ = spearmanr(pred, y_va)
+        ic_list.append(ic)
+        print(f"  Fold {fold + 1}: IC={ic:.4f}, RMSE={np.sqrt(mean_squared_error(y_va, pred)):.6f}")
+
+    print(f"\nXGBoost Walk-Forward Results:")
+    print(f"  Mean IC : {np.mean(ic_list):.4f}")
+    print(f"  Std  IC : {np.std(ic_list):.4f}")
+    print(f"  ICIR    : {np.mean(ic_list) / np.std(ic_list):.4f}")
+
+    # ── Feature importance ────────────────────────────────────────────────────
+    fi = model.feature_importances_
+    idx = np.argsort(fi)[::-1][:12]
+    print(f"\nTop-12 Feature Importances:")
+    print(f"{'Feature':<18} {'Importance':>12} {'Bar':>20}")
+    print("-" * 55)
+    for i in idx:
+        bar = "█" * int(fi[i] * 500)
+        print(f"{FEATURE_COLS[i]:<18} {fi[i]:>12.6f}  {bar}")
+
+    return model, ic_list, FEATURE_COLS
+
+
+def run_self_validation() -> None:
+    """Executes standalone self-validation assertions for the XGBoost alpha model."""
+    logging.basicConfig(level=logging.INFO)
+    logger.info("Running XGBoost Alpha Model validation...")
+
+    model, ic_list, feature_cols = run_xgboost_pipeline()
+
+    assert len(ic_list) == 5, "Expected 5 cross-validation folds"
+    assert len(feature_cols) > 0, "Feature columns list is empty"
+    assert model is not None, "Trained XGBoost model is None"
+
+    logger.info("SUCCESS: XGBoost Alpha Model passed all validation assertions.")
+
+
+if __name__ == "__main__":
+    try:
+        run_self_validation()
+        sys.exit(0)
+    except Exception as e:
+        logger.error("FAILURE in XGBoost Alpha Model execution: %s", e)
+        sys.exit(1)
 ```
 
 **Expected Output:**
 ```
-  Fold 1: IC=0.0312, RMSE=0.021234
-  Fold 2: IC=0.0423, RMSE=0.019823
-  Fold 3: IC=0.0289, RMSE=0.022341
-  Fold 4: IC=0.0378, RMSE=0.020512
-  Fold 5: IC=0.0341, RMSE=0.021089
+INFO:__main__:Running XGBoost Alpha Model validation...
+INFO:__main__:Downloading historical market data via yfinance...
+INFO:__main__:Constructing cross-sectional features...
+INFO:__main__:Executing TimeSeriesSplit walk-forward training...
+  Fold 1: IC=0.0157, RMSE=0.044321
+  Fold 2: IC=0.0329, RMSE=0.038691
+  Fold 3: IC=0.0910, RMSE=0.042252
+  Fold 4: IC=0.0387, RMSE=0.048464
+  Fold 5: IC=0.0418, RMSE=0.056899
 
 XGBoost Walk-Forward Results:
-  Mean IC : 0.0349
-  Std  IC : 0.0050
-  ICIR    : 6.9800
+  Mean IC : 0.0440
+  Std  IC : 0.0252
+  ICIR    : 1.7481
 
 Top-12 Feature Importances:
-Feature             Importance                  Bar
+Feature              Importance                  Bar
 -------------------------------------------------------
-mom_21             0.082341  █████████████████████████████████████████
-vol_21             0.071234  ████████████████████████████████████
-bb_z               0.065123  █████████████████████████████████
-rsi_14             0.058923  █████████████████████████████
-mom_63             0.052341  ██████████████████████████
-vol_ratio          0.048923  ████████████████████████
-amihud             0.042341  █████████████████████
-dollar_vol         0.038923  ███████████████████
-garman_klass       0.034512  █████████████████
-roc_10             0.031234  ████████████████
-mom_5              0.028923  ██████████████
-high_low           0.025341  █████████████
+vol_63                 0.071895  ███████████████████████████████████
+mom_63                 0.069957  ██████████████████████████████████
+roc_10                 0.066997  █████████████████████████████████
+garman_klass           0.066827  █████████████████████████████████
+mom_252                0.064145  ████████████████████████████████
+vol_10                 0.064143  ████████████████████████████████
+vol_21                 0.061165  ██████████████████████████████
+amihud                 0.059493  █████████████████████████████
+bb_z                   0.058441  █████████████████████████████
+mom_5                  0.057589  ████████████████████████████
+mom_21                 0.055301  ███████████████████████████
+dollar_vol             0.053710  ██████████████████████████
+INFO:__main__:SUCCESS: XGBoost Alpha Model passed all validation assertions.
 ```
 
 [🔝 Back to Top](#-table-of-contents)

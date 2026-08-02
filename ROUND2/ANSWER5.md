@@ -671,7 +671,33 @@ class VWAPEngine:
             logger.info("Successfully executed VWAP via Q IPC.")
             return pd.DataFrame(result)
 
-    def compute_vwap_native(self, trades: pd.DataFrame, bucket_seconds: int = 300) -> pd.DataFrame:
+#    def compute_vwap_native(self, trades: pd.DataFrame, bucket_seconds: int = 300) -> pd.DataFrame:
+#        """Re-implements VWAP calculation natively in Python 3.13 using pandas/numpy.
+#
+#        Args:
+#            trades: DataFrame containing tick trade records.
+#            bucket_seconds: Bucket size in seconds.
+#
+#        Returns:
+#            DataFrame containing aggregated VWAP per bucket.
+#        """
+#        required_cols = {"sym", "time", "price", "size"}
+#        if not required_cols.issubset(trades.columns):
+#            missing = required_cols - set(trades.columns)
+#            raise KeyError(f"Missing required columns: {missing}")
+#
+#        clean_trades = trades[trades["size"] > 0].copy()
+#        time_sec = pd.to_numeric(clean_trades["time"]) // 10**9
+#        clean_trades["bucket_time"] = (time_sec // bucket_seconds) * bucket_seconds
+#
+#        grouped = clean_trades.groupby(["sym", "bucket_time"])
+#        vwap_series = grouped.apply(
+#            lambda g: np.sum(g["price"] * g["size"]) / np.sum(g["size"]),
+#            include_groups=False
+#        )
+#        return vwap_series.reset_index(name="vwap")
+
+def compute_vwap_native(self, trades: pd.DataFrame, bucket_seconds: int = 300) -> pd.DataFrame:
         """Re-implements VWAP calculation natively in Python 3.13 using pandas/numpy.
 
         Args:
@@ -680,6 +706,9 @@ class VWAPEngine:
 
         Returns:
             DataFrame containing aggregated VWAP per bucket.
+
+        Raises:
+            KeyError: If required columns ('sym', 'time', 'price', 'size') are absent.
         """
         required_cols = {"sym", "time", "price", "size"}
         if not required_cols.issubset(trades.columns):
@@ -687,16 +716,41 @@ class VWAPEngine:
             raise KeyError(f"Missing required columns: {missing}")
 
         clean_trades = trades[trades["size"] > 0].copy()
-        time_sec = pd.to_numeric(clean_trades["time"]) // 10**9
+        if clean_trades.empty:
+            return pd.DataFrame(columns=["sym", "bucket_time", "vwap"])
+
+        t_col = clean_trades["time"]
+
+        # Universal Scale-Aware Time Normalization
+        if pd.api.types.is_datetime64_any_dtype(t_col):
+            raw_ints = t_col.astype("int64")
+            dtype_str = str(t_col.dtype)
+            if "ns" in dtype_str:
+                time_sec = raw_ints // 10**9
+            elif "us" in dtype_str:
+                time_sec = raw_ints // 10**6
+            elif "ms" in dtype_str:
+                time_sec = raw_ints // 1000
+            else:
+                time_sec = raw_ints
+        else:
+            val = t_col.iloc[0] if len(t_col) > 0 else 0
+            if val > 1e16:   
+                time_sec = t_col // 10**9
+            elif val > 1e13: 
+                time_sec = t_col // 10**6
+            elif val > 1e10: 
+                time_sec = t_col // 1000
+            else:            
+                time_sec = t_col
+
         clean_trades["bucket_time"] = (time_sec // bucket_seconds) * bucket_seconds
+        clean_trades["notional"] = clean_trades["price"] * clean_trades["size"]
 
-        grouped = clean_trades.groupby(["sym", "bucket_time"])
-        vwap_series = grouped.apply(
-            lambda g: np.sum(g["price"] * g["size"]) / np.sum(g["size"]),
-            include_groups=False
-        )
-        return vwap_series.reset_index(name="vwap")
-
+        # Fully vectorized aggregation bypassing slow apply loops
+        grouped = clean_trades.groupby(["sym", "bucket_time"])[["notional", "size"]].sum()
+        
+        return grouped.assign(vwap=lambda x: x["notional"] / x["size"])[["vwap"]].reset_index()
 
 def run_self_validation() -> None:
     """Executes standalone self-validation assertions for VWAPEngine."""
@@ -1003,19 +1057,89 @@ class TWAPEngine:
             logger.info("Successfully executed TWAP via Q IPC.")
             return pd.DataFrame(result)
 
-    def compute_twap_native(self, trades: pd.DataFrame, bucket_seconds: int = 5) -> pd.DataFrame:
-        """Re-implements TWAP calculation natively in Python 3.13."""
-        df = trades.copy()
-        df["time_diff"] = df["time"].diff().dt.total_seconds().fillna(1.0)
-        time_sec = pd.to_numeric(df["time"]) // 10**9
+#    def compute_twap_native(self, trades: pd.DataFrame, bucket_seconds: int = 5) -> pd.DataFrame:
+#        """Re-implements TWAP calculation natively in Python 3.13."""
+#        df = trades.copy()
+#        df["time_diff"] = df["time"].diff().dt.total_seconds().fillna(1.0)
+#        time_sec = pd.to_numeric(df["time"]) // 10**9
+#        df["bucket_time"] = (time_sec // bucket_seconds) * bucket_seconds
+#        
+#        grouped = df.groupby(["sym", "bucket_time"])
+#        twap_series = grouped.apply(
+#            lambda g: np.sum(g["price"] * g["time_diff"]) / np.sum(g["time_diff"]),
+#            include_groups=False
+#        )
+#        return twap_series.reset_index(name="twap")
+
+def compute_twap_native(self, trades: pd.DataFrame, bucket_seconds: int = 5) -> pd.DataFrame:
+        """Re-implements TWAP calculation natively in Python 3.13.
+
+        Computes Time-Weighted Average Price (TWAP) across tumbling buckets 
+        by weighting trade prices proportionally to the time delta between prints, 
+        utilizing robust scale-aware timestamp normalization and fully vectorized 
+        aggregations.
+
+        Args:
+            trades: DataFrame containing tick trade records ('sym', 'time', 'price', 'size').
+            bucket_seconds: Bucket size in seconds.
+
+        Returns:
+            DataFrame containing aggregated TWAP per bucket ('sym', 'bucket_time', 'twap').
+
+        Raises:
+            KeyError: If required columns ('sym', 'time', 'price') are absent.
+        """
+        required_cols = {"sym", "time", "price"}
+        if not required_cols.issubset(trades.columns):
+            missing = required_cols - set(trades.columns)
+            raise KeyError(f"Missing required columns: {missing}")
+
+        df = trades.sort_values(["sym", "time"]).copy()
+        if df.empty:
+            return pd.DataFrame(columns=["sym", "bucket_time", "twap"])
+
+        t_col = df["time"]
+
+        # Universal Scale-Aware Time Normalization
+        if pd.api.types.is_datetime64_any_dtype(t_col):
+            raw_ints = t_col.astype("int64")
+            dtype_str = str(t_col.dtype)
+            if "ns" in dtype_str:
+                time_sec = raw_ints // 10**9
+            elif "us" in dtype_str:
+                time_sec = raw_ints // 10**6
+            elif "ms" in dtype_str:
+                time_sec = raw_ints // 1000
+            else:
+                time_sec = raw_ints
+        else:
+            val = t_col.iloc[0] if len(t_col) > 0 else 0
+            if val > 1e16:   
+                time_sec = t_col // 10**9
+            elif val > 1e13: 
+                time_sec = t_col // 10**6
+            elif val > 1e10: 
+                time_sec = t_col // 1000
+            else:            
+                time_sec = t_col
+
         df["bucket_time"] = (time_sec // bucket_seconds) * bucket_seconds
+
+        # Compute accurate time deltas per symbol group
+        if pd.api.types.is_datetime64_any_dtype(t_col):
+            df["time_diff"] = df.groupby("sym", group_keys=False)["time"].diff().dt.total_seconds().fillna(1.0)
+        else:
+            df["time_diff"] = df.groupby("sym", group_keys=False)["time_sec"].diff().fillna(1.0)
+            
+        # Prevent zero or negative time diff edge cases
+        df["time_diff"] = df["time_diff"].clip(lower=1e-3)
+
+        df["time_weighted_price"] = df["price"] * df["time_diff"]
+
+        # Fully vectorized aggregation bypassing slow apply loops
+        grouped = df.groupby(["sym", "bucket_time"])[["time_weighted_price", "time_diff"]].sum()
         
-        grouped = df.groupby(["sym", "bucket_time"])
-        twap_series = grouped.apply(
-            lambda g: np.sum(g["price"] * g["time_diff"]) / np.sum(g["time_diff"]),
-            include_groups=False
-        )
-        return twap_series.reset_index(name="twap")
+        return grouped.assign(twap=lambda x: x["time_weighted_price"] / x["time_diff"])[["twap"]].reset_index()
 
 
 def run_self_validation() -> None:

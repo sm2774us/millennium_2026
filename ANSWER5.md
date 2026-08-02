@@ -45,8 +45,40 @@ Typical usage:
 
 from __future__ import annotations
 
+import logging
+import sys
+import numpy as np
 import pandas as pd
 
+
+#def compute_rolling_vwap_and_slippage(
+#    fills: pd.DataFrame,
+#    window: str = "5min",
+#) -> pd.DataFrame:
+#    """Compute rolling VWAP and slippage vs. arrival price per symbol.
+#
+#    Args:
+#        fills: DataFrame indexed by timestamp with columns
+#            ["sym", "price", "size", "arrival_price"].
+#        window: Rolling time window for VWAP, e.g. "5min".
+#
+#    Returns:
+#        A copy of `fills` with two additional columns:
+#            "rolling_vwap": time-windowed volume-weighted average price.
+#            "slippage_bps": (price - arrival_price) / arrival_price * 1e4.
+#    """
+#    out = fills.sort_index().copy()
+#    out["pv"] = out["price"] * out["size"]
+#
+#    grouped = out.groupby("sym", group_keys=False)
+#    rolling_pv = grouped["pv"].apply(lambda s: s.rolling(window).sum())
+#    rolling_size = grouped["size"].apply(lambda s: s.rolling(window).sum())
+#    out["rolling_vwap"] = rolling_pv / rolling_size
+#
+#    out["slippage_bps"] = (
+#        (out["price"] - out["arrival_price"]) / out["arrival_price"] * 1e4
+#    )
+#    return out.drop(columns="pv")
 
 def compute_rolling_vwap_and_slippage(
     fills: pd.DataFrame,
@@ -55,27 +87,80 @@ def compute_rolling_vwap_and_slippage(
     """Compute rolling VWAP and slippage vs. arrival price per symbol.
 
     Args:
-        fills: DataFrame indexed by timestamp with columns
+        fills: DataFrame indexed by timestamp (or with a datetime index) with columns
             ["sym", "price", "size", "arrival_price"].
         window: Rolling time window for VWAP, e.g. "5min".
 
     Returns:
         A copy of `fills` with two additional columns:
             "rolling_vwap": time-windowed volume-weighted average price.
-            "slippage_bps": (price - arrival_price) / arrival_price * 1e4.
+            "slippage_bps": signed basis point deviation from arrival price.
+
+    Raises:
+        KeyError: If required columns are absent from the input DataFrame.
     """
+    required_cols = {"sym", "price", "size", "arrival_price"}
+    if not required_cols.issubset(fills.columns):
+        missing = required_cols - set(fills.columns)
+        raise KeyError(f"Missing required columns: {missing}")
+
     out = fills.sort_index().copy()
+    if out.empty:
+        out["rolling_vwap"] = pd.Series(dtype=float)
+        out["slippage_bps"] = pd.Series(dtype=float)
+        return out
+
+    # Ensure index is datetime for time-based rolling windows
+    if not pd.api.types.is_datetime64_any_dtype(out.index):
+        out.index = pd.to_datetime(out.index)
+
     out["pv"] = out["price"] * out["size"]
 
+    # Fully vectorized rolling aggregation per symbol group bypassing slow apply loops
     grouped = out.groupby("sym", group_keys=False)
-    rolling_pv = grouped["pv"].apply(lambda s: s.rolling(window).sum())
-    rolling_size = grouped["size"].apply(lambda s: s.rolling(window).sum())
-    out["rolling_vwap"] = rolling_pv / rolling_size
+    rolling_pv = grouped["pv"].rolling(window).sum()
+    rolling_size = grouped["size"].rolling(window).sum()
 
+    # Reset index to align with original dataframe frame structure securely
+    out["rolling_vwap"] = (rolling_pv / rolling_size).reset_index(level=0, drop=True)
+
+    # Compute execution slippage in basis points (signed: positive means adverse relative to arrival)
     out["slippage_bps"] = (
         (out["price"] - out["arrival_price"]) / out["arrival_price"] * 1e4
     )
     return out.drop(columns="pv")
+
+def run_self_validation() -> None:
+    """Executes standalone self-validation assertions for rolling VWAP and slippage."""
+    logging.basicConfig(level=logging.INFO)
+    logger.info("Running rolling_vwap_slippage standalone validation...")
+
+    dates = pd.date_range("2026-07-29 09:30:00", periods=5, freq="s")
+    sample_fills = pd.DataFrame({
+        "sym": ["CL", "CL", "CL", "CL", "CL"],
+        "price": [75.0, 75.2, 75.1, 75.5, 75.6],
+        "size": [100, 200, 150, 300, 100],
+        "arrival_price": [74.9, 74.9, 74.9, 74.9, 74.9]
+    }, index=dates)
+
+    result = compute_rolling_vwap_and_slippage(sample_fills, window="10s")
+    
+    assert len(result) == 5, "Expected 5 rows"
+    assert "rolling_vwap" in result.columns, "Missing 'rolling_vwap' column"
+    assert "slippage_bps" in result.columns, "Missing 'slippage_bps' column"
+    assert not result["rolling_vwap"].isna().any(), "Rolling VWAP contains unexpected NaNs"
+    assert not result["slippage_bps"].isna().any(), "Slippage contains unexpected NaNs"
+
+    logger.info("SUCCESS: rolling_vwap_slippage validation assertions passed.")
+
+
+if __name__ == "__main__":
+    try:
+        run_self_validation()
+        sys.exit(0)
+    except Exception as e:
+        logger.error("FAILURE in rolling_vwap_slippage execution: %s", e)
+        sys.exit(1)
 ```
 
 **D) Feynman summary:** Rolling VWAP is a moving weighted average — pandas's `.rolling(window)` does the "moving" part, and dividing rolling price×size by rolling size does the "weighted average" part; slippage is just the percentage gap between what you paid and what the market was at when you decided to trade, scaled to basis points so it's comparable across instruments with wildly different price levels.

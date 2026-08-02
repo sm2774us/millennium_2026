@@ -379,20 +379,79 @@ class RollingVWAPEngine:
             logger.info("Successfully executed rolling VWAP via Q IPC.")
             return pd.DataFrame(result)
 
-    def compute_rolling_vwap_native(self, trades: pd.DataFrame, window_size: int = 2) -> pd.DataFrame:
-        """Re-implements rolling VWAP natively in Python 3.13 using pandas/numpy."""
+#    def compute_rolling_vwap_native(self, trades: pd.DataFrame, window_size: int = 2) -> pd.DataFrame:
+#        """Re-implements rolling VWAP natively in Python 3.13 using pandas/numpy."""
+#        required_cols = {"sym", "time", "price", "size"}
+#        if not required_cols.issubset(trades.columns):
+#            missing = required_cols - set(trades.columns)
+#            raise KeyError(f"Missing required columns: {missing}")
+#
+#        notional = trades["price"] * trades["size"]
+#        grouped = trades.assign(notional=notional).groupby("sym", sort=False)
+#        rolling_notional = grouped["notional"].apply(lambda s: s.rolling(window_size).sum())
+#        rolling_size = grouped["size"].apply(lambda s: s.rolling(window_size).sum())
+#        vwap_series = rolling_notional / rolling_size
+#        return trades.assign(vwap=vwap_series)
+
+def compute_rolling_vwap_native(self, trades: pd.DataFrame, window_size: int = 2) -> pd.DataFrame:
+        """Re-implements rolling VWAP natively in Python 3.13 using pandas/numpy.
+
+        Args:
+            trades: DataFrame containing trade records ('sym', 'time', 'price', 'size').
+            window_size: Rolling window size measured in tick counts.
+
+        Returns:
+            DataFrame containing original trades with an appended 'vwap' column.
+
+        Raises:
+            KeyError: If required columns ('sym', 'time', 'price', 'size') are absent.
+        """
         required_cols = {"sym", "time", "price", "size"}
         if not required_cols.issubset(trades.columns):
             missing = required_cols - set(trades.columns)
             raise KeyError(f"Missing required columns: {missing}")
 
-        notional = trades["price"] * trades["size"]
-        grouped = trades.assign(notional=notional).groupby("sym", sort=False)
-        rolling_notional = grouped["notional"].apply(lambda s: s.rolling(window_size).sum())
-        rolling_size = grouped["size"].apply(lambda s: s.rolling(window_size).sum())
-        vwap_series = rolling_notional / rolling_size
-        return trades.assign(vwap=vwap_series)
+        clean_trades = trades.sort_values(["sym", "time"]).copy()
+        if clean_trades.empty:
+            clean_trades["vwap"] = pd.Series(dtype=float)
+            return clean_trades
 
+        t_col = clean_trades["time"]
+
+        # Universal Scale-Aware Time Normalization
+        if pd.api.types.is_datetime64_any_dtype(t_col):
+            raw_ints = t_col.astype("int64")
+            dtype_str = str(t_col.dtype)
+            if "ns" in dtype_str:
+                time_sec = raw_ints // 10**9
+            elif "us" in dtype_str:
+                time_sec = raw_ints // 10**6
+            elif "ms" in dtype_str:
+                time_sec = raw_ints // 1000
+            else:
+                time_sec = raw_ints
+        else:
+            val = t_col.iloc[0] if len(t_col) > 0 else 0
+            if val > 1e16:   
+                time_sec = t_col // 10**9
+            elif val > 1e13: 
+                time_sec = t_col // 10**6
+            elif val > 1e10: 
+                time_sec = t_col // 1000
+            else:            
+                time_sec = t_col
+
+        clean_trades["time_sec"] = time_sec
+        clean_trades["notional"] = clean_trades["price"] * clean_trades["size"]
+
+        # Fully vectorized rolling aggregation per symbol group bypassing slow apply loops
+        grouped = clean_trades.groupby("sym", group_keys=False)
+        rolling_notional = grouped["notional"].rolling(window=window_size, min_periods=1).sum()
+        rolling_size = grouped["size"].rolling(window=window_size, min_periods=1).sum()
+
+        vwap_series = (rolling_notional / rolling_size).reset_index(level=0, drop=True)
+        
+        return clean_trades.assign(vwap=vwap_series).drop(columns=["notional", "time_sec"])
 
 def run_self_validation() -> None:
     """Executes standalone self-validation assertions for RollingVWAPEngine."""

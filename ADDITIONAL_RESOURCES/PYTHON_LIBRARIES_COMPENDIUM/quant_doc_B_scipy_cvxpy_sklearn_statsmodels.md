@@ -2108,124 +2108,286 @@ $$\sigma_t^2 = \omega + \alpha_1 \varepsilon_{t-1}^2 + \beta_1 \sigma_{t-1}^2$$
 $$\ell = -\frac{T}{2}\ln(2\pi) - \frac{1}{2}\sum_{t=1}^{T}\left[\ln\sigma_t^2 + \frac{\varepsilon_t^2}{\sigma_t^2}\right]$$
 
 ```python
+## ── quant_B_7_4_arima_garch.py ────────────────────────────────────────────
+#"""ARIMA + GARCH Volatility Forecasting — Python 3.13+"""
+#
+#import numpy as np
+#import pandas as pd
+#import yfinance as yf
+#import statsmodels.api as sm
+#from statsmodels.tsa.arima.model import ARIMA
+#from scipy.optimize import minimize
+#import warnings
+#warnings.filterwarnings("ignore")
+#
+#data  = yf.download("SPY", start="2015-01-01", end="2024-12-31",
+#                    auto_adjust=True, progress=False)["Close"].squeeze()
+#r     = (np.log(data / data.shift(1)).dropna() * 100)  # % returns
+#
+## ── ARMA order selection via AIC grid search ───────────────────────────────
+#print("ARMA Order Selection (AIC):")
+#best_aic, best_order = np.inf, (0, 0)
+#for p in range(3):
+#    for q in range(3):
+#        try:
+#            m   = ARIMA(r, order=(p, 0, q)).fit(method_kwargs={"warn_convergence": False})
+#            if m.aic < best_aic:
+#                best_aic, best_order = m.aic, (p, 0, q)
+#        except Exception:
+#            pass
+#
+#print(f"  Best ARMA order: {best_order}, AIC={best_aic:.4f}")
+#arma  = ARIMA(r, order=best_order).fit()
+#resid = arma.resid.to_numpy()
+#
+## ── GARCH(1,1) on ARMA residuals ──────────────────────────────────────────
+#T_g = len(resid)
+#def garch11_nll_fast(params):
+#    w, a, b = params
+#    if w <= 0 or a <= 0 or b <= 0 or a+b >= 0.9999: return 1e10
+#    sig2    = np.empty(T_g)
+#    sig2[0] = resid.var()
+#    for t in range(1, T_g):
+#        sig2[t] = w + a*resid[t-1]**2 + b*sig2[t-1]
+#    return 0.5*np.sum(np.log(sig2) + resid**2/sig2)
+#
+#res = minimize(garch11_nll_fast, [0.01, 0.08, 0.90],
+#               method="L-BFGS-B",
+#               bounds=[(1e-6,1),(1e-6,0.5),(1e-6,0.999)])
+#w_g, a_g, b_g = res.x
+#
+## Conditional variance series
+#sig2 = np.empty(T_g)
+#sig2[0] = resid.var()
+#for t in range(1, T_g):
+#    sig2[t] = w_g + a_g*resid[t-1]**2 + b_g*sig2[t-1]
+#
+#cond_vol = pd.Series(np.sqrt(sig2 * 252), index=r.index) / 100  # annualised
+#
+## ── Multi-step GARCH forecast ─────────────────────────────────────────────
+#lr_var = w_g / (1 - a_g - b_g)
+#h_max  = 22                                             # 1-month ahead
+#var_h  = np.empty(h_max)
+#var_h[0] = w_g + a_g*resid[-1]**2 + b_g*sig2[-1]
+#for h in range(1, h_max):
+#    var_h[h] = w_g + (a_g + b_g)*var_h[h-1]           # recursion
+#
+#vol_fcast = np.sqrt(var_h * 252) / 100                 # annualised vol
+#
+#print(f"\nGARCH(1,1) Parameters:")
+#print(f"  ω    = {w_g:.8f}")
+#print(f"  α₁   = {a_g:.6f}")
+#print(f"  β₁   = {b_g:.6f}")
+#print(f"  α+β  = {a_g+b_g:.6f}  (persistence)")
+#print(f"  LR σ = {np.sqrt(lr_var * 252)/100:.4%}")
+#
+#print(f"\nConditional Volatility (recent):")
+#print(cond_vol.tail(5).apply(lambda x: f"{x:.4%}").to_string())
+#
+#print(f"\nGARCH Volatility Forecast (1-22 days ahead):")
+#print(f"{'h':>4} {'Forecast Vol':>14}")
+#for h in [1, 5, 10, 22]:
+#    print(f"{h:>4} {vol_fcast[h-1]:>14.4%}")
+#
+## ── Realised vs conditional vol comparison ────────────────────────────────
+#rv_21 = r.rolling(21).std().iloc[-1] * np.sqrt(252) / 100
+#print(f"\n21-day Realised Vol : {rv_21:.4%}")
+#print(f"Current GARCH Vol   : {cond_vol.iloc[-1]:.4%}")
+#print(f"1-month Forecast Vol: {vol_fcast[21]:.4%}")
+#print(f"Long-Run Vol        : {np.sqrt(lr_var*252)/100:.4%}")
+#
+
 # ── quant_B_7_4_arima_garch.py ────────────────────────────────────────────
 """ARIMA + GARCH Volatility Forecasting — Python 3.13+"""
 
+from __future__ import annotations
+
+import logging
+import sys
 import numpy as np
 import pandas as pd
 import yfinance as yf
-import statsmodels.api as sm
 from statsmodels.tsa.arima.model import ARIMA
 from scipy.optimize import minimize
 import warnings
+
 warnings.filterwarnings("ignore")
 
-data  = yf.download("SPY", start="2015-01-01", end="2024-12-31",
-                    auto_adjust=True, progress=False)["Close"].squeeze()
-r     = (np.log(data / data.shift(1)).dropna() * 100)  # % returns
+logger = logging.getLogger(__name__)
 
-# ── ARMA order selection via AIC grid search ───────────────────────────────
-print("ARMA Order Selection (AIC):")
-best_aic, best_order = np.inf, (0, 0)
-for p in range(3):
-    for q in range(3):
-        try:
-            m   = ARIMA(r, order=(p, 0, q)).fit(method_kwargs={"warn_convergence": False})
-            if m.aic < best_aic:
-                best_aic, best_order = m.aic, (p, 0, q)
-        except Exception:
-            pass
 
-print(f"  Best ARMA order: {best_order}, AIC={best_aic:.4f}")
-arma  = ARIMA(r, order=best_order).fit()
-resid = arma.resid.to_numpy()
+def run_arima_garch_pipeline() -> tuple[pd.Series, pd.Series, np.ndarray]:
+    """Executes the complete ARMA-GARCH model estimation and forecasting pipeline.
 
-# ── GARCH(1,1) on ARMA residuals ──────────────────────────────────────────
-T_g = len(resid)
-def garch11_nll_fast(params):
-    w, a, b = params
-    if w <= 0 or a <= 0 or b <= 0 or a+b >= 0.9999: return 1e10
-    sig2    = np.empty(T_g)
+    Downloads SPY historical price data, performs ARMA order selection via AIC grid search,
+    fits a GARCH(1,1) model on the residuals via maximum likelihood estimation, 
+    and generates multi-step volatility forecasts.
+
+    Returns:
+        A tuple containing:
+            - r: Percentage log returns series.
+            - cond_vol: Annualized conditional volatility series.
+            - vol_fcast: Multi-step annualized GARCH volatility forecast array (1-22 days).
+
+    Raises:
+        RuntimeError: If data retrieval or optimization fails.
+    """
+    logger.info("Downloading historical SPY data via yfinance...")
+    data = yf.download(
+        "SPY", 
+        start="2015-01-01", 
+        end="2024-12-31",
+        auto_adjust=True, 
+        progress=False
+    )["Close"].squeeze()
+
+    if isinstance(data, pd.DataFrame):
+        data = data.iloc[:, 0]
+
+    r = (np.log(data / data.shift(1)).dropna() * 100)  # % returns
+
+    # ── ARMA order selection via AIC grid search ───────────────────────────────
+    logger.info("Running ARMA Order Selection via AIC grid search...")
+    best_aic, best_order = np.inf, (0, 0)
+    for p in range(3):
+        for q in range(3):
+            try:
+                m = ARIMA(r, order=(p, 0, q)).fit(method_kwargs={"warn_convergence": False})
+                if m.aic < best_aic:
+                    best_aic, best_order = m.aic, (p, 0, q)
+            except Exception:
+                pass
+
+    logger.info("Best ARMA order found: %s with AIC: %.4f", best_order, best_aic)
+    arma = ARIMA(r, order=best_order).fit()
+    resid = arma.resid.to_numpy()
+
+    # ── GARCH(1,1) on ARMA residuals ──────────────────────────────────────────
+    T_g = len(resid)
+
+    def garch11_nll_fast(params):
+        w, a, b = params
+        if w <= 0 or a <= 0 or b <= 0 or a + b >= 0.9999:
+            return 1e10
+        sig2 = np.empty(T_g)
+        sig2[0] = resid.var()
+        for t in range(1, T_g):
+            sig2[t] = w + a * resid[t - 1]**2 + b * sig2[t - 1]
+        return 0.5 * np.sum(np.log(sig2) + resid**2 / sig2)
+
+    logger.info("Fitting GARCH(1,1) via L-BFGS-B optimization...")
+    res = minimize(
+        garch11_nll_fast, 
+        [0.01, 0.08, 0.90],
+        method="L-BFGS-B",
+        bounds=[(1e-6, 1), (1e-6, 0.5), (1e-6, 0.999)]
+    )
+    w_g, a_g, b_g = res.x
+
+    # Conditional variance series
+    sig2 = np.empty(T_g)
     sig2[0] = resid.var()
     for t in range(1, T_g):
-        sig2[t] = w + a*resid[t-1]**2 + b*sig2[t-1]
-    return 0.5*np.sum(np.log(sig2) + resid**2/sig2)
+        sig2[t] = w_g + a_g * resid[t - 1]**2 + b_g * sig2[t - 1]
 
-res = minimize(garch11_nll_fast, [0.01, 0.08, 0.90],
-               method="L-BFGS-B",
-               bounds=[(1e-6,1),(1e-6,0.5),(1e-6,0.999)])
-w_g, a_g, b_g = res.x
+    cond_vol = pd.Series(np.sqrt(sig2 * 252), index=r.index) / 100  # annualised
 
-# Conditional variance series
-sig2 = np.empty(T_g)
-sig2[0] = resid.var()
-for t in range(1, T_g):
-    sig2[t] = w_g + a_g*resid[t-1]**2 + b_g*sig2[t-1]
+    # ── Multi-step GARCH forecast ─────────────────────────────────────────────
+    lr_var = w_g / (1 - a_g - b_g)
+    h_max = 22  # 1-month ahead
+    var_h = np.empty(h_max)
+    var_h[0] = w_g + a_g * resid[-1]**2 + b_g * sig2[-1]
+    for h in range(1, h_max):
+        var_h[h] = w_g + (a_g + b_g) * var_h[h - 1]  # recursion
 
-cond_vol = pd.Series(np.sqrt(sig2 * 252), index=r.index) / 100  # annualised
+    vol_fcast = np.sqrt(var_h * 252) / 100  # annualised vol
 
-# ── Multi-step GARCH forecast ─────────────────────────────────────────────
-lr_var = w_g / (1 - a_g - b_g)
-h_max  = 22                                             # 1-month ahead
-var_h  = np.empty(h_max)
-var_h[0] = w_g + a_g*resid[-1]**2 + b_g*sig2[-1]
-for h in range(1, h_max):
-    var_h[h] = w_g + (a_g + b_g)*var_h[h-1]           # recursion
+    # ── Console Reporting ─────────────────────────────────────────────────────
+    print(f"\nGARCH(1,1) Parameters:")
+    print(f"  ω    = {w_g:.8f}")
+    print(f"  α₁   = {a_g:.6f}")
+    print(f"  β₁   = {b_g:.6f}")
+    print(f"  α+β  = {a_g + b_g:.6f}  (persistence)")
+    print(f"  LR σ = {np.sqrt(lr_var * 252) / 100:.4%}")
 
-vol_fcast = np.sqrt(var_h * 252) / 100                 # annualised vol
+    print(f"\nConditional Volatility (recent):")
+    print(cond_vol.tail(5).apply(lambda x: f"{x:.4%}").to_string())
 
-print(f"\nGARCH(1,1) Parameters:")
-print(f"  ω    = {w_g:.8f}")
-print(f"  α₁   = {a_g:.6f}")
-print(f"  β₁   = {b_g:.6f}")
-print(f"  α+β  = {a_g+b_g:.6f}  (persistence)")
-print(f"  LR σ = {np.sqrt(lr_var * 252)/100:.4%}")
+    print(f"\nGARCH Volatility Forecast (1-22 days ahead):")
+    print(f"{'h':>4} {'Forecast Vol':>14}")
+    for h in [1, 5, 10, 22]:
+        print(f"{h:>4} {vol_fcast[h - 1]:>14.4%}")
 
-print(f"\nConditional Volatility (recent):")
-print(cond_vol.tail(5).apply(lambda x: f"{x:.4%}").to_string())
+    # ── Realised vs conditional vol comparison ────────────────────────────────
+    rv_21 = r.rolling(21).std().iloc[-1] * np.sqrt(252) / 100
+    print(f"\n21-day Realised Vol : {rv_21:.4%}")
+    print(f"Current GARCH Vol   : {cond_vol.iloc[-1]:.4%}")
+    print(f"1-month Forecast Vol: {vol_fcast[21]:.4%}")
+    print(f"Long-Run Vol        : {np.sqrt(lr_var * 252) / 100:.4%}")
 
-print(f"\nGARCH Volatility Forecast (1-22 days ahead):")
-print(f"{'h':>4} {'Forecast Vol':>14}")
-for h in [1, 5, 10, 22]:
-    print(f"{h:>4} {vol_fcast[h-1]:>14.4%}")
+    return r, cond_vol, vol_fcast
 
-# ── Realised vs conditional vol comparison ────────────────────────────────
-rv_21 = r.rolling(21).std().iloc[-1] * np.sqrt(252) / 100
-print(f"\n21-day Realised Vol : {rv_21:.4%}")
-print(f"Current GARCH Vol   : {cond_vol.iloc[-1]:.4%}")
-print(f"1-month Forecast Vol: {vol_fcast[21]:.4%}")
-print(f"Long-Run Vol        : {np.sqrt(lr_var*252)/100:.4%}")
+
+def run_self_validation() -> None:
+    """Executes standalone self-validation assertions for the ARIMA-GARCH pipeline."""
+    logging.basicConfig(level=logging.INFO)
+    logger.info("Running ARIMA-GARCH pipeline validation...")
+
+    r, cond_vol, vol_fcast = run_arima_garch_pipeline()
+
+    assert len(r) > 0, "Return series is empty"
+    assert len(cond_vol) == len(r), "Conditional volatility length mismatch"
+    assert len(vol_fcast) == 22, "Forecast horizon length mismatch"
+    assert not cond_vol.isna().any(), "Conditional volatility contains NaNs"
+    assert not np.isnan(vol_fcast).any(), "Volatility forecast contains NaNs"
+
+    logger.info("SUCCESS: ARIMA-GARCH pipeline passed all validation assertions.")
+
+
+if __name__ == "__main__":
+    try:
+        run_self_validation()
+        sys.exit(0)
+    except Exception as e:
+        logger.error("FAILURE in ARIMA-GARCH pipeline execution: %s", e)
+        sys.exit(1)
 ```
 
 **Expected Output:**
 ```
-ARMA Order Selection (AIC):
-  Best ARMA order: (0, 0, 0), AIC=8234.42
+INFO:__main__:Running ARIMA-GARCH pipeline validation...
+INFO:__main__:Downloading historical SPY data via yfinance...
+INFO:__main__:Running ARMA Order Selection via AIC grid search...
+INFO:__main__:Best ARMA order found: (2, 0, 2) with AIC: 7542.9032
+INFO:__main__:Fitting GARCH(1,1) via L-BFGS-B optimization...
 
 GARCH(1,1) Parameters:
-  ω    = 0.00000182
-  α₁   = 0.082341
-  β₁   = 0.904123
-  α+β  = 0.986464  (persistence)
-  LR σ = 16.2341%
+  ω    = 0.03724908
+  α₁   = 0.164757
+  β₁   = 0.803744
+  α+β  = 0.968501  (persistence)
+  LR σ = 17.2628%
 
 Conditional Volatility (recent):
 Date
-2024-12-27    15.8923%
-2024-12-30    16.1234%
-2024-12-31    15.2341%
+2024-12-23    19.8722%
+2024-12-24    18.6479%
+2024-12-26    17.9979%
+2024-12-27    16.4782%
+2024-12-30    17.2774%
 
 GARCH Volatility Forecast (1-22 days ahead):
-   h  Forecast Vol
-   1       15.3412%
-   5       15.5234%
-  10       15.7891%
-  22       16.0123%
+   h   Forecast Vol
+   1       17.4482%
+   5       17.4260%
+  10       17.4020%
+  22       17.3577%
 
-21-day Realised Vol : 15.8923%
-Current GARCH Vol   : 15.2341%
-1-month Forecast Vol: 16.0123%
-Long-Run Vol        : 16.2341%
+21-day Realised Vol : 14.6080%
+Current GARCH Vol   : 17.2774%
+1-month Forecast Vol: 17.3577%
+Long-Run Vol        : 17.2628%
+INFO:__main__:SUCCESS: ARIMA-GARCH pipeline passed all validation assertions.
 ```
 
 [🔝 Back to Top](#-table-of-contents)
