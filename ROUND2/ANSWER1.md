@@ -801,15 +801,61 @@ class RealizedVolatilityCalculator:
         Returns:
           A pandas DataFrame containing log returns, rolling RV, and annualized vol.
         """
+#        df = ticks.sort_values(["sym", "time"]).copy()
+#        df["log_ret"] = df.groupby("sym")["price"].apply(lambda p: np.log(p).diff()).fillna(0.0)
+#        df["squared_ret"] = df["log_ret"] ** 2
+#        df["rolling_rv"] = df.groupby("sym")["squared_ret"].rolling(
+#            window=window_ticks, min_periods=1
+#        ).sum().reset_index(0, drop=True)
+#        df["annualized_vol"] = np.sqrt(df["rolling_rv"] * 252 * 23400 / window_ticks)
+#        return df
+required_cols = {"sym", "time", "price"}
+        if not required_cols.issubset(ticks.columns):
+            missing = required_cols - set(ticks.columns)
+            raise KeyError(f"Missing required columns: {missing}")
+
         df = ticks.sort_values(["sym", "time"]).copy()
-        df["log_ret"] = df.groupby("sym")["price"].apply(lambda p: np.log(p).diff()).fillna(0.0)
+        if df.empty:
+            return pd.DataFrame(columns=list(ticks.columns) + ["log_ret", "squared_ret", "rolling_rv", "annualized_vol"])
+
+        t_col = df["time"]
+
+        # Universal Scale-Aware Time Normalization (Consistent with VWAP Engine)
+        if pd.api.types.is_datetime64_any_dtype(t_col):
+            raw_ints = t_col.astype("int64")
+            dtype_str = str(t_col.dtype)
+            if "ns" in dtype_str:
+                time_sec = raw_ints // 10**9
+            elif "us" in dtype_str:
+                time_sec = raw_ints // 10**6
+            elif "ms" in dtype_str:
+                time_sec = raw_ints // 1000
+            else:
+                time_sec = raw_ints
+        else:
+            val = t_col.iloc[0]
+            if val > 1e16:   
+                time_sec = t_col // 10**9
+            elif val > 1e13: 
+                time_sec = t_col // 10**6
+            elif val > 1e10: 
+                time_sec = t_col // 1000
+            else:            
+                time_sec = t_col
+
+        df["time_sec"] = time_sec
+
+        # Vectorized Log Returns calculation per symbol group
+        df["log_ret"] = df.groupby("sym", group_keys=False)["price"].apply(lambda p: np.log(p).diff()).fillna(0.0)
         df["squared_ret"] = df["log_ret"] ** 2
-        df["rolling_rv"] = df.groupby("sym")["squared_ret"].rolling(
+
+        # Fully vectorized rolling variance calculation
+        df["rolling_rv"] = df.groupby("sym", group_keys=False)["squared_ret"].rolling(
             window=window_ticks, min_periods=1
-        ).sum().reset_index(0, drop=True)
+        ).sum().reset_index(level=0, drop=True)
+
         df["annualized_vol"] = np.sqrt(df["rolling_rv"] * 252 * 23400 / window_ticks)
         return df
-
 
 def run_self_validation() -> None:
     """Executes standalone self-validation assertions for RealizedVolatilityCalculator."""
