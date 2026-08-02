@@ -1716,7 +1716,7 @@ $$
 \mathbb{E}[T] = a \cdot b
 $$
 
-Probability of hitting $+b$ first: $P(+b) = \dfrac{a}{a+b}$ (by the martingale/optional-stopping argument, since the walk is a martingale and $\mathbb{E}[X_T]=0=b\cdot P(+b) - a\cdot(1-P(+b))$).
+Probability of hitting $+b$ first: $P(+b) = \dfrac{a}{a+b}$ (by the martingale/optional-stopping argument, since the walk is a martingale and $\mathbb{E}[X_T]=0=b\cdot P(+b) - a\cdot(1-P(+b))$ ).
 
 **Say it out loud:** *"Because a fair random walk is a martingale, its expected value never changes — so the expected value at the stopping time must still be zero. That single constraint, plus the fact that the walk must end at exactly +b or exactly −a, is enough to solve for the hit probabilities without simulating anything: probability of the upper barrier is just a/(a+b), proportional to how far away the barrier you're NOT trying to hit is. Intuitively, if your stop-loss is very close (small a) and your take-profit is far away (large b), you're much more likely to get stopped out first — which is obvious once you see it, but people get it wrong constantly when sizing stops relative to targets."*
 
