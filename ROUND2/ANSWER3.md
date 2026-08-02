@@ -255,6 +255,37 @@ if __name__ == "__main__":
 
 ---
 
+To understand why intra-day strategies lean toward Kyle-style frameworks while mid-frequency systematic macro favors Almgren-Chriss (AC), we have to look at the **timescale of execution, the nature of information asymmetry, and what is treated as an exogenous input versus an endogenous variable**.
+
+Here is the structural rationale behind this division:
+
+#### 1. High-Frequency / Intra-Day Trading: The Kyle Perspective (Information & Adverse Selection)
+
+Intra-day and high-frequency trading (HFT) strategies operate on tick-to-minute timescales where **alpha is fundamentally tied to order flow toxicity and short-term price formation**.
+
+* **The Problem:** At this horizon, every order you submit immediately shifts the order book and leaks information to faster or more informed participants. You are not just executing against passive liquidity; you are interacting directly with market makers who are actively pricing **adverse selection** ($\lambda$).
+* **Why Kyle Fits:** Kyle's model treats price impact as *endogenous*—meaning price changes are a direct function of net order flow and the underlying liquidity provider's uncertainty about the trader's information content (informed vs. noise trading).
+* **Intra-Day Rationale:** Intra-day desks care deeply about *order flow imbalance (OFI)*, *trade sign*, and *instantaneous price impact*. They need to know: *"If I cross the spread right now, how much adverse selection am I paying, and how does the market maker update their reservation price?"* Kyle's Lambda ( $dp = \lambda \cdot dQ$ - the **Continuous / Differential Form** of **Kyle's Lambda** ) gives them a direct handle on toxicity, helping them time fills to minimize information leakage and exploit immediate order-book dynamics.
+
+#### 2. Mid-Frequency Systematic Macro: The Almgren-Chriss Perspective (Optimal Trajectory & Portfolio Constraints)
+
+Mid-frequency systematic macro strategies operate on hourly-to-daily holding periods. Their execution horizons span hours, days, or multi-day VWAP/TWAP schedules across global macro instruments (FX, rates, equity indices, commodities).
+
+* **The Problem:** The primary constraint isn't instantaneous adverse selection from a single microsecond tick, but rather **minimizing the total execution cost (temporary impact + permanent impact + timing risk / variance) over a prolonged schedule**.
+* **Why Almgren-Chriss Fits:** AC treats price impact as *exogenous* to the immediate alpha signal—meaning the price impact function is estimated historically or empirically as a known penalty, and the trader's goal is to find the optimal trading trajectory $x(t)$ that balances **expected cost against inventory risk**.
+* **Mid-Freq Macro Rationale:** Macro portfolios deal with massive notional sizes relative to local market depth, spread across fragmented liquidity pools and session boundaries (e.g., London/NY overlaps). They cannot simply hide behind microsecond order flow. Instead, they need a robust, deterministic scheduling engine that answers: *"Given my total parent order size, my risk aversion parameter ( $\lambda_{AC}$ ), and asset volatility ( $\sigma$ ), how should I slice this order into child orders over the next 4 hours to minimize variance and implementation shortfall?"*
+
+#### Summary Comparison
+
+| Dimension | Kyle-Style Frameworks | Almgren-Chriss Framework |
+| --- | --- | --- |
+| **Primary Horizon** | Ticks to Minutes (Intra-day) | Hours to Days (Mid-Frequency / Macro) |
+| **Price Impact** | **Endogenous** (emerges from information asymmetry & order flow) | **Exogenous** (modeled as a deterministic function of trading speed) |
+| **Core Objective** | Quantify toxic flow, avoid adverse selection, optimize micro-timing | Balance execution cost against inventory price risk over a trajectory |
+| **Key Variables** | Order flow imbalance, Kyle's $\lambda$, sniper/maker dynamics | Volatility ($\sigma$), risk aversion ($\gamma$), temporary/permanent impact coefficients |
+
+---
+
 ### C) Mathematical Derivation (MathJax)
 
 #### 1. Kyle's Lambda (1985): First-Principles Microstructure Equilibrium
