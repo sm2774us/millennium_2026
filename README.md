@@ -68,12 +68,6 @@ Why Millennium specifically:
 ---
 ---
 
-- [**Execution Dynamics** expected knowledge for a **Senior Quantitative Researcher**.](./EXECUTION_DYNAMICS.md)
-- **[Quantitative Specialist Interview Playbook - 20 Questions](./TARGETED_TECHNIAL_QUESTIONS.md)**
-
----
----
-
 ## 📑 Advanced Rounds
 
 - **[Round2 - Technical Interview](./ROUND2/README.md)**
@@ -84,6 +78,9 @@ Why Millennium specifically:
 ## 📑 Additional Resources
 
 - **[Additional Resources](./ADDITIONAL_RESOURCES/README.md)**
+- [**Execution Dynamics** expected knowledge for a **Senior Quantitative Researcher**.](./EXECUTION_DYNAMICS.md)
+- **[Quantitative Specialist Interview Playbook - 20 Questions](./TARGETED_TECHNIAL_QUESTIONS.md)**
+- **[🧑‍🤝‍🧑 50 Interview Questions for Face-to-Face In-Person Interview](./MILLENNIUM_FACE_TO_FACE.md)**
 
 ---
 ---
