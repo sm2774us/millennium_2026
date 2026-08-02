@@ -352,8 +352,8 @@ Here is a complete, line-by-line detailed explanation of the `compute_vwap_nativ
 * **Data Cleaning (`size > 0`):** Filters out zero-size trades, odd-lot anomalies, or cancellation prints that would otherwise corrupt the volume denominator. `.copy()` ensures we avoid `SettingWithCopyWarning` when modifying the dataframe.
 * **Timestamp Normalization (`time_sec`):** Assumes timestamps are stored as nanoseconds (standard for high-frequency or modern tick databases). Dividing by $10^9$ (`10**9`) converts nanoseconds into standard integer **epoch seconds**.
 * **Tumbling Bucket Floor Quantization (`bucket_time`):**
-* `time_sec // bucket_seconds` performs integer division to find the discrete bucket index.
-* Multiplying back by `bucket_seconds` snaps the timestamp down to the start boundary of that window (e.g., mapping any trade occurring between 10:00:00 and 10:04:59 to a uniform boundary of 10:00:00).
+  * `time_sec // bucket_seconds` performs integer division to find the discrete bucket index.
+  * Multiplying back by `bucket_seconds` snaps the timestamp down to the start boundary of that window (e.g., mapping any trade occurring between 10:00:00 and 10:04:59 to a uniform boundary of 10:00:00).
 
 ##### Step 3: Grouping by Asset and Time Window
 
@@ -379,10 +379,10 @@ Here is a complete, line-by-line detailed explanation of the `compute_vwap_nativ
 $$\text{VWAP} = \frac{\sum (\text{Price} \times \text{Size})}{\sum \text{Size}}$$
 
 * **Mechanism:**
-* **`lambda g: ...`**: Evaluates each partitioned sub-dataframe (`g`) individually.
-* **`np.sum(g["price"] * g["size"])`**: Computes the total gross notional traded within that specific bucket using fast NumPy vectorization.
-* **`np.sum(g["size"])`**: Computes total cumulative volume.
-* **`include_groups=False`**: A performance parameter that prevents Pandas from passing grouping keys into the lambda function, optimizing execution speed and avoiding legacy warnings. The output is a multi-indexed Pandas Series indexed by `[sym, bucket_time]`.
+  * **`lambda g: ...`**: Evaluates each partitioned sub-dataframe (`g`) individually.
+  * **`np.sum(g["price"] * g["size"])`**: Computes the total gross notional traded within that specific bucket using fast NumPy vectorization.
+  * **`np.sum(g["size"])`**: Computes total cumulative volume.
+  * **`include_groups=False`**: A performance parameter that prevents Pandas from passing grouping keys into the lambda function, optimizing execution speed and avoiding legacy warnings. The output is a multi-indexed Pandas Series indexed by `[sym, bucket_time]`.
 
 ##### Step 5: Flattening and Returning the Output DataFrame
 
