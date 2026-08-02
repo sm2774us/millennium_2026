@@ -258,12 +258,19 @@ $$\text{Roll Yield} \approx -\frac{F(t,T_{\text{next}}) - F(t,T_{\text{front}})}
 ## B1 · Implementation Shortfall — Decomposition & Benchmark Selection
 
 **Definition (Perold, 1988):**
-$$\text{IS} = \underbrace{(P_{\text{fill,avg}} - P_{\text{arrival}})}_{\text{execution cost}} \times Q_{\text{filled}} \;+\; \underbrace{(P_{\text{final}} - P_{\text{arrival}}) \times Q_{\text{unfilled}}}_{\text{opportunity cost}}$$
+
+$$
+\text{IS} = \underbrace{(P_{\text{fill,avg}} - P_{\text{arrival}})}_{\text{execution cost}} \times Q_{\text{filled}} \;+\; \underbrace{(P_{\text{final}} - P_{\text{arrival}}) \times Q_{\text{unfilled}}}_{\text{opportunity cost}}
+$$
 
 **Say it out loud:** *"Implementation shortfall is the total cost of turning a decision into a position: how much I paid above the price that existed the moment the PM decided to trade, for the shares I actually filled, plus the cost of the shares I never got to, valued at how far price moved away from me by the time I gave up. It's the only benchmark that can't be gamed by trading slowly — VWAP can look great while opportunity cost silently destroys the PM's alpha."*
 
 **Decomposition I'd report:**
-$$\text{IS} = \text{Delay Cost} + \text{Trading Cost} + \text{Opportunity Cost} + \text{Fees}$$
+
+$$
+\text{IS} = \text{Delay Cost} + \text{Trading Cost} + \text{Opportunity Cost} + \text{Fees}
+$$
+
 where Delay Cost = drift from decision time to first order release, Trading Cost = drift from release to each fill (market impact + spread), Opportunity Cost = as above for unfilled residual.
 
 **Feynman tie-back:** *"IS is the only benchmark aligned with the PM's actual economic outcome, because it's anchored to their decision price, not a market-average price they had no claim to. Everything else (VWAP, TWAP, arrival) is a proxy; IS is closer to ground truth for 'did the desk destroy or add value.'"* — this is squarely the "design and maintain the transaction cost analysis framework for futures" bullet.
@@ -276,13 +283,22 @@ where Delay Cost = drift from decision time to first order release, Trading Cost
 ## B2 · Market Impact Models — Square-Root Law & Almgren-Chriss
 
 **The empirical square-root law:**
-$$\Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}$$
+
+$$
+\Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}
+$$
 
 **Say it out loud:** *"Price impact scales with volatility times the square root of the fraction of daily volume you trade — not linearly. Doubling your order size only increases impact by about 41%, not 100%. That square-root shape is one of the most robust empirical facts in market microstructure, replicated across equities, futures, and FX, and it's the backbone of every impact-aware execution algo, including the ones I'd build here."*
 
 **Almgren-Chriss cost function** (temporary + permanent impact):
-$$\eta(v) = \eta v \quad (\text{temporary, linear in trade rate}), \qquad g(v) = \gamma v \quad (\text{permanent})$$
-$$\text{Total Cost} = \int_0^T \Big[\eta \, \dot{x}(t)^2 \Big] dt \;+\; \frac{1}{2}\gamma X^2 \;+\; \lambda \int_0^T \sigma^2 x(t)^2 \, dt$$
+
+$$
+\eta(v) = \eta v \quad (\text{temporary, linear in trade rate}), \qquad g(v) = \gamma v \quad (\text{permanent})
+$$
+
+$$
+\text{Total Cost} = \int_0^T \Big[\eta \, \dot{x}(t)^2 \Big] dt \;+\; \frac{1}{2}\gamma X^2 \;+\; \lambda \int_0^T \sigma^2 x(t)^2 \, dt
+$$
 
 **Say it out loud, plainly:** *"There are three terms. Temporary impact is the cost you pay for trading fast right now — it scales with the square of your trading rate, so trading twice as fast costs four times as much in impact per unit time. Permanent impact is a one-time cost proportional to total size regardless of speed — the market permanently reprices to reflect your information. Risk penalty is how much you're paying for the privilege of taking longer, because your remaining unexecuted position sits exposed to price volatility the whole time. The optimal trajectory is whatever balances 'faster costs more in impact' against 'slower costs more in risk,' weighted by the trader's risk aversion λ."*
 
@@ -295,10 +311,13 @@ $$\text{Total Cost} = \int_0^T \Big[\eta \, \dot{x}(t)^2 \Big] dt \;+\; \frac{1}
 
 ## B3 · Optimal Execution — Almgren-Chriss Trading Trajectory Derivation
 
-**Setup:** minimize $E[\text{Cost}] + \lambda \, \text{Var}[\text{Cost}]$ over remaining-inventory path $x(t)$, $x(0)=X$, $x(T)=0$.
+**Setup:** minimize $\mathbb{E}[\text{Cost}] + \lambda \, \text{Var}[\text{Cost}]$ over remaining-inventory path $x(t)$, $x(0)=X$, $x(T)=0$.
 
 **Result (the famous sinh trajectory):**
-$$x(t) = X \cdot \frac{\sinh\big(\kappa (T-t)\big)}{\sinh(\kappa T)}, \qquad \kappa = \sqrt{\frac{\lambda \sigma^2}{\eta}}$$
+
+$$
+x(t) = X \cdot \frac{\sinh\big(\kappa (T-t)\big)}{\sinh(\kappa T)}, \qquad \kappa = \sqrt{\frac{\lambda \sigma^2}{\eta}}
+$$
 
 **Say it out loud:** *"Kappa is a single number that captures the tension between risk aversion and impact cost — big lambda or big sigma (you're scared of price risk) pushes kappa up, which makes the trajectory front-load more aggressively, trading fast now to reduce exposure time. Big eta (impact is expensive) pushes kappa down toward zero, which flattens the trajectory toward straight-line — that is, toward plain TWAP. In the risk-neutral limit, λ→0, kappa→0, and sinh(κ(T−t))/sinh(κT) → (T−t)/T, exactly linear — which is a nice sanity check: Almgren-Chriss collapses to naive TWAP when you stop caring about risk."*
 
@@ -350,7 +369,10 @@ TWAP              Time-weighted, ignores volume    Ignores intraday liquidity sh
 ## B6 · Slippage Attribution — Timing, Impact, Spread & Opportunity Cost
 
 **Full attribution waterfall:**
-$$\text{Total Slippage} = \underbrace{P_{\text{release}} - P_{\text{decision}}}_{\text{Delay}} + \underbrace{P_{\text{avg fill}} - P_{\text{release}}}_{\text{Trading (Impact + Spread + Timing)}} + \underbrace{P_{\text{close}} - P_{\text{avg fill}}}_{\text{Post-trade drift, informational}}$$
+
+$$
+\text{Total Slippage} = \underbrace{P_{\text{release}} - P_{\text{decision}}}_{\text{Delay}} + \underbrace{P_{\text{avg fill}} - P_{\text{release}}}_{\text{Trading (Impact + Spread + Timing)}} + \underbrace{P_{\text{close}} - P_{\text{avg fill}}}_{\text{Post-trade drift, informational}}
+$$
 
 Trading-cost sub-decomposition: **spread cost** (half-spread paid crossing on aggressive fills), **impact cost** (price moved *because of* our own trading, estimated via the square-root model as a counterfactual "no-trade" path), **timing cost** (price moved for exogenous reasons during our trading window, uncorrelated to our flow).
 
@@ -388,7 +410,9 @@ IMPACT SHAPE           Well-studied sqrt-law          Sqrt-law holds but ADV    
 
 **Setup:** PM's average IS slippage over $n$ trades is $\bar{X}$ ticks with sample std $s$. Test $H_0: \mu = 0$.
 
-$$t = \frac{\bar{X} - 0}{s/\sqrt{n}} \;\sim\; t_{n-1} \text{ under } H_0$$
+$$
+t = \frac{\bar{X} - 0}{s/\sqrt{n}} \;\sim\; t_{n-1} \text{ under } H_0
+$$
 
 **Say it out loud:** *"I standardize the average slippage by its own sampling uncertainty — divide by the standard error, which shrinks as one over root n. A PM with 20 trades and 3 ticks of average slippage almost never clears significance; a PM with 2,000 trades and 1 tick average might clear it easily, because the denominator shrank so much. The lesson I apply constantly: never tell a PM their execution is bad based on a handful of trades — I always report a confidence interval, not a point estimate, and I use bootstrap resampling instead of the naive t-test when returns are fat-tailed or autocorrelated across trades in the same session, which futures fills often are."*
 
@@ -1481,7 +1505,7 @@ if __name__ == "__main__":
     print("All RollingStats assertions passed.")
 ```
 
-**Detailed explanation:** because `collections.deque(maxlen=window)` silently evicts the oldest element on overflow, I read `self._values[0]` (the soon-to-be-evicted element) *before* appending, and subtract its contribution from both the running sum and sum-of-squares — this "downdate then update" pattern keeps `_sum`/`_sum_sq` correct in O(1) per call rather than re-summing the window. Variance is computed as $E[X^2] - (E[X])^2$, the sum-of-squares identity, which is O(1) given the maintained running sums; I explicitly `max(..., 0.0)` clamp against floating-point cancellation error that can occasionally drive this identity slightly negative for near-constant series.
+**Detailed explanation:** because `collections.deque(maxlen=window)` silently evicts the oldest element on overflow, I read `self._values[0]` (the soon-to-be-evicted element) *before* appending, and subtract its contribution from both the running sum and sum-of-squares — this "downdate then update" pattern keeps `_sum`/`_sum_sq` correct in O(1) per call rather than re-summing the window. Variance is computed as $\mathbb{E}[X^2] - (\mathbb{E}[X])^2$, the sum-of-squares identity, which is O(1) given the maintained running sums; I explicitly `max(..., 0.0)` clamp against floating-point cancellation error that can occasionally drive this identity slightly negative for near-constant series.
 
 **Complexity:** O(1) amortized per update, O(window) space — optimal, since the exact rolling window contents must be retained to correctly downdate on eviction.
 
@@ -1614,7 +1638,9 @@ if __name__ == "__main__":
 
 **Say it out loud, Feynman style:** *"With one egg you're stuck doing linear search — drop from floor 1, 2, 3, ... — because you can't afford to break it. With two eggs, the first egg can afford to break once, so I want to jump by decreasing amounts: if the first egg breaks on drop k, I've 'used up' k drops already, so I only have 14-k drops left for the second egg to linear-search a much smaller remaining range with the second egg. Setting the first jump at 14 and shrinking by 1 each time balances the worst case across every possible breaking floor — that's why it's optimal, not just a lucky guess."*
 
-$$n(n+1)/2 \ge 100 \implies n=14 \text{ (since } 14\cdot15/2=105\ge100\text{)}$$
+$$
+n(n+1)/2 \ge 100 \implies n=14 \text{ (since } 14\cdot15/2=105\ge100\text{)}
+$$
 
 **Job tie-back:** this is a proxy for search/optimization reasoning under a limited "budget of costly probes" — directly analogous to finding an optimal execution price level with limited "information-revealing" probes (e.g., iceberg-probing limit orders) without excessive signaling.
 
@@ -1628,7 +1654,10 @@ $$n(n+1)/2 \ge 100 \implies n=14 \text{ (since } 14\cdot15/2=105\ge100\text{)}$$
 **Problem:** Each child order fills independently with probability $p$ per attempt (else rejected/re-sent). What's the expected number of attempts to get $k$ fills?
 
 **Answer:** Negative binomial expectation:
-$$E[\text{attempts}] = \frac{k}{p}$$
+
+$$
+\mathbb{E}[\text{attempts}] = \frac{k}{p}
+$$
 
 **Say it out loud:** *"Each single fill is a geometric random variable with mean 1/p — that's how many tries on average until one success. If I need k independent successes, by linearity of expectation I just add k of those means together, giving k/p. This is the same logic I'd use to size how many child order slices to plan for a POV algo given a historical fill/reject rate at a venue — if my acceptance rate is 80%, I need to plan for 1/0.8 = 1.25x as many attempts as the bare minimum."*
 
@@ -1645,7 +1674,9 @@ $$E[\text{attempts}] = \frac{k}{p}$$
 
 **Trading reframe (what they're actually testing):** *"Monty Hall's power isn't the puzzle itself, it's that Monty's action — always opening a door he KNOWS is empty — carries information, because his choice is conditioned on the true state. The trading analogy: if a counterparty only shows me a two-sided market, or only lets me trade against them, when they have information (e.g., a broker's last-look rejection is more likely exactly when the market is about to move against me), then their *decision to interact with me at all* is informative, and I have to update on it — that's the core intuition behind adverse selection and why 'the fact that this order got filled easily' can itself be bad news."*
 
-$$P(\text{win by switching}) = \frac{2}{3}, \qquad P(\text{win by staying}) = \frac{1}{3}$$
+$$
+P(\text{win by switching}) = \frac{2}{3}, \qquad P(\text{win by staying}) = \frac{1}{3}
+$$
 
 **Feynman explanation:** *"Before any door opens, my initial pick has a 1/3 chance of being right, so the other two doors combined have a 2/3 chance of hiding the prize. Monty then removes one wrong option from that 2/3 group with certainty — he never removes the prize — so all of that 2/3 probability collapses onto the single remaining unopened door. Switching just lets me buy that whole 2/3 bucket instead of keeping my original 1/3 bucket."*
 
@@ -1659,8 +1690,14 @@ $$P(\text{win by switching}) = \frac{2}{3}, \qquad P(\text{win by staying}) = \f
 **Setup:** Base rate: 10% of counterparty orders are "informed" (know something). If informed, price moves adversely 80% of the time in the next minute; if uninformed, only 20% of the time. Given we observe an adverse move, what's the updated probability the order was informed?
 
 **Bayes' theorem:**
-$$P(\text{Informed}\mid\text{Move}) = \frac{P(\text{Move}\mid\text{Informed})\,P(\text{Informed})}{P(\text{Move}\mid\text{Informed})P(\text{Informed}) + P(\text{Move}\mid\text{Uninformed})P(\text{Uninformed})}$$
-$$= \frac{0.8 \times 0.1}{0.8 \times 0.1 + 0.2 \times 0.9} = \frac{0.08}{0.26} \approx 0.308$$
+
+$$
+P(\text{Informed}\mid\text{Move}) = \frac{P(\text{Move}\mid\text{Informed})\,P(\text{Informed})}{P(\text{Move}\mid\text{Informed})P(\text{Informed}) + P(\text{Move}\mid\text{Uninformed})P(\text{Uninformed})}
+$$
+
+$$
+= \frac{0.8 \times 0.1}{0.8 \times 0.1 + 0.2 \times 0.9} = \frac{0.08}{0.26} \approx 0.308
+$$
 
 **Say it out loud:** *"Even though informed flow is four times more likely to produce an adverse move than uninformed flow, the base rate of informed flow is so low (10%) that observing one adverse move only pushes my belief up to about 31%, not anywhere near certainty. This is exactly the trap junior people fall into with TCA — seeing one bad fill and concluding 'that counterparty is toxic' — when the correct Bayesian update, given realistic base rates, is much more modest. I'd need several independent adverse observations against the same counterparty before the posterior gets convincingly high."*
 
@@ -1674,9 +1711,12 @@ $$= \frac{0.8 \times 0.1}{0.8 \times 0.1 + 0.2 \times 0.9} = \frac{0.08}{0.26} \
 ## E5 · Random Walk & Gambler's Ruin — Expected Time to Hit a Stop
 
 **Setup:** Symmetric random walk (p=0.5), starting at position 0, absorbing barriers at $-a$ (stop-loss) and $+b$ (take-profit). Expected time to absorption:
-$$E[T] = a \cdot b$$
 
-Probability of hitting $+b$ first: $P(+b) = \dfrac{a}{a+b}$ (by the martingale/optional-stopping argument, since the walk is a martingale and $E[X_T]=0=b\cdot P(+b) - a\cdot(1-P(+b))$).
+$$
+\mathbb{E}[T] = a \cdot b
+$$
+
+Probability of hitting $+b$ first: $P(+b) = \dfrac{a}{a+b}$ (by the martingale/optional-stopping argument, since the walk is a martingale and $\mathbb{E}[X_T]=0=b\cdot P(+b) - a\cdot(1-P(+b))$).
 
 **Say it out loud:** *"Because a fair random walk is a martingale, its expected value never changes — so the expected value at the stopping time must still be zero. That single constraint, plus the fact that the walk must end at exactly +b or exactly −a, is enough to solve for the hit probabilities without simulating anything: probability of the upper barrier is just a/(a+b), proportional to how far away the barrier you're NOT trying to hit is. Intuitively, if your stop-loss is very close (small a) and your take-profit is far away (large b), you're much more likely to get stopped out first — which is obvious once you see it, but people get it wrong constantly when sizing stops relative to targets."*
 
@@ -1690,7 +1730,10 @@ Probability of hitting $+b$ first: $P(+b) = \dfrac{a}{a+b}$ (by the martingale/o
 ## E6 · Central Limit Theorem & Why VWAP Slippage Is Approximately Normal
 
 **Statement:** For i.i.d. (or weakly dependent, finite-variance) increments $X_i$ with mean $\mu$ and variance $\sigma^2$:
-$$\frac{\sum_{i=1}^n X_i - n\mu}{\sigma\sqrt{n}} \xrightarrow{d} N(0,1) \text{ as } n \to \infty$$
+
+$$
+\frac{\sum_{i=1}^n X_i - n\mu}{\sigma\sqrt{n}} \xrightarrow{d} N(0,1) \text{ as } n \to \infty
+$$
 
 **Say it out loud:** *"VWAP slippage aggregated across many independent child fills behaves like a sum of many small, roughly independent shocks — regardless of the individual fill-level distribution's shape, as the number of fills grows the standardized sum converges to a normal distribution. That's why I can use a t-test or a normal confidence interval on aggregate PM-level slippage even though any single fill's slippage distribution is skewed and fat-tailed — CLT is doing the heavy lifting, PROVIDED the fills are close enough to independent. The big caveat I always flag: fills within the same parent order are correlated (they're all reacting to the same underlying price path), so the *effective* n is much smaller than the raw fill count, which is exactly the clustering correction I mentioned in B8."*
 
@@ -1706,9 +1749,16 @@ $$\frac{\sum_{i=1}^n X_i - n\mu}{\sigma\sqrt{n}} \xrightarrow{d} N(0,1) \text{ a
 **Problem:** Two coins, each fair marginally, but flipped so that they agree (both heads or both tails) with probability $q$. Find the correlation between the two outcomes (coded as $\pm 1$).
 
 **Solution:** Let $X, Y \in \{-1,+1\}$, each marginally $P(X{=}1)=0.5$. $P(X{=}Y)=q$.
-$$E[XY] = (+1)\cdot q + (-1)\cdot(1-q) = 2q - 1$$
-Since $E[X]=E[Y]=0$ and $\text{Var}(X)=\text{Var}(Y)=1$:
-$$\rho = \text{Cov}(X,Y) = E[XY] - E[X]E[Y] = 2q-1$$
+
+$$
+\mathbb{E}[XY] = (+1)\cdot q + (-1)\cdot(1-q) = 2q - 1
+$$
+
+Since $\mathbb{E}[X]=\mathbb{E}[Y]=0$ and $\text{Var}(X)=\text{Var}(Y)=1$:
+
+$$
+\rho = \text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X] \mathbb{E}[Y] = 2q-1
+$$
 
 **Say it out loud:** *"Correlation here collapses to a beautifully simple linear function of the agreement probability: if the coins always agree, q=1 and correlation is exactly 1; if they always disagree, q=0 and correlation is exactly −1; at q=0.5 (no relationship between them) correlation is exactly 0. This ±1-coding trick — mapping a binary outcome to ±1 instead of 0/1 — is the same trick I use constantly translating discrete market-state variables (e.g., 'did this order get filled at a level above/below prevailing mid') into something I can directly correlate with continuous variables like realized slippage."*
 
@@ -1845,21 +1895,37 @@ $$\rho = \text{Cov}(X,Y) = E[XY] - E[X]E[Y] = 2q-1$$
 
 ## 📐 Quick-Reference Equation Sheet
 
-$$F(t,T) = S_t \cdot e^{(r+c-y)(T-t)} \quad\text{(futures fair value / cost of carry)}$$
+$$
+F(t,T) = S_t \cdot e^{(r+c-y)(T-t)} \quad\text{(futures fair value / cost of carry)}
+$$
 
-$$\text{Roll Yield} \approx -\frac{F(t,T_{\text{next}})-F(t,T_{\text{front}})}{F(t,T_{\text{front}})}\times\frac{365}{T_{\text{next}}-T_{\text{front}}}$$
+$$
+\text{Roll Yield} \approx -\frac{F(t,T_{\text{next}})-F(t,T_{\text{front}})}{F(t,T_{\text{front}})}\times\frac{365}{T_{\text{next}}-T_{\text{front}}}
+$$
 
-$$\text{VM}_t=(F_t-F_{t-1})\times\text{Multiplier}\times N \quad\text{(daily variation margin)}$$
+$$
+\text{VM}_t=(F_t-F_{t-1})\times\text{Multiplier}\times N \quad\text{(daily variation margin)}
+$$
 
-$$\text{IS}=(P_{\text{fill,avg}}-P_{\text{arrival}})\times Q_{\text{filled}}+(P_{\text{final}}-P_{\text{arrival}})\times Q_{\text{unfilled}}$$
+$$
+\text{IS}=(P_{\text{fill,avg}}-P_{\text{arrival}})\times Q_{\text{filled}}+(P_{\text{final}}-P_{\text{arrival}})\times Q_{\text{unfilled}}
+$$
 
-$$\Delta P=\sigma\,Y\sqrt{Q/V}\quad\text{(square-root market impact law)}$$
+$$
+\Delta P=\sigma\,Y\sqrt{Q/V}\quad\text{(square-root market impact law)}
+$$
 
-$$x(t)=X\cdot\frac{\sinh(\kappa(T-t))}{\sinh(\kappa T)},\qquad \kappa=\sqrt{\lambda\sigma^2/\eta}\quad\text{(Almgren-Chriss optimal trajectory)}$$
+$$
+x(t)=X\cdot\frac{\sinh(\kappa(T-t))}{\sinh(\kappa T)},\qquad \kappa=\sqrt{\lambda\sigma^2/\eta}\quad\text{(Almgren-Chriss optimal trajectory)}
+$$
 
-$$t=\frac{\bar X}{s/\sqrt n}\sim t_{n-1}\quad\text{(TCA significance test)}$$
+$$
+t=\frac{\bar X}{s/\sqrt n}\sim t_{n-1}\quad\text{(TCA significance test)}
+$$
 
-$$E[T]=ab,\qquad P(+b\text{ first})=\frac{a}{a+b}\quad\text{(gambler's ruin, symmetric walk)}$$
+$$
+\mathbb{E}[T]=ab,\qquad P(+b\text{ first})=\frac{a}{a+b}\quad\text{(gambler's ruin, symmetric walk)}
+$$
 
 $$\rho = 2q-1 \quad\text{(correlation from ±1-coded agreement probability }q\text{)}$$
 
