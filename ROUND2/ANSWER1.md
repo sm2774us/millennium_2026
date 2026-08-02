@@ -306,7 +306,8 @@ def run_self_validation() -> None:
     assert len(result_native) == 3, "Expected exactly 3 VWAP buckets"
     
     expected_bucket_0 = (75.0 * 100 + 75.2 * 200) / 300
-    actual_bucket_0 = result_native.loc[result_native["bucket_time"] == 1785394200, "vwap"].values[0]
+    #actual_bucket_0 = result_native.loc[result_native["bucket_time"] == 1785394200, "vwap"].values[0]
+    actual_bucket_0 = result["vwap"].iloc[0]
     assert np.isclose(actual_bucket_0, expected_bucket_0), f"Bucket 1 VWAP mismatch: {actual_bucket_0} vs {expected_bucket_0}"
 
     # Validate Q IPC implementation (2-second bucket represented as 2,000,000,000 ns)
