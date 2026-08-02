@@ -311,8 +311,18 @@ Here is a complete, line-by-line detailed explanation of the `compute_vwap_nativ
 
 ```python
     def compute_vwap_native(self, trades: pd.DataFrame, bucket_seconds: int = 300) -> pd.DataFrame:
-        """Re-implements VWAP calculation natively in Python 3.13.        Args:          trades: A pandas DataFrame containing trade logs.          bucket_seconds: The tumbling bucket interval in seconds.        Returns:          A pandas DataFrame containing symbol, bucket_time, and computed vwap.        Raises:          KeyError: If required columns ('sym', 'time', 'price', 'size') are absent.        """
+        """Re-implements VWAP calculation natively in Python 3.13.
 
+        Args:
+          trades: A pandas DataFrame containing trade logs.
+          bucket_seconds: The tumbling bucket interval in seconds.
+
+        Returns:
+          A pandas DataFrame containing symbol, bucket_time, and computed vwap.
+
+        Raises:
+          KeyError: If required columns ('sym', 'time', 'price', 'size') are absent.
+        """
 ```
 
 * **Purpose:** This method takes a raw trade log DataFrame and computes Volume-Weighted Average Price (VWAP) bars across tumbling time windows (defaulting to 300 seconds, or 5-minute buckets) in native Python/Pandas.
