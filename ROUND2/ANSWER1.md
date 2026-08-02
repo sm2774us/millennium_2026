@@ -113,6 +113,33 @@ exit 0;
 * **`by sym, bucketTime`**: Groups the filtered and bucketed table by contract symbol and the floored bucket timestamp simultaneously, producing a multi-keyed aggregated result table.
 * **Standalone Execution & Assertions**: The script defines a `main` block wrapped in protected evaluation (`@[main; ...; exit 1]`), executing sample validations and throwing descriptive errors if expectations fail.
 
+#### `@[main; .z.s; { -2 "FAILURE in vwapByBucket main: ", x; exit 1 }];`
+This line of code acts as a **robust execution wrapper for batch processes and production scripts** in kdb+. It ensures that if an error occurs while running your main function, the process fails cleanly with a descriptive error message and a non-zero exit code instead of hanging or dropping into an interactive console prompt.
+
+Breaking down the syntax piece by piece:
+
+##### 1. `@[main; .z.s; { -2 "FAILURE in vwapByBucket main: ", x; exit 1 }]`
+
+This uses kdb+'s **protected apply** (`@`) syntax, which follows the pattern `@[function; arguments; catch_handler]`:
+
+* **`main`**: The target function being executed (e.g., your primary execution or VWAP calculation routine).
+* **`.z.s`**: A q system keyword representing **self** (the current function or script name). Passing it as the argument supplies the required input payload to `main`.
+* **`{ -2 ... }`**: The error-handler lambda function executed *only* if `main` throws a runtime error or unhandled exception.
+* **`-2`**: Writes the following string directly to **stderr** (standard error stream) rather than stdout (`-1`).
+* **`x`**: The error string caught by the trap.
+* **`exit 1`**: Immediately terminates the entire q process with an exit status code of `1` (signaling failure to external orchestrators like Airflow, Kubernetes, or shell scripts).
+
+##### 2. `;exit 0;`
+
+* If `main` completes successfully without throwing any errors, the script moves to the next instruction and calls **`exit 0`**, terminating the kdb+ process with a success status code (`0`).
+
+##### Why this pattern is used in Quant Production
+
+In automated trading infrastructure or batch historical backtests/TCA jobs, leaving a kdb+ process hanging or dropping to a console prompt (`q)`) upon an unhandled exception will lock up automation pipelines. This pattern guarantees strict **fail-fast behavior with proper shell exit codes**:
+
+* **Success $\rightarrow$ Exit `0**`
+* **Failure $\rightarrow$ Print error to `stderr` $\rightarrow$ Exit `1**`
+
 ### G) Standalone Self-Validating Python 3.13 Module (`vwap_engine.py`)
 
 ```python
