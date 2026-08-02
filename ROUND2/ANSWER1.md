@@ -1490,21 +1490,75 @@ class ImplementationShortfallCalculator:
             logger.info("Successfully executed implementation shortfall via Q IPC.")
             return pd.DataFrame(result)
 
-    def compute_native(self, fills: pd.DataFrame, decision: pd.DataFrame) -> pd.DataFrame:
-        """Re-implements implementation shortfall natively in Python 3.13."""
-        grouped_fills = fills.groupby(["orderId", "side"]).apply(
-            lambda g: pd.Series({
-                "avg_fill_px": np.sum(g["price"] * g["size"]) / np.sum(g["size"]),
-                "filled_qty": np.sum(g["size"])
-            }),
-            include_groups=False
-        ).reset_index()
+#    def compute_native(self, fills: pd.DataFrame, decision: pd.DataFrame) -> pd.DataFrame:
+#        """Re-implements implementation shortfall natively in Python 3.13."""
+#        grouped_fills = fills.groupby(["orderId", "side"]).apply(
+#            lambda g: pd.Series({
+#                "avg_fill_px": np.sum(g["price"] * g["size"]) / np.sum(g["size"]),
+#                "filled_qty": np.sum(g["size"])
+#            }),
+#            include_groups=False
+#        ).reset_index()
+#
+#        merged = pd.merge(decision, grouped_fills, on="orderId", how="inner")
+#        side_sign = np.where(merged["side"] == "buy", 1.0, -1.0)
+#        merged["is_bps"] = 10000 * side_sign * (merged["avg_fill_px"] - merged["decision_price"]) / merged["decision_price"]
+#        return merged
+
+def compute_native(self, fills: pd.DataFrame, decision: pd.DataFrame) -> pd.DataFrame:
+        """Re-implements implementation shortfall natively in Python 3.13.
+
+        Computes execution performance metrics by aggregating trade fills against 
+        parent decision prices, calculating average fill prices, filled quantities, 
+        and implementation shortfall in basis points (bps).
+
+        Args:
+          fills: A pandas DataFrame containing trade execution fills 
+                 ('orderId', 'side', 'price', 'size', and optionally 'time').
+          decision: A pandas DataFrame containing parent order decisions 
+                    ('orderId', 'decision_price', etc.).
+
+        Returns:
+          A pandas DataFrame containing merged execution data, average fill prices, 
+          filled quantities, and implementation shortfall in basis points ('is_bps').
+
+        Raises:
+          KeyError: If required columns for calculation are absent.
+        """
+        required_fill_cols = {"orderId", "side", "price", "size"}
+        required_decision_cols = {"orderId", "decision_price"}
+        
+        if not required_fill_cols.issubset(fills.columns):
+            missing = required_fill_cols - set(fills.columns)
+            raise KeyError(f"Missing required columns in fills: {missing}")
+            
+        if not required_decision_cols.issubset(decision.columns):
+            missing = required_decision_cols - set(decision.columns)
+            raise KeyError(f"Missing required columns in decision: {missing}")
+
+        clean_fills = fills[fills["size"] > 0].copy()
+        if clean_fills.empty:
+            return pd.DataFrame()
+
+        # Vectorized aggregation using grouped sums to bypass slow apply loops
+        clean_fills["notional"] = clean_fills["price"] * clean_fills["size"]
+        grouped_fills = (
+            clean_fills.groupby(["orderId", "side"])[["notional", "size"]]
+            .sum()
+            .assign(avg_fill_px=lambda x: x["notional"] / x["size"])
+            .rename(columns={"size": "filled_qty"})
+            [["avg_fill_px", "filled_qty"]]
+            .reset_index()
+        )
 
         merged = pd.merge(decision, grouped_fills, on="orderId", how="inner")
+        if merged.empty:
+            return merged
+
         side_sign = np.where(merged["side"] == "buy", 1.0, -1.0)
         merged["is_bps"] = 10000 * side_sign * (merged["avg_fill_px"] - merged["decision_price"]) / merged["decision_price"]
+        
         return merged
-
 
 def run_self_validation() -> None:
     """Executes standalone self-validation assertions for ImplementationShortfallCalculator."""
