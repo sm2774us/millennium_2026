@@ -295,7 +295,7 @@ where Delay Cost = drift from decision time to first order release, Trading Cost
 
 $$\Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}$$
 
-**Say it out loud:** *"Price impact scales with volatility times the square root of your participation rate ($Q/V$) — it is strictly sub-linear. Doubling your order size only increases impact by about 41%, not 100%. That concave, square-root shape is one of the most robust empirical facts in market microstructure."*
+**Say it out loud:** *"Price impact scales with volatility times the square root of your participation rate ( $\frac{Q}{V}$ ) — it is strictly sub-linear. Doubling your order size only increases impact by about 41%, not 100%. That concave, square-root shape is one of the most robust empirical facts in market microstructure."*
 
 **Almgren-Chriss Cost Function (The Mathematical Tug-of-War):**
 
@@ -320,7 +320,7 @@ $$\text{Total Cost} = \underbrace{\int_0^T \Big[\eta \dot{x}(t)^2 \Big] dt}_{\te
 
 **The Internal Relationship (The Synthesis):**
 
-> *"Term 2 is just a spectator. The actual execution trajectory is a ruthless, localized negotiation strictly between Term 1 and Term 3. Term 1 wants us to stretch the trade over the entire day to minimize the $\dot{x}^2$ speed penalty. Term 3 is terrified of volatility and wants us to execute the entire block right now to crush the $x^2$ variance exposure. The mathematical solution to this exact tension is what produces the optimal trading curve."*
+> **"Term 2 is just a spectator. The actual execution trajectory is a ruthless, localized negotiation strictly between Term 1 and Term 3. Term 1 wants us to stretch the trade over the entire day to minimize the $\dot{x}^2$ speed penalty. Term 3 is terrified of volatility and wants us to execute the entire block right now to crush the $x^2$ variance exposure. The mathematical solution to this exact tension is what produces the optimal trading curve."**
 > 
 
 **Job tie-back:** "experience fitting trading cost and market impact models" is a direct JD line item — this is likely a whiteboard-derivation question.
@@ -2059,17 +2059,20 @@ $$
 $$
 
 Compute the two required moments directly from the linear strategy:
+
 $$
 \text{Cov}(v,\omega) = \text{Cov}(v, \beta(v-P_0)+\omega_{\text{noise}}) = \beta\,\text{Var}(v) = \beta\Sigma_0
 $$
+
 $$
 \text{Var}(\omega) = \beta^2\Sigma_0 + \sigma_u^2
 $$
 
 Therefore:
-$$
-\boxed{\lambda = \frac{\beta\Sigma_0}{\beta^2\Sigma_0+\sigma_u^2}}
-$$
+
+|     |
+| :-- |
+| $`\lambda = \frac{\beta\Sigma_0}{\beta^2\Sigma_0+\sigma_u^2}`$ |
 
 **Interpretation (why this matters operationally):** $\lambda$ is the empirically estimable **slope of price-change-per-unit-signed-volume regression**, i.e. exactly the $\hat\beta$ from a linear regression of $\Delta P$ on signed order flow — this is precisely why **Q1's OLS template above** (regressing execution cost on order-flow features) is a direct, practical estimator of Kyle's lambda from TCA fill data: run $\Delta P_t = \lambda \omega_t + \varepsilon_t$ via OLS, $\hat\lambda = (\omega'\omega)^{-1}\omega'\Delta P$.
 
@@ -2105,17 +2108,24 @@ $$
 $$
 
 Compute each piece:
+
 $$
 \frac{\partial L}{\partial \dot x} = 2\eta \dot x \quad\Rightarrow\quad \frac{d}{dt}(2\eta\dot x) = 2\eta\ddot x
 $$
+
 $$
 \frac{\partial L}{\partial x} = 2\lambda\sigma^2 x
 $$
 
 Substituting:
+
 $$
-2\eta\ddot x(t) - 2\lambda\sigma^2 x(t) = 0 \quad\Longrightarrow\quad \boxed{\ddot x(t) = \kappa^2 x(t)}, \qquad \kappa \equiv \sqrt{\frac{\lambda\sigma^2}{\eta}}
+2\eta\ddot x(t) - 2\lambda\sigma^2 x(t) = 0 \quad\Longrightarrow\quad 
 $$
+
+|     |
+| :-- |
+| $`\ddot x(t) = \kappa^2 x(t)}, \qquad \kappa \equiv \sqrt{\frac{\lambda\sigma^2}{\eta}`$ |
 
 **Step 2 — General solution of the linear 2nd-order ODE.** The characteristic equation $r^2=\kappa^2$ has roots $r=\pm\kappa$, giving general solution $x(t) = A\,e^{\kappa t} + B\,e^{-\kappa t}$, equivalently in hyperbolic form (more numerically convenient and boundary-condition friendly):
 
@@ -2308,9 +2318,11 @@ $$
 p_k = \frac{k-(-a)}{b-(-a)} = \frac{k+a}{a+b}
 $$
 Evaluate at start $k=0$ (shifting to the problem's original $+b/-a$ from origin convention):
-$$
-\boxed{P(+b\text{ first}) = \frac{a}{a+b}}
-$$
+
+|     |
+| :-- |
+| $`P(+b\text{ first}) = \frac{a}{a+b}`$ |
+
 (using symmetric relabeling — the probability of reaching the barrier $b$ away first is proportional to the *distance to the other barrier*, an intuitive "gravity" result confirmed algebraically.)
 
 **Step 3 — Expected time to absorption, via a martingale/Wald argument.** For the *symmetric* walk, $S_k$ itself is a martingale, but $S_k^2 - k$ is *also* a martingale (since $\mathbb E[S_{k+1}^2\mid S_k] = S_k^2+1$ for a $\pm1$ step, so $\mathbb E[S_{k+1}^2-(k+1)\mid \mathcal F_k] = S_k^2-k$). By the Optional Stopping Theorem applied to stopping time $T=\min\{k: S_k\in\{-a,b\}\}$ (finite a.s. and bounded increments justify OST here):
@@ -2318,9 +2330,11 @@ $$
 \mathbb E[S_T^2 - T] = S_0^2 - 0 = 0 \quad\Longrightarrow\quad \mathbb E[T] = \mathbb E[S_T^2]
 $$
 Compute $\mathbb E[S_T^2]$ using the hitting probabilities from Step 2 (with the origin at 0, barriers at $-a,+b$): $\mathbb E[S_T^2] = b^2\cdot\frac{a}{a+b} + a^2\cdot\frac{b}{a+b} = \frac{ab(a+b)}{a+b} = ab$. Therefore:
-$$
-\boxed{\mathbb E[T] = ab}
-$$
+
+|     |
+| :-- |
+| $`\mathbb{E}[T] = ab`$ |
+
 exactly the closed-form quoted in the Equation Sheet. **Trading interpretation:** a symmetric stop-loss at $a$ ticks and take-profit at $b$ ticks away gives expected holding time (in "tick-step" units) of $ab$ — quadratic in barrier width, so widening both barriers by 2x quadruples expected holding time, a frequently underestimated scaling when sizing stop/target distances against a desired trade horizon.
 
 [🔝 Back to Top](#-table-of-contents)
@@ -2357,10 +2371,12 @@ $$
 $$
 \text{Cov}(X,Y) = \mathbb E[XY]-\mathbb E[X]\mathbb E[Y] = 2q-1
 $$
-Since $\text{Var}(X)=\mathbb E[X^2]-\mathbb E[X]^2 = 1-0=1$ (as $X^2\equiv1$ always for $\pm1$-coding), and likewise $\text{Var}(Y)=1$:
+Since $\text{Var}(X)=\mathbb E[X^2]-\mathbb E[X]^2 = 1-0=1$ (as $X^2\equiv1$ always for $\pm1$-coding), and likewise $\text{Var}(Y)=1$ :
+
 $$
 \rho = \frac{\text{Cov}(X,Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}} = \frac{2q-1}{\sqrt{1\cdot1}} = \boxed{2q-1}
 $$
+
 matching the Equation Sheet exactly. **Sanity checks:** $q=1$ (always agree) $\Rightarrow \rho=1$ ✓; $q=1/2$ (independent fair coins) $\Rightarrow\rho=0$ ✓; $q=0$ (always disagree) $\Rightarrow\rho=-1$ ✓. **Trading analogy:** two venues' quote-update directions agreeing with probability $q$ is a direct, one-line proxy for cross-venue price-discovery correlation, usable as a quick mental Fermi-check before running a full realized-correlation estimate.
 
 [🔝 Back to Top](#-table-of-contents)
