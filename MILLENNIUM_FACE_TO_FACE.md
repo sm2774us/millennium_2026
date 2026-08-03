@@ -260,7 +260,7 @@ $$\text{Roll Yield} \approx -\frac{F(t,T_{\text{next}}) - F(t,T_{\text{front}})}
 **Definition (Perold, 1988):**
 
 $$
-\text{IS} = \underbrace{(P_{\text{fill,avg}} - P_{\text{arrival}})}_{\text{execution cost}} \times Q_{\text{filled}} \;+\; \underbrace{(P_{\text{final}} - P_{\text{arrival}}) \times Q_{\text{unfilled}}}_{\text{opportunity cost}}
+\text{IS} = \underbrace{(P_{\text{fill,avg}} - P_{\text{arrival}})}_{\text{execution cost}} \times Q_{\text{filled}} + \underbrace{(P_{\text{final}} - P_{\text{arrival}}) \times Q_{\text{unfilled}}}_{\text{opportunity cost}}
 $$
 
 **Say it out loud:** *"Implementation shortfall is the total cost of turning a decision into a position: how much I paid above the price that existed the moment the PM decided to trade, for the shares I actually filled, plus the cost of the shares I never got to, valued at how far price moved away from me by the time I gave up. It's the only benchmark that can't be gamed by trading slowly — VWAP can look great while opportunity cost silently destroys the PM's alpha."*
@@ -297,7 +297,7 @@ $$
 $$
 
 $$
-\text{Total Cost} = \int_0^T \Big[\eta \, \dot{x}(t)^2 \Big] dt \;+\; \frac{1}{2}\gamma X^2 \;+\; \lambda \int_0^T \sigma^2 x(t)^2 \, dt
+\text{Total Cost} = \int_0^T \Big[\eta \, \dot{x}(t)^2 \Big] dt + \frac{1}{2}\gamma X^2 + \lambda \int_0^T \sigma^2 x(t)^2 \, dt
 $$
 
 **Say it out loud, plainly:** *"There are three terms. Temporary impact is the cost you pay for trading fast right now — it scales with the square of your trading rate, so trading twice as fast costs four times as much in impact per unit time. Permanent impact is a one-time cost proportional to total size regardless of speed — the market permanently reprices to reflect your information. Risk penalty is how much you're paying for the privilege of taking longer, because your remaining unexecuted position sits exposed to price volatility the whole time. The optimal trajectory is whatever balances 'faster costs more in impact' against 'slower costs more in risk,' weighted by the trader's risk aversion λ."*
@@ -411,7 +411,7 @@ IMPACT SHAPE           Well-studied sqrt-law          Sqrt-law holds but ADV    
 **Setup:** PM's average IS slippage over $n$ trades is $\bar{X}$ ticks with sample std $s$. Test $H_0: \mu = 0$.
 
 $$
-t = \frac{\bar{X} - 0}{s/\sqrt{n}} \;\sim\; t_{n-1} \text{ under } H_0
+t = \frac{\bar{X} - 0}{s/\sqrt{n}} \sim t_{n-1} \text{ under } H_0
 $$
 
 **Say it out loud:** *"I standardize the average slippage by its own sampling uncertainty — divide by the standard error, which shrinks as one over root n. A PM with 20 trades and 3 ticks of average slippage almost never clears significance; a PM with 2,000 trades and 1 tick average might clear it easily, because the denominator shrank so much. The lesson I apply constantly: never tell a PM their execution is bad based on a handful of trades — I always report a confidence interval, not a point estimate, and I use bootstrap resampling instead of the naive t-test when returns are fat-tailed or autocorrelated across trades in the same session, which futures fills often are."*
