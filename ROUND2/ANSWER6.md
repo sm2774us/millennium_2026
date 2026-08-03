@@ -535,18 +535,18 @@ $$
 
 
 ```
-TRADER/PM               EXECUTING BROKER            CLEARING BROKER (FCM)
-│                          │                            │
-│──── order ──────────────►│                            │
-│                          │──execute on exchange───────┤
-│                          │                            │
-│                          │──trade give-up message─────►│
-│                          │  (price, size, account,      │  MATCH against
-│                          │   give-up instructions)      │  give-up agreement
-│                          │                            │  on file
-│                          │                            │
-│                          │◄── accept / DK (reject) ───┤
-│                          │                            │
+TRADER/PM               EXECUTING BROKER                           CLEARING BROKER (FCM)
+│                          │                                           │
+│──── order ──────────────►│                                           │
+│                          │──execute on exchange──────────────────────┤
+│                          │                                           │
+│                          │──trade give-up message───────────────────►│
+│                          │  (price, size, account,                   │  MATCH against
+│                          │   give-up instructions)                   │  give-up agreement
+│                          │                                           │  on file
+│                          │                                           │
+│                          │◄── accept / DK (reject) ──────────────────┤
+│                          │                                           │
 │◄── confirmed trade in account, cleared/margined by clearing broker ──┤
 ```
 
@@ -689,10 +689,7 @@ Where $M(x_k)$ is the margin requirement function of inventory $x_k$ and $L_{\ma
 ### D) Architectural & Algorithmic ASCII Diagram
 
 ```
-OPTIMIZER ──> Inventory Trajectory x_k ──> Check Position Limit (x_k <= L_max)
-                                        ──> Add Margin Capital Cost Term κ * M(x_k)
-
-
+OPTIMIZER ──> Inventory Trajectory x_k ──> Check Position Limit (x_k <= L_max) ──> Add Margin Capital Cost Term κ * M(x_k)
 ```
 
 ### E) Standalone Self-Validating q Script (`constrainedSchedule.q`)
@@ -837,8 +834,6 @@ $$\text{IS} = \frac{\sum_i q_i (p_i^{\text{exec}} - p^{\text{arrival}})}{\sum_i 
 
 ```
 ORDER BLOTTER (Arrival/Exec) ──> L1/L2 Market Data Feed ──> TCA Pipeline (Shortfall / VWAP / Slippage)
-
-
 ```
 
 ### E) Standalone Self-Validating q Script (`tcaSchema.q`)
