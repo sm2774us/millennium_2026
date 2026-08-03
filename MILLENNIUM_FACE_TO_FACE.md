@@ -455,109 +455,65 @@ t:([] sym:`AAPL`MSFT`GOOG; px:150.0 305.5 2800.1; qty:100 200 50)
 
 **Summary:** Maintain a keyed table of best bid/offer per symbol, updated on each tick via upsert; O(1) amortized update per tick using q's native keyed-table upsert, O(k) space for k symbols.
 
-```q
-/ real_time_bbo.q
-/ Maintains best-bid/best-offer state per instrument from a raw quote tick stream.
-/ Data structures: keyed table (dictionary of symbol -> row) for O(1) upsert/lookup.
-
-.bbo.book:([sym:`symbol$()] bidPx:`float$(); bidSz:`long$(); askPx:`float$(); askSz:`long$(); ts:`timestamp$())
-
-/ Apply one incoming quote tick (sym;bidPx;bidSz;askPx;askSz;ts) to the book.
-/ Uses upsert (,) on a keyed table: O(1) amortized replace-or-insert by key.
-updQuote:{[sym;bidPx;bidSz;askPx;askSz;ts]
-  .bbo.book,:([sym:enlist sym] bidPx:enlist bidPx; bidSz:enlist bidSz;
-              askPx:enlist askPx; askSz:enlist askSz; ts:enlist ts);
-  }
-
-/ Compute the mid and micro-price (size-weighted mid) for a symbol.
-midPrice:{[sym]
-  row:.bbo.book sym;
-  (row`bidPx)+(row`askPx)-row`bidPx  / trivial (bid+ask)/2 expressed additively for clarity
-  };
-
-microPrice:{[sym]
-  row:.bbo.book sym;
-  bp:row`bidPx; bs:row`bidSz; ap:row`askPx; as_:row`askSz;
-  (bp*as_ + ap*bs) % (bs+as_)   / size-weighted micro-price
-  };
-
-if[0<0;
-  / __main__-equivalent validation block for q: guarded by protected eval, run via `q real_time_bbo.q`
-  updQuote[`ESU25;5000.00;25;5000.25;30;.z.p];
-  updQuote[`ESU25;5000.25;40;5000.50;10;.z.p];
-  -1 "Book: ",-3!.bbo.book;
-  m:midPrice[`ESU25];
-  mp:microPrice[`ESU25];
-  if[not m=5000.375; '"midPrice assertion failed"];
-  -1 "Validation passed. mid=",string[m]," micro=",string mp;
-  ];
-
-# 🖥️ KDB+/Q
-
----
-
-## C1 · Q Language Fundamentals — Atoms, Lists, Dictionaries & Tables
-
-**Say it out loud:** *"Everything in q is built from a handful of primitives: atoms are single typed values; lists are ordered collections of atoms or other lists; a dictionary is just two parallel lists — keys and values — zipped together; and a table is nothing more than a flipped dictionary of column-name symbols to equal-length column lists. Once you internalize that a table IS a dictionary of lists, column-oriented performance stops being magic — you understand why q is fast: operations vectorize over contiguous columnar memory instead of row-by-row."*
-
-```q
-/ atoms
-x:42; y:`symbol; z:2025.01.15
-/ list
-l:1 2 3 4 5
-/ dictionary: keys -> values
-d:`a`b`c!1 2 3
-/ table = flip of a dictionary of equal-length column lists
-t:([] sym:`AAPL`MSFT`GOOG; px:150.0 305.5 2800.1; qty:100 200 50)
-/ a table IS a dictionary under the hood:
-0N!(cols t)!value flip t   / prints the underlying dict structure
-```
-
-**Job tie-back:** the JD requires "5+ years of KDB and Python programming experience in a quantitative finance environment" — interviewers routinely open with this to confirm the candidate isn't just Python-fluent claiming KDB on a resume.
-
-[🔝 Back to Top](#-table-of-contents)
-
----
----
-
-## C2 · Building a Real-Time Order Book / Tick Aggregator in q
-
-**Summary:** Maintain a keyed table of best bid/offer per symbol, updated on each tick via upsert; O(1) amortized update per tick using q's native keyed-table upsert, O(k) space for k symbols.
+**Complexity Analysis:**
+* **$O(1)$ Amortized Update per Tick**: It uses q's native keyed table `upsert` (`.bbo.book upsert t`), which hashes the keys (`sym`) and performs an in-place replacement or insertion directly into the hash-indexed structure without scanning the table.
+* **$O(k)$ Space for $k$ Symbols**: The table `.bbo.book` is a keyed table (dictionary) where each unique instrument symbol acts as the primary key. Therefore, memory scaling is bound strictly to the number of unique symbols ($k$) currently active in the book, rather than the historical tick count.
 
 ```q
 / real_time_bbo.q
 / Maintains best-bid/best-offer state per instrument from a raw quote tick stream.
-/ Data structures: keyed table (dictionary of symbol -> row) for O(1) upsert/lookup.
 
 .bbo.book:([sym:`symbol$()] bidPx:`float$(); bidSz:`long$(); askPx:`float$(); askSz:`long$(); ts:`timestamp$())
 
-/ Apply one incoming quote tick (sym;bidPx;bidSz;askPx;askSz;ts) to the book.
-/ Uses upsert (,) on a keyed table: O(1) amortized replace-or-insert by key.
-updQuote:{[sym;bidPx;bidSz;askPx;askSz;ts]
-  .bbo.book,:([sym:enlist sym] bidPx:enlist bidPx; bidSz:enlist bidSz;
-              askPx:enlist askPx; askSz:enlist askSz; ts:enlist ts);
-  }
-
-/ Compute the mid and micro-price (size-weighted mid) for a symbol.
-midPrice:{[sym]
-  row:.bbo.book sym;
-  (row`bidPx)+(row`askPx)-row`bidPx
+/ Apply incoming quote tick(s). 
+/ Accepts either a single record or a flipped table for bulk/vectorized ingestion.
+updQuote:{[t]
+  .bbo.book upsert t;
   };
 
-microPrice:{[sym]
-  row:.bbo.book sym;
+/ Compute the mid-price for a symbol or a vector of symbols.
+midPrice:{[s]
+  row:.bbo.book s;
+  (row[`bidPx] + row`askPx) * 0.5
+  };
+
+/ Compute the micro-price (size-weighted mid) for a symbol or a vector of symbols.
+microPrice:{[s]
+  row:.bbo.book s;
   bp:row`bidPx; bs:row`bidSz; ap:row`askPx; as_:row`askSz;
-  (bp*as_ + ap*bs) % (bs+as_)
+  (bp * as_ + ap * bs) % bs + as_
   };
 
-/ Validation block: run via `q real_time_bbo.q`
-updQuote[`ESU25;5000.00;25;5000.25;30;.z.p];
-updQuote[`ESU25;5000.25;40;5000.50;10;.z.p];
--1 "Book: ",-3!.bbo.book;
-m:midPrice[`ESU25];
-mp:microPrice[`ESU25];
-if[not m=5000.375; '"midPrice assertion failed"];
--1 "Validation passed. mid=",string[m]," micro=",string mp;
+/ Main execution routine for batch processing and self-validation.
+main:{[args]
+  / 1. Generate synthetic test quotes using vectorized table input
+  sampleQuotes:([]
+    sym: `ESU25`ESU25;
+    bidPx: 5000.00 5000.25;
+    bidSz: 25 40;
+    askPx: 5000.25 5000.50;
+    askSz: 30 10;
+    ts: .z.p + 0 1
+    );
+
+  / 2. Execute quote updates
+  updQuote[sampleQuotes];
+
+  / 3. Assertions & Validation
+  m: midPrice[`ESU25];
+  mp: microPrice[`ESU25];
+  
+  assert:{[cond;msg] if[not cond; '"Assertion failed: ",msg]};
+
+  assert[count .bbo.book = 1; "Error: Expected exactly 1 book entry for ESU25"];
+  assert[m = 5000.375; "Error: midPrice mismatch"];
+  assert[mp = (5000.25 * 10 + 5000.50 * 40) % 50; "Error: microPrice mismatch"];
+  
+  -1 "SUCCESS: real_time_bbo q script passed all validation assertions.";
+  0
+  };
+
+@[main; .z.x; { -2 "FAILURE in real_time_bbo main: ", x; exit 1 }];exit 0;
 ```
 
 **Detailed explanation:** `.bbo.book` is a **keyed table** — `sym` is the key column, meaning the table behaves as a dictionary keyed by symbol, giving O(1) amortized lookup/update via hashing internally. `updQuote` uses the **upsert operator `,`** on a keyed table: if the key `sym` already exists the row is replaced in place; if not, it's appended — this single operator gives us insert and update semantics, the idiomatic q pattern for maintaining live state, versus imperative if/else branching which the style guide discourages as fighting the language. `microPrice` is fully vectorized arithmetic on scalar fields — a size-weighted mid, the standard microstructure "fair value" proxy: a large ask size relative to bid size pressures fair value toward the bid.
