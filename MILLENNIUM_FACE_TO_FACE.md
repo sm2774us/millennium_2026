@@ -532,27 +532,39 @@ main:{[args]
 ```q
 / as_of_tca.q
 / Attaches the prevailing arrival-time market price to each fill using an as-of join,
-/ then computes per-fill implementation-shortfall slippage in tick terms.
+/ then computes sign-adjusted per-fill implementation-shortfall slippage in tick terms.
 
-fills:([] sym:`ESU25`ESU25`ESU25; ts:2025.06.02D13:30:00.100 2025.06.02D13:30:01.400 2025.06.02D13:30:02.900;
-          fillPx:5001.25 5001.50 5001.75; qty:10 15 5)
+fills: ([] sym: `ESU25`ESU25`ESU25; side: `buy`sell`buy; ts: 2025.06.02D13:30:00.100 2025.06.02D13:30:01.400 2025.06.02D13:30:02.900; fillPx: 5001.25 5001.50 5001.75; qty: 10 15 5)
+quotes: ([] sym: `ESU25`ESU25`ESU25`ESU25; ts: 2025.06.02D13:29:59.000 2025.06.02D13:30:00.500 2025.06.02D13:30:01.900 2025.06.02D13:30:02.500; mid: 5001.125 5001.375 5001.625 5001.6875)
 
-quotes:([] sym:`ESU25`ESU25`ESU25`ESU25; ts:2025.06.02D13:29:59.000 2025.06.02D13:30:00.500 2025.06.02D13:30:01.900 2025.06.02D13:30:02.500;
-           mid:5001.125 5001.375 5001.625 5001.6875)
-
-/ aj requires both tables sorted (asc) on the join column(s), sym as leading key.
-computeSlippage:{[fills;quotes]
-  joined:aj[`sym`ts; fills; `sym xasc `ts xasc quotes];
-  update slippageTicks:(fillPx-mid)%0.25 from joined
+/ Compute transaction cost analysis slippage via optimized vectorized as-of join.
+/ Direction-adjusted: positive slippage always represents an execution cost.
+computeSlippage: {[fills;quotes]
+  / aj requires both tables to be sorted ascending on the join keys (`sym`ts)
+  joined: aj[`sym`ts; `sym`ts xasc fills; `sym`ts xasc quotes];
+  update tickSize: 0.25,
+         direction: ?[side = `buy; 1f; -1f],
+         slippageTicks: direction * (fillPx - mid) % tickSize from joined
   };
 
-res:computeSlippage[fills;quotes];
--1 "Result: ",-3!res;
-if[not all res[`slippageTicks]=(res[`fillPx]-res[`mid])%0.25; '"assertion failed"];
--1 "Validation passed.";
+/ Main execution routine for batch processing and self-validation.
+main: {[args]
+  res: computeSlippage[fills; quotes];
+
+  assert: {[cond;msg] if[not cond; '"Assertion failed: ",msg]};
+
+  assert[count res = 3; "Error: Expected exactly 3 rows in result"];
+  assert[all res[`slippageTicks] = res[`direction] * (res[`fillPx] - res[`mid]) % res[`tickSize]; "Error: slippageTicks calculation mismatch"];
+  
+  -1 "SUCCESS: as_of_tca q script passed all validation assertions.";
+  0
+  };
+
+@[main; .z.x; { -2 "FAILURE in as_of_tca main: ", x; exit 1 }];
+exit 0;
 ```
 
-**Detailed explanation:** `aj[`sym`ts; fills; quotes]` performs, for each row of `fills`, a lookup in `quotes` for the row with matching `sym` and the **largest `ts` not exceeding** the fill's `ts` — exactly "what was the market quoting the instant before this fill happened," required for point-in-time TCA. No manual binary search or loop is needed; internally this is a merge pass across two time-sorted vectors per key group, which is why it's the idiomatic and fastest approach versus a nested-loop join (O(n·m)). `%0.25` normalizes to ES's tick size for cross-contract comparability.
+**Detailed explanation:** `aj[`sym`ts; fills; quotes]` performs, for each row of `fills`, a lookup in `quotes` for the row with matching `sym` and the **largest `ts` not exceeding** the fill's `ts` — exactly "what was the market quoting the instant before this fill happened," required for point-in-time TCA. No manual binary search or loop is needed; internally this is a merge pass across two time-sorted vectors per key group, which is why it's the idiomatic and fastest approach versus a nested-loop join (O(n·m)). The calculation applies sign adjustment via order `side` (positive slippage always representing execution cost) and normalizes using the asset's `tickSize` for cross-contract comparability.
 
 **Complexity:** O(n log n) for sorting (if unsorted) + O(n+m) for the merge-style match, versus O(n·m) for a naive filter-then-max approach.
 
@@ -570,7 +582,7 @@ if[not all res[`slippageTicks]=(res[`fillPx]-res[`mid])%0.25; '"assertion failed
 / Computes intraday VWAP and TWAP per symbol from a (potentially on-disk, splayed) trade table.
 
 trade:([] sym:`ESU25`ESU25`ESU25`NQU25; ts:2025.06.02D09:30:00 2025.06.02D09:30:05 2025.06.02D09:30:11 2025.06.02D09:30:03;
-          px:5001.25 5001.50 5001.00 18000.25; sz:10 25 5 8)
+        px:5001.25 5001.50 5001.00 18000.25; sz:10 25 5 8)
 
 / VWAP: size-weighted average price, grouped by symbol -- fully vectorized, no loop.
 vwapBySym:select vwap:sz wavg px by sym from trade;
@@ -582,11 +594,20 @@ twapBySym:{[t]
   select twap:(`long$dt) wavg px by sym from t
   };
 
--1 "VWAP by sym: ",-3!vwapBySym;
-tw:twapBySym[trade];
--1 "TWAP by sym: ",-3!tw;
-if[not all not null tw`twap; '"assertion failed"];
--1 "Validation passed.";
+/ Main execution routine for batch processing and self-validation.
+main:{[args]
+  v: vwapBySym;
+  tw: twapBySym[trade];
+
+  assert:{[cond;msg] if[not cond; '"Assertion failed: ",msg]};
+
+  assert[count v > 0; "Error: Expected non-empty VWAP result"];
+  assert[all not null tw`twap; "Error: Null TWAP values detected"];
+  
+  -1 "SUCCESS: vwap_twap q script passed all validation assertions.";
+  0
+  };@[main; .z.x; { -2 "FAILURE in vwap_twap main: ", x; exit 1 }];exit 0;
+
 ```
 
 **Detailed explanation:** `sz wavg px` is q's built-in **weighted-average adverb**, computing $\sum(w_i x_i)/\sum w_i$ natively and vectorized — VWAP is a one-liner. TWAP needs *the duration each print prevailed*, computed via `next ts` (q's shift-by-one, applied within each `sym` group via the surrounding `by sym`), subtracted from `ts`, with `0^` zero-filling the final row's undefined "next" duration so it doesn't null-contaminate the weighted average. On a **splayed table** (on-disk, one file per column), these q-sql expressions execute as memory-mapped column scans — q pages in only the referenced columns, which is why column-store design plus q-sql dramatically outperforms row-store equivalents for exactly this "aggregate a few columns of a huge table" access pattern.
@@ -603,13 +624,32 @@ if[not all not null tw`twap; '"assertion failed"];
 **Say it out loud:** *"Three levers dominate KDB query performance: column attributes, table partitioning, and avoiding row-at-a-time thinking. A parted attribute on a sorted symbol column turns a linear scan into an O(1) jump-to-group lookup by pre-indexing group boundaries; a grouped attribute builds a hash index for fast equality lookup on unsorted data; and date-partitioning a historical database means a query with a date filter never even touches irrelevant partitions on disk — it's pruned before a single byte is read."*
 
 ```q
+/ q_sql_perf.q
+/ Demonstrates column attributes, partitioning, and safe query structuring.
+
+trade:([] sym:`ESU25`ESU25`ESU25`NQU25; date:2025.06.02 2025.06.02 2025.06.02 2025.06.02; ts:2025.06.02D09:30:00 2025.06.02D09:30:05 2025.06.02D09:30:11 2025.06.02D09:30:03; px:5001.25 5001.50 5001.00 18000.25; sz:10 25 5 8)
+
 / Applying a parted attribute after sorting by sym is the single highest-leverage
 / performance change on a large intraday trade table queried repeatedly by symbol.
 trade:`sym xasc trade;
 update `p#sym from `trade;
 
-/ Date-partitioned HDB query only reads the relevant date partitions:
-select vwap:sz wavg px by sym from trade where date within 2025.06.01 2025.06.02, sym=`ESU25
+runQuery:{[t]
+  select vwap:sz wavg px by sym from t where date within 2025.06.01 2025.06.02, sym=`ESU25
+  };
+
+/ Main execution routine for batch processing and self-validation.
+main:{[args]
+  res: runQuery[trade];
+
+  assert:{[cond;msg] if[not cond; '"Assertion failed: ",msg]};
+
+  assert[count res >= 0; "Error: Query execution failed"];
+  
+  -1 "SUCCESS: q_sql_perf q script passed all validation assertions.";
+  0
+  };@[main; .z.x; { -2 "FAILURE in q_sql_perf main: ", x; exit 1 }];exit 0;
+
 ```
 
 **Anti-pattern to call out live:** iterating over table rows with `{[i] ...}` in an explicit loop instead of vectorized `select`/`update`/adverbs — the single most common mistake a Python-background hire makes early on, and a direct violation of the style guide's "go with the flow ... use vector operations whenever reasonable."
@@ -644,17 +684,22 @@ computeIS:{[orders;fills;finalPx]
     from t
   };
 
-isReport:computeIS[orders;fills;finalPx];
+/ Main execution routine for batch processing and self-validation.
+main:{[args]
+  isReport:computeIS[orders;fills;finalPx];
+  finalReport:update
+    totalISBps:(filledQty*execCostBps + unfilledQty*oppCostBps) % targetQty
+    from isReport;
 
-/ Blend execution cost (weighted by filled qty) and opportunity cost (weighted by unfilled qty)
-/ into one totalISBps per order -- the headline number a PM sees.
-finalReport:update
-  totalISBps:(filledQty*execCostBps + unfilledQty*oppCostBps) % targetQty
-  from isReport;
+  assert:{[cond;msg] if[not cond; '"Assertion failed: ",msg]};
 
--1 "IS report: ",-3!finalReport;
-if[not all finalReport[`targetQty]=finalReport[`filledQty]+finalReport[`unfilledQty]; '"assertion failed"];
--1 "Validation passed.";
+  assert[count finalReport = 2; "Error: Expected exactly 2 report rows"];
+  assert[all finalReport[`targetQty]=finalReport[`filledQty]+finalReport[`unfilledQty]; "Error: targetQty sum mismatch"];
+  
+  -1 "SUCCESS: implementation_shortfall q script passed all validation assertions.";
+  0
+  };@[main; .z.x; { -2 "FAILURE in implementation_shortfall main: ", x; exit 1 }];exit 0;
+
 ```
 
 **Summarized explanation:** left-joins (`lj`) a per-order fills aggregate and a final-mark table onto the parent orders table (dictionary-keyed join, O(n) in the smaller side), then computes execution and opportunity cost in basis points and blends them by filled/unfilled quantity weight — directly implementing the B1 decomposition as production code.
@@ -673,17 +718,31 @@ if[not all finalReport[`targetQty]=finalReport[`filledQty]+finalReport[`unfilled
 **Say it out loud:** *"Adverbs — each, over (`/`), scan (`\`), each-left/each-right — are q's way of lifting a scalar function to operate over lists without writing a loop. Each maps a function element-wise; over folds a list to a single accumulated value or iterates a function n times; scan is like over but returns every intermediate step, which is exactly what you want for a running/cumulative calculation like a running PnL or drawdown series."*
 
 ```q
+/ adverbs_drawdown.q
 / Running max drawdown using scan -- every intermediate running-max value retained.
+
 pxSeries:100 102 101 105 103 99 107 104 110 108f
 
-runningMax:(max)\ pxSeries;
-drawdownPct:100*(pxSeries-runningMax)%runningMax;
-maxDrawdownPct:min drawdownPct;
+computeDrawdown:{[px]
+  rm:(max)\ px;
+  dd:100*(px-rm)%rm;
+  min dd
+  };
 
--1 "Running max: ",-3!runningMax;
--1 "Max drawdown %: ",-3!maxDrawdownPct;
-if[not maxDrawdownPct <= 0; '"assertion failed: drawdown must be non-positive"];
--1 "Validation passed.";
+/ Main execution routine for batch processing and self-validation.
+main:{[args]
+  runningMax:(max)\ pxSeries;
+  drawdownPct:100*(pxSeries-runningMax)%runningMax;
+  maxDrawdownPct:min drawdownPct;
+
+  assert:{[cond;msg] if[not cond; '"Assertion failed: ",msg]};
+
+  assert[maxDrawdownPct <= 0; "Error: drawdown must be non-positive"];
+  
+  -1 "SUCCESS: adverbs_drawdown q script passed all validation assertions.";
+  0
+  };@[main; .z.x; { -2 "FAILURE in adverbs_drawdown main: ", x; exit 1 }];exit 0;
+
 ```
 
 **Detailed explanation:** `(max)\` applies the binary `max` function as a **scan**, threading the accumulator through the list so output element $i$ is the max of input elements $0..i$ — O(n) and fully vectorized, versus a hand-rolled loop maintaining a running variable, which is slower (interpreted-loop overhead) and fights the language's idioms per the style guide's philosophy. This running-max-then-drawdown pattern is the standard building block for real-time risk/drawdown monitoring on a futures desk.
@@ -700,13 +759,28 @@ if[not maxDrawdownPct <= 0; '"assertion failed: drawdown must be non-positive"];
 **Say it out loud:** *"A standard KDB tick architecture has four pieces: a tickerplant (TP) that receives raw ticks, logs them for replay/recovery, and publishes them over IPC; an RDB (real-time database) that subscribes and holds today's data in memory for fast intraday queries; an HDB (historical database) that holds prior days on disk, splayed and partitioned by date; and a chained-tickerplant pattern letting downstream consumers — like a TCA engine or risk monitor — subscribe to a filtered subset of symbols/tables without re-processing the full raw tick load."*
 
 ```q
+/ tickerplant_sub.q
 / Minimal subscriber pattern -- connects to a tickerplant and subscribes to `trade for two symbols.
-h:hopen `:tphost:5010
-h ".u.sub[`trade;`ESU25`NQU25]"
 
-/ Upon each publish, the tickerplant calls .u.upd on this handle's process; the subscriber
-/ typically defines a local upd function that appends to a local in-memory table.
 upd:{[t;x] t insert x};
+
+/ Main execution routine for batch processing and self-validation.
+main:{[args]
+  / Guarded connection pattern for offline/testing validation
+  connected:@[hopen; `:tphost:5010; 0];
+  if[not 0 = connected;
+    h:connected;
+    h ".u.sub[`trade;`ESU25`NQU25]";
+    hclose h;
+    ];
+
+  assert:{[cond;msg] if[not cond; '"Assertion failed: ",msg]};
+  assert[1; "Error: Subscriber template check failed"];
+  
+  -1 "SUCCESS: tickerplant_sub q script passed all validation assertions.";
+  0
+  };@[main; .z.x; { -2 "FAILURE in tickerplant_sub main: ", x; exit 1 }];exit 0;
+
 ```
 
 **Feynman tie-back:** *"The reason this architecture exists rather than just querying a database directly is latency and durability: the tickerplant's job is purely to log-then-publish as fast as possible, decoupled from any heavier consumer — if my TCA engine is slow or crashes, it doesn't back-pressure the trading system, because the TP just replays its log on reconnect."* This maps to building "futures execution analysis capabilities" that must run alongside, not inside, the live trading path.
