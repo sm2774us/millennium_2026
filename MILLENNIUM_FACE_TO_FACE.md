@@ -2060,7 +2060,7 @@ $$
 P = P_0 + \lambda\,\omega, \qquad \lambda > 0 \text{ (Kyle's lambda / price impact coefficient)}
 $$
 
-**Derivation of $\lambda$ from market-maker zero-profit condition.** Let the informed trader's private signal be $v \sim \mathcal N(P_0,\Sigma_0)$ (true asset value) and noise trader flow $\omega_{\text{noise}}\sim\mathcal N(0,\sigma_u^2)$, independent of $v$. The informed trader optimally submits $\omega_{\text{informed}} = \beta (v - P_0)$ for some constant $\beta$ (linear strategy, verified below to be optimal). The market maker, observing total flow $\omega=\beta(v-P_0)+\omega_{\text{noise}}$, sets price equal to the conditional expectation (semi-strong-form efficiency, zero expected profit):
+**Derivation of $\lambda$ from market-maker zero-profit condition.** Let the informed trader's private signal be $v \sim \mathcal{N}(P_0,\Sigma_0)$ (true asset value) and noise trader flow $\omega_{\text{noise}} \sim \mathcal{N}(0,\sigma_u^2)$, independent of $v$. The informed trader optimally submits $\omega_{\text{informed}} = \beta (v - P_0)$ for some constant $\beta$ (linear strategy, verified below to be optimal). The market maker, observing total flow $\omega=\beta(v-P_0)+\omega_{\text{noise}}$, sets price equal to the conditional expectation (semi-strong-form efficiency, zero expected profit):
 
 $$
 P = \mathbb{E}[v \mid \omega]
@@ -2193,7 +2193,7 @@ whose solution is the discrete hyperbolic-sine trajectory $x_k = X\dfrac{\sinh(\
 **Step 1 — CLT statement.** By the Lindeberg-Lévy Central Limit Theorem, for iid $X_i$ with finite variance:
 
 $$
-\sqrt n\,(\bar X-\mu) \xrightarrow{d} \mathcal N(0,\sigma^2) \quad\Longrightarrow\quad \bar X \overset{approx}{\sim} \mathcal N\left(\mu,\frac{\sigma^2}{n}\right)
+\sqrt n\,(\bar X-\mu) \xrightarrow{d} \mathcal{N}(0,\sigma^2) \quad\Longrightarrow\quad \bar X \overset{approx}{\sim} \mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right)
 $$
 
 **Step 2 — Studentization (why $t$, not $z$).** Because $\sigma^2$ is unknown and must be estimated by $s^2$, replacing $\sigma$ with $s$ introduces additional sampling variability. Under normality of the $X_i$ (or asymptotically by Slutsky's theorem otherwise), the studentized statistic follows Student's $t$ with $n-1$ degrees of freedom:
@@ -2393,7 +2393,7 @@ Evaluate at start $k=0$ (shifting to the problem's original $+b/-a$ from origin 
 
 (using symmetric relabeling — the probability of reaching the barrier $b$ away first is proportional to the *distance to the other barrier*, an intuitive "gravity" result confirmed algebraically.)
 
-**Step 3 — Expected time to absorption, via a martingale/Wald argument.** For the *symmetric* walk, $S_k$ itself is a martingale, but $S_k^2 - k$ is *also* a martingale (since $\mathbb{E}[S_{k+1}^2\mid S_k] = S_k^2+1$ for a $\pm1$ step, so $\mathbb{E}[S_{k+1}^2-(k+1)\mid \mathcal F_k] = S_k^2-k$). By the Optional Stopping Theorem applied to stopping time $T=\min\{k: S_k\in\{-a,b\}\}$ (finite a.s. and bounded increments justify OST here):
+**Step 3 — Expected time to absorption, via a martingale/Wald argument.** For the *symmetric* walk, $S_k$ itself is a martingale, but $S_k^2 - k$ is *also* a martingale (since $\mathbb{E}[S_{k+1}^2\mid S_k] = S_k^2+1$ for a $\pm1$ step, so $\mathbb{E}[S_{k+1}^2-(k+1)\mid \mathcal{F_k}] = S_k^2-k$). By the Optional Stopping Theorem applied to stopping time $T=\min\{k: S_k\in\{-a,b\}\}$ (finite a.s. and bounded increments justify OST here):
 
 $$
 \mathbb{E}[S_T^2 - T] = S_0^2 - 0 = 0 \quad\Longrightarrow\quad \mathbb{E}[T] = \mathbb{E}[S_T^2]
@@ -2431,7 +2431,7 @@ are driven largely by independent-ish exogenous order-flow/noise shocks between 
 **Step 1 — Why CLT applies despite weights.** The (weighted) Lindeberg-Feller CLT extends the classical iid CLT to **independent, non-identically-distributed, weighted** sums, provided the Lindeberg condition holds (no single term's variance dominates the total — true here since no single child fill is typically more than a few % of the parent's total quantity):
 
 $$
-\frac{\sum_i w_i\varepsilon_i - \mathbb{E}[\sum_i w_i \varepsilon_i]}{\sqrt{\sum_i w_i^2\text{Var}(\varepsilon_i)}} \xrightarrow{d} \mathcal N(0,1)
+\frac{\sum_i w_i\varepsilon_i - \mathbb{E}[\sum_i w_i \varepsilon_i]}{\sqrt{\sum_i w_i^2\text{Var}(\varepsilon_i)}} \xrightarrow{d} \mathcal{N}(0,1)
 $$
 
 **Step 2 — Why it's only *approximate*, not exact (the caveat interviewers want).** Two violations degrade Gaussianity in practice: (a) **autocorrelation** between consecutive child fills (violates independence — same root issue as Appendix B8-D's block-bootstrap discussion), reducing the *effective* number of independent terms below $n$; (b) **fat tails** in $\varepsilon_i$ from occasional large adverse-selection events (informed counterflow), meaning the Lindeberg condition is only "approximately" satisfied for moderate $n$, so higher moments (skew, kurtosis) matter for small-`n` parent orders — precisely why B8's bootstrap approach is preferred over the naive Gaussian/t-test for TCA in practice, even though the CLT gives a reasonable large-`n` justification for the normal approximation used in quick, back-of-envelope significance checks.
@@ -2576,8 +2576,8 @@ if __name__ == "__main__":
 * **Protected `try/except` in `__main__`** mirrors the q template's `@[main; .z.x; {...}]` protected-evaluation pattern, giving a clean non-zero exit code on failure for CI/pipeline integration.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(nk)$ to construct a table of $n$ rows and $k$ columns (each column copied once); $\mathcal O(nk)$ to invert back to a dict.
-* **Space Complexity:** $\mathcal O(nk)$ — one copy of the full column-oriented data, identical order to the q original.
+* **Time Complexity:** $\mathcal{O}(nk)$ to construct a table of $n$ rows and $k$ columns (each column copied once); $\mathcal{O}(nk)$ to invert back to a dict.
+* **Space Complexity:** $\mathcal{O}(nk)$ — one copy of the full column-oriented data, identical order to the q original.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2664,8 +2664,8 @@ if __name__ == "__main__":
 * **Micro-price formula** is identical arithmetic to the q version, just applied to scalar dataclass fields instead of vector columns.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(1)$ average-case per quote update and per price query (hash dict); worst case $\mathcal O(n)$ under adversarial hash collisions (practically irrelevant with Python's string hashing).
-* **Space Complexity:** $\mathcal O(k)$ for $k$ distinct tracked symbols — identical to the q solution's theoretical floor.
+* **Time Complexity:** $\mathcal{O}(1)$ average-case per quote update and per price query (hash dict); worst case $\mathcal{O}(n)$ under adversarial hash collisions (practically irrelevant with Python's string hashing).
+* **Space Complexity:** $\mathcal{O}(k)$ for $k$ distinct tracked symbols — identical to the q solution's theoretical floor.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2740,8 +2740,8 @@ if __name__ == "__main__":
 * **Backward direction** enforces "most recent quote **at or before** the fill" — the exact TCA point-in-time semantics needed to avoid look-ahead bias (using a quote that arrived *after* the fill would leak future information into the benchmark).
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n\log n + m\log m)$ dominated by the pre-sort of $n$ fills and $m$ quotes (if not already sorted), then $\mathcal O(n+m)$ for the merge scan itself — identical asymptotic class to q's `aj` on unsorted input, and strictly $\mathcal O(n+m)$ if inputs are already sorted (as they are in a tickerplant-fed pipeline).
-* **Space Complexity:** $\mathcal O(n)$ for the output joined frame.
+* **Time Complexity:** $\mathcal{O}(n\log n + m\log m)$ dominated by the pre-sort of $n$ fills and $m$ quotes (if not already sorted), then $\mathcal{O}(n+m)$ for the merge scan itself — identical asymptotic class to q's `aj` on unsorted input, and strictly $\mathcal{O}(n+m)$ if inputs are already sorted (as they are in a tickerplant-fed pipeline).
+* **Space Complexity:** $\mathcal{O}(n)$ for the output joined frame.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2836,8 +2836,8 @@ if __name__ == "__main__":
 * **`groupby(...).apply(...)`** replaces q's implicit `by sym` grouping; `include_groups=False` avoids passing the grouping column back into the aggregation function (a Pandas 2.x correctness detail worth calling out live, since silently including it changes dtype-handling in older Pandas versions).
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n\log n)$ for the groupby's internal sort (or $\mathcal O(n)$ with a hash-based groupby implementation, which Pandas uses by default for non-sorted keys) plus $\mathcal O(n)$ for the weighted-average reduction — effectively linear in practice for typical cardinalities.
-* **Space Complexity:** $\mathcal O(n)$ for intermediate group frames plus $\mathcal O(k)$ for the $k$-symbol output — matching the q solution's optimality class.
+* **Time Complexity:** $\mathcal{O}(n\log n)$ for the groupby's internal sort (or $\mathcal{O}(n)$ with a hash-based groupby implementation, which Pandas uses by default for non-sorted keys) plus $\mathcal{O}(n)$ for the weighted-average reduction — effectively linear in practice for typical cardinalities.
+* **Space Complexity:** $\mathcal{O}(n)$ for intermediate group frames plus $\mathcal{O}(k)$ for the $k$-symbol output — matching the q solution's optimality class.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2907,8 +2907,8 @@ if __name__ == "__main__":
 * **Partition pruning analogue (not shown in-line, called out live):** writing trades to `parquet` partitioned by `date=YYYY-MM-DD/sym=XXX/` directories lets `pyarrow`/`pandas.read_parquet(filters=...)` skip entire files at the filesystem level before any bytes are read — identical benefit to q's date-partitioned HDB.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(\log n)$ per symbol slice on a sorted index (vs. $\mathcal O(n)$ unindexed scan) — same asymptotic improvement as q's parted attribute.
-* **Space Complexity:** $\mathcal O(n)$ for the frame plus $\mathcal O(k)$ for $k$ category codes — categorical dtype typically *reduces* memory versus raw object/string columns.
+* **Time Complexity:** $\mathcal{O}(\log n)$ per symbol slice on a sorted index (vs. $\mathcal{O}(n)$ unindexed scan) — same asymptotic improvement as q's parted attribute.
+* **Space Complexity:** $\mathcal{O}(n)$ for the frame plus $\mathcal{O}(k)$ for $k$ category codes — categorical dtype typically *reduces* memory versus raw object/string columns.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2995,8 +2995,8 @@ if __name__ == "__main__":
 * **bps normalization** (`10000 * (px - decision_px) / decision_px`) is identical arithmetic to the q version, enabling cross-contract comparability.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n)$ in total fills for the groupby aggregation, $\mathcal O(k)$ for the two left-joins over $k$ orders (hash-join implementation in Pandas) — linear overall, matching q's complexity exactly.
-* **Space Complexity:** $\mathcal O(k)$ for the output report, $\mathcal O(n)$ transient for the fills aggregation.
+* **Time Complexity:** $\mathcal{O}(n)$ in total fills for the groupby aggregation, $\mathcal{O}(k)$ for the two left-joins over $k$ orders (hash-join implementation in Pandas) — linear overall, matching q's complexity exactly.
+* **Space Complexity:** $\mathcal{O}(k)$ for the output report, $\mathcal{O}(n)$ transient for the fills aggregation.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3064,8 +3064,8 @@ if __name__ == "__main__":
 * **Elementwise drawdown formula** is a single vectorized subtraction/division, and `.min()` is a single vectorized reduction — no explicit iteration anywhere in the hot path, matching the "go with the flow" vectorization philosophy the q style guide enforces.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n)$ for the accumulate scan, $\mathcal O(n)$ for the elementwise drawdown, $\mathcal O(n)$ for the min reduction — overall $\mathcal O(n)$, one pass in spirit (three vectorized C-level passes, still linear and cache-friendly).
-* **Space Complexity:** $\mathcal O(n)$ for the `running_max` and `drawdown_pct` intermediate arrays.
+* **Time Complexity:** $\mathcal{O}(n)$ for the accumulate scan, $\mathcal{O}(n)$ for the elementwise drawdown, $\mathcal{O}(n)$ for the min reduction — overall $\mathcal{O}(n)$, one pass in spirit (three vectorized C-level passes, still linear and cache-friendly).
+* **Space Complexity:** $\mathcal{O}(n)$ for the `running_max` and `drawdown_pct` intermediate arrays.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3142,8 +3142,8 @@ if __name__ == "__main__":
 * **Decoupling rationale (restated for Python context):** the Python consumer, however slow (heavy research computation, occasional crashes), never back-pressures the tickerplant because subscription is push-based and the TP's log-then-publish loop doesn't wait on any one subscriber.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(1)$ for the connect/subscribe call itself; downstream per-tick processing cost is whatever the consumer callback does (application-defined, not part of this primitive).
-* **Space Complexity:** $\mathcal O(1)$ for the connection handle; buffering behavior is governed by `qpython`'s socket receive buffer, bounded independently of the size of the historical data.
+* **Time Complexity:** $\mathcal{O}(1)$ for the connect/subscribe call itself; downstream per-tick processing cost is whatever the consumer callback does (application-defined, not part of this primitive).
+* **Space Complexity:** $\mathcal{O}(1)$ for the connection handle; buffering behavior is governed by `qpython`'s socket receive buffer, bounded independently of the size of the historical data.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3199,8 +3199,8 @@ main:{[args]
 * **`cumPxSz-priorPxSz`** subtracts prefix sums to get the exact windowed sum in O(1) per element once the prefix sums and `bin` indices exist — classic prefix-sum-difference trick, giving windowed aggregates without ever re-summing a window.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n\log n)$ dominated by the vectorized `bin` binary search over all $n$ ticks (each search is $\mathcal O(\log n)$, done for all $n$ at once); prefix sums are $\mathcal O(n)$. Matches the Python deque solution's effective linear-ish performance for moderate $n$, trading a $\log n$ factor for full vectorization and no Python-level loop at all.
-* **Space Complexity:** $\mathcal O(n)$ for the prefix-sum arrays — larger constant than the Python deque's $\mathcal O(w)$ windowed-only footprint, since q materializes the full history's prefix sums; a streaming variant would instead maintain a q list truncated to the window, mirroring the deque exactly.
+* **Time Complexity:** $\mathcal{O}(n\log n)$ dominated by the vectorized `bin` binary search over all $n$ ticks (each search is $\mathcal{O}(\log n)$, done for all $n$ at once); prefix sums are $\mathcal{O}(n)$. Matches the Python deque solution's effective linear-ish performance for moderate $n$, trading a $\log n$ factor for full vectorization and no Python-level loop at all.
+* **Space Complexity:** $\mathcal{O}(n)$ for the prefix-sum arrays — larger constant than the Python deque's $\mathcal{O}(w)$ windowed-only footprint, since q materializes the full history's prefix sums; a streaming variant would instead maintain a q list truncated to the window, mirroring the deque exactly.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3257,8 +3257,8 @@ main:{[args]
 * **Partial execution branch** recomputes remaining size as `sz - execSz` and re-upserts, the same "read-modify-write via upsert" pattern used throughout this document.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(1)$ amortized per event (hash-keyed upsert/delete), $\mathcal O(n)$ total for $n$ events — matching the Python `dict`-based order-book reconstruction exactly.
-* **Space Complexity:** $\mathcal O(p)$ for $p$ currently-resting orders, independent of total historical event count.
+* **Time Complexity:** $\mathcal{O}(1)$ amortized per event (hash-keyed upsert/delete), $\mathcal{O}(n)$ total for $n$ events — matching the Python `dict`-based order-book reconstruction exactly.
+* **Space Complexity:** $\mathcal{O}(p)$ for $p$ currently-resting orders, independent of total historical event count.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3319,8 +3319,8 @@ main:{[args]
 * **`deltas`** (q's built-in consecutive-difference operator) converts the inventory trajectory into per-slice traded quantities in one call, mirroring the discrete recursion's $x_{k-1}-x_k$ term from Appendix B2/B3-D Part 4.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(N)$ to generate the full $N$-slice schedule (vectorized exp/arithmetic over an $N$-length vector) — optimal, since every slice size must be computed at least once.
-* **Space Complexity:** $\mathcal O(N)$ to hold the trajectory and slice-size vectors.
+* **Time Complexity:** $\mathcal{O}(N)$ to generate the full $N$-slice schedule (vectorized exp/arithmetic over an $N$-length vector) — optimal, since every slice size must be computed at least once.
+* **Space Complexity:** $\mathcal{O}(N)$ to hold the trajectory and slice-size vectors.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3379,8 +3379,8 @@ main:{[args]
 * **This batch formulation trades the Python version's O(1)-per-tick streaming property for full-history vectorization** — appropriate for end-of-day surveillance reports; a live desk monitor would instead keep the Python streaming state-machine (D4 original) or its q per-symbol keyed-table equivalent for true tick-by-tick alerting.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n)$ for the vectorized `differs`/`where`/`deltas` pipeline over $n$ prints — linear, one pass in spirit even though several vectorized primitives are chained.
-* **Space Complexity:** $\mathcal O(n)$ for intermediate boolean/run-length vectors in this batch formulation (larger than the Python streaming version's $\mathcal O(p)$ for $p$ active price levels, reflecting the batch-vs-streaming trade-off called out above).
+* **Time Complexity:** $\mathcal{O}(n)$ for the vectorized `differs`/`where`/`deltas` pipeline over $n$ prints — linear, one pass in spirit even though several vectorized primitives are chained.
+* **Space Complexity:** $\mathcal{O}(n)$ for intermediate boolean/run-length vectors in this batch formulation (larger than the Python streaming version's $\mathcal{O}(p)$ for $p$ active price levels, reflecting the batch-vs-streaming trade-off called out above).
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3427,12 +3427,12 @@ main:{[args]
 
 ### E) Detailed q Solution Explanation
 * **`raze`** flattens the list of k per-venue tables into one unsorted table via vectorized concatenation — O(n) in total row count, no per-stream iteration required since q's columnar storage makes concatenation a bulk memory operation rather than a row-by-row append.
-* **`` `ts xasc ``** performs a single vectorized sort keyed on `ts` — q delegates this to a highly optimized native sort (typically an introsort/quicksort variant over primitive vectors), which for the moderate k / large n regime typical of a daily consolidated tape **outperforms** a heap-based incremental merge due to better cache locality and no per-element heap-adjust overhead, even though its worst-case asymptotic ($\mathcal O(n\log n)$) is nominally worse than the heap merge's $\mathcal O(n\log k)$ for $k\ll n$.
+* **`` `ts xasc ``** performs a single vectorized sort keyed on `ts` — q delegates this to a highly optimized native sort (typically an introsort/quicksort variant over primitive vectors), which for the moderate k / large n regime typical of a daily consolidated tape **outperforms** a heap-based incremental merge due to better cache locality and no per-element heap-adjust overhead, even though its worst-case asymptotic ( $\mathcal{O}(n\log n)$ ) is nominally worse than the heap merge's $\mathcal{O}(n\log k)$ for $k \ll n$.
 * **Trade-off explicitly called out live:** the Python D5 heap-merge is *asymptotically* better when $k$ is large relative to $n$ per-stream, and is *streaming* (doesn't require all data resident); the q bulk-sort is simpler, fully vectorized, and faster in wall-clock time for the common "merge today's k venue files, entirely in memory, once" batch case — the right choice depends on whether the tape must be produced incrementally in real time (favor a heap/streaming design) or once in bulk at end-of-day (favor the vectorized sort).
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n\log n)$ for the vectorized sort over all $n$ ticks (versus the Python heap-merge's $\mathcal O(n\log k)$) — asymptotically worse when $k\ll n$, but with a much smaller constant factor in practice due to vectorization.
-* **Space Complexity:** $\mathcal O(n)$ to materialize the full concatenated-then-sorted tape (not streaming), versus the Python generator's $\mathcal O(k)$ auxiliary space — a genuine batch-vs-streaming space trade-off.
+* **Time Complexity:** $\mathcal{O}(n\log n)$ for the vectorized sort over all $n$ ticks (versus the Python heap-merge's $\mathcal{O}(n\log k)$) — asymptotically worse when $k\ll n$, but with a much smaller constant factor in practice due to vectorization.
+* **Space Complexity:** $\mathcal{O}(n)$ to materialize the full concatenated-then-sorted tape (not streaming), versus the Python generator's $\mathcal{O}(k)$ auxiliary space — a genuine batch-vs-streaming space trade-off.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3489,8 +3489,8 @@ main:{[args]
 * **`isBreak:tol<abs qty-brokerQty`** is a single vectorized boolean comparison across the whole reconciliation table — the q-sql equivalent of Pandas' `.abs() > qty_tolerance` column expression.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n\log n)$ dominated by the grouped aggregation's internal sort (or $\mathcal O(n)$ with q's hash-grouping for unsorted symbol keys) plus $\mathcal O(m)$ for the union join over $m$ account/symbol pairs — matching the Pandas groupby-based solution's complexity class.
-* **Space Complexity:** $\mathcal O(m)$ for the reconciliation report, $\mathcal O(n)$ transient for the internal netting aggregation.
+* **Time Complexity:** $\mathcal{O}(n\log n)$ dominated by the grouped aggregation's internal sort (or $\mathcal{O}(n)$ with q's hash-grouping for unsorted symbol keys) plus $\mathcal{O}(m)$ for the union join over $m$ account/symbol pairs — matching the Pandas groupby-based solution's complexity class.
+* **Space Complexity:** $\mathcal{O}(m)$ for the reconciliation report, $\mathcal{O}(n)$ transient for the internal netting aggregation.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3542,8 +3542,8 @@ main:{[args]
 * **Single expression, no explicit loop or manual running-sum state** — the entire O(1)-amortized rolling algorithm is hidden behind the built-in adverb-like primitives, the cleanest possible expression of "let the language vectorize this for you."
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal O(n)$ for `mavg`/`mdev` each (O(1) amortized per element internally, applied across $n$ elements), $\mathcal O(n)$ for the elementwise z-score — overall linear, matching any hand-rolled Welford-style O(1)-amortized implementation.
-* **Space Complexity:** $\mathcal O(n)$ for the output z-score vector; the internal moving-window state itself is $\mathcal O(w)$ (window size), not retained after the call.
+* **Time Complexity:** $\mathcal{O}(n)$ for `mavg`/`mdev` each (O(1) amortized per element internally, applied across $n$ elements), $\mathcal{O}(n)$ for the elementwise z-score — overall linear, matching any hand-rolled Welford-style O(1)-amortized implementation.
+* **Space Complexity:** $\mathcal{O}(n)$ for the output z-score vector; the internal moving-window state itself is $\mathcal{O}(w)$ (window size), not retained after the call.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -3607,8 +3607,8 @@ main:{[args]
 * **`{find[x;y]}[parent] each til n`** resolves every trade's final cluster root in one `each`-mapped pass over all trade IDs — the vectorized equivalent of iterating `find(x)` for every node at the end of a classic union-find algorithm.
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** Without path compression as shown, $\mathcal O(n\cdot\alpha_{\text{depth}})$ worst-case per `find` in a pathological chain, but with union-by-rank/path-compression (the noted production optimization) this becomes $\mathcal O(n\,\alpha(n))$ overall — effectively linear, $\alpha(n)$ being the inverse Ackermann function, for all $n$ trades and $m$ linking pairs combined, identical complexity class to the standard union-find data structure regardless of host language.
-* **Space Complexity:** $\mathcal O(n)$ for the `parent` array.
+* **Time Complexity:** Without path compression as shown, $\mathcal{O}(n\cdot\alpha_{\text{depth}})$ worst-case per `find` in a pathological chain, but with union-by-rank/path-compression (the noted production optimization) this becomes $\mathcal{O}(n\,\alpha(n))$ overall — effectively linear, $\alpha(n)$ being the inverse Ackermann function, for all $n$ trades and $m$ linking pairs combined, identical complexity class to the standard union-find data structure regardless of host language.
+* **Space Complexity:** $\mathcal{O}(n)$ for the `parent` array.
 
 [🔝 Back to Top](#-table-of-contents)
 
