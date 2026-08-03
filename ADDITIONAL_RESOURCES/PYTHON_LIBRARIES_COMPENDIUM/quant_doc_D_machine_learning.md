@@ -402,7 +402,7 @@ Keep top $a \cdot 100\%$ large-gradient instances + random sample $(1-a)b\cdot 1
 $$\text{Bundle}(F_1, F_2) \iff \text{Conflict}(F_1, F_2) < \epsilon$$
 
 **Leaf-wise tree growth:**
-$$\text{leaf}^* = \underset{l}{\arg\max} \; \Delta \text{Loss}(l)$$
+$$\text{leaf}^* = \underset{l}{\arg\max} \Delta \text{Loss}(l)$$
 
 ```python
 # ── quant_D_2_lightgbm.py ─────────────────────────────────────────────────

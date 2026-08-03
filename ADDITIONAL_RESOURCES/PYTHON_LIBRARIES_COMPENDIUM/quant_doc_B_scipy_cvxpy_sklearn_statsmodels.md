@@ -643,7 +643,7 @@ graph LR
 
 **Markowitz MVO Problem:**
 
-$$\min_{\mathbf{w}} \; \mathbf{w}^\top \Sigma \mathbf{w} - \frac{1}{\gamma} \boldsymbol{\mu}^\top \mathbf{w}$$
+$$\min_{\mathbf{w}} \mathbf{w}^\top \Sigma \mathbf{w} - \frac{1}{\gamma} \boldsymbol{\mu}^\top \mathbf{w}$$
 
 $$\text{s.t.} \quad \mathbf{1}^\top \mathbf{w} = 1, \quad \mathbf{w} \geq \mathbf{0}, \quad \|\mathbf{w}\|_1 \leq L$$
 
@@ -900,7 +900,7 @@ $$\text{RC}_i = w_i \cdot \text{MRC}_i$$
 
 **Risk Parity Condition:**
 
-$$\text{RC}_i = \frac{\sigma_p}{n} \; \forall i \quad \Leftrightarrow \quad w_i (\Sigma \mathbf{w})_i = w_j (\Sigma \mathbf{w})_j \; \forall i,j$$
+$$\text{RC}_i = \frac{\sigma_p}{n} \forall i \quad \Leftrightarrow \quad w_i (\Sigma \mathbf{w})_i = w_j (\Sigma \mathbf{w})_j \forall i,j$$
 
 **CVXPY Approximation** (successive convex):
 
@@ -1031,7 +1031,7 @@ $$\text{CVaR}_\alpha(\mathbf{w}) = \min_{\nu \in \mathbb{R}} \left\{\nu + \frac{
 
 **Optimisation Problem:**
 
-$$\max_{\mathbf{w}, \nu, \mathbf{u}} \; \boldsymbol{\mu}^\top \mathbf{w}$$
+$$\max_{\mathbf{w}, \nu, \mathbf{u}} \boldsymbol{\mu}^\top \mathbf{w}$$
 
 $$\text{s.t.} \quad \nu + \frac{1}{(1-\alpha)T} \mathbf{1}^\top \mathbf{u} \leq \beta_{\text{CVaR}}$$
 
@@ -1442,15 +1442,15 @@ Forward Return by Prediction Quintile:
 
 **Ridge Regression** ($\ell_2$):
 
-$$\hat{\boldsymbol{\beta}}_{\text{ridge}} = \underset{\boldsymbol{\beta}}{\arg\min} \; \|\mathbf{y} - X\boldsymbol{\beta}\|_2^2 + \lambda_2 \|\boldsymbol{\beta}\|_2^2$$
+$$\hat{\boldsymbol{\beta}}_{\text{ridge}} = \underset{\boldsymbol{\beta}}{\arg\min} \|\mathbf{y} - X\boldsymbol{\beta}\|_2^2 + \lambda_2 \|\boldsymbol{\beta}\|_2^2$$
 
 **LASSO** ($\ell_1$, sparse solution):
 
-$$\hat{\boldsymbol{\beta}}_{\text{lasso}} = \underset{\boldsymbol{\beta}}{\arg\min} \; \|\mathbf{y} - X\boldsymbol{\beta}\|_2^2 + \lambda_1 \|\boldsymbol{\beta}\|_1$$
+$$\hat{\boldsymbol{\beta}}_{\text{lasso}} = \underset{\boldsymbol{\beta}}{\arg\min} \|\mathbf{y} - X\boldsymbol{\beta}\|_2^2 + \lambda_1 \|\boldsymbol{\beta}\|_1$$
 
 **Elastic Net** (combined):
 
-$$\hat{\boldsymbol{\beta}}_{\text{EN}} = \underset{\boldsymbol{\beta}}{\arg\min} \; \|\mathbf{y} - X\boldsymbol{\beta}\|_2^2 + \lambda \left[\alpha \|\boldsymbol{\beta}\|_1 + \frac{1-\alpha}{2}\|\boldsymbol{\beta}\|_2^2\right]$$
+$$\hat{\boldsymbol{\beta}}_{\text{EN}} = \underset{\boldsymbol{\beta}}{\arg\min} \|\mathbf{y} - X\boldsymbol{\beta}\|_2^2 + \lambda \left[\alpha \|\boldsymbol{\beta}\|_1 + \frac{1-\alpha}{2}\|\boldsymbol{\beta}\|_2^2\right]$$
 
 ```python
 # ── quant_B_6_3_lasso_ridge.py ────────────────────────────────────────────
@@ -1738,7 +1738,7 @@ $$\mathbf{y}_t = \mathbf{c} + \sum_{k=1}^{p} \Phi_k \mathbf{y}_{t-k} + \boldsymb
 
 **Granger Causality** ($x$ Granger-causes $y$):
 
-$$H_0: \Phi_k^{yx} = 0 \; \forall k \implies F\text{-test}$$
+$$H_0: \Phi_k^{yx} = 0 \forall k \implies F\text{-test}$$
 
 **Forecast Error Variance Decomposition:**
 

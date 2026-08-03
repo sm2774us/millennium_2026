@@ -384,7 +384,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\text{ReportStatus}_t = \begin{cases} \text{COMPLETE} & \text{if } \forall f \in \text{Feeds}, \; \tau_f \le \text{Watermark} \\ \text{PARTIAL} & \text{otherwise} \end{cases}$$
+$$\text{ReportStatus}_t = \begin{cases} \text{COMPLETE} & \text{if } \forall f \in \text{Feeds}, \tau_f \le \text{Watermark} \\ \text{PARTIAL} & \text{otherwise} \end{cases}$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
@@ -1023,7 +1023,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\text{CheckStatus}_f = \begin{cases} \text{PASS} & \text{if } \forall c \in \text{Metrics}, \; \vert{}c - \mu_c\vert{} \le k\sigma_c \\ \text{FAIL} & \text{otherwise} \end{cases}$$
+$$\text{CheckStatus}_f = \begin{cases} \text{PASS} & \text{if } \forall c \in \text{Metrics}, \vert{}c - \mu_c\vert{} \le k\sigma_c \\ \text{FAIL} & \text{otherwise} \end{cases}$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 

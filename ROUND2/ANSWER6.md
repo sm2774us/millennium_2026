@@ -682,7 +682,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\min_{\{v_k\}} E[C] + \lambda\,\text{Var}[C] + \kappa \sum_k M(x_k)\quad \text{s.t.}\quad x_k \le L_{\max}\; \forall k$$
+$$\min_{\{v_k\}} E[C] + \lambda\,\text{Var}[C] + \kappa \sum_k M(x_k)\quad \text{s.t.}\quad x_k \le L_{\max} \forall k$$
 
 Where $M(x_k)$ is the margin requirement function of inventory $x_k$ and $L_{\max}$ is the regulatory position limit.
 

@@ -85,7 +85,7 @@ $$\mu_p = \mathbf{w}^T \boldsymbol{\mu}, \qquad \sigma_p^2 = \mathbf{w}^T \Sigma
 
 **Efficient frontier** (parametric, risk-aversion $\gamma$):
 
-$$\max_{\mathbf{w}}\; \mathbf{w}^T\boldsymbol{\mu} - \frac{\gamma}{2}\,\mathbf{w}^T\Sigma\,\mathbf{w}$$
+$$\max_{\mathbf{w}} \mathbf{w}^T\boldsymbol{\mu} - \frac{\gamma}{2}\,\mathbf{w}^T\Sigma\,\mathbf{w}$$
 
 $$\Rightarrow \mathbf{w}^* = \frac{1}{\gamma}\Sigma^{-1}\boldsymbol{\mu} \quad \text{(unconstrained)}$$
 
@@ -582,7 +582,7 @@ $$\tilde{S}_k = S_{k-1} + \sigma \xi_k - \gamma \frac{n_k}{\tau} \quad \text{(te
 
 Minimise expected cost $E[C]$ subject to variance $V[C] = \text{const}$:
 
-$$\min_{\{n_k\}} \; E[C] + \lambda \cdot V[C]$$
+$$\min_{\{n_k\}} E[C] + \lambda \cdot V[C]$$
 
 Optimal trajectory (continuous limit):
 

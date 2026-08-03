@@ -62,7 +62,7 @@ Lesson: rare priors resist updating — need many observations
 
 ### Q2 · Expected Maximum of N Uniform RVs
 
-$$F_{M_n}(x) = x^n \;\Rightarrow\; f_{M_n}(x) = nx^{n-1}$$
+$$F_{M_n}(x) = x^n \Rightarrow f_{M_n}(x) = nx^{n-1}$$
 
 $$\mathbb{E}[\max(U_1,\ldots,U_n)] = \int_0^1 x\cdot nx^{n-1}\,dx = \boxed{\dfrac{n}{n+1}}$$
 
@@ -95,7 +95,7 @@ $$P(\text{reach }N \mid k) = \begin{cases} \dfrac{1-r^k}{1-r^N} & p\ne q \\[6pt]
 
 **Log-likelihood:** $\ell(\lambda) = n\log\lambda - \lambda\sum x_i$
 
-$$\frac{d\ell}{d\lambda} = \frac{n}{\lambda} - \sum x_i = 0 \;\Rightarrow\; \boxed{\hat\lambda_{\text{MLE}} = \frac{1}{\bar x}}$$
+$$\frac{d\ell}{d\lambda} = \frac{n}{\lambda} - \sum x_i = 0 \Rightarrow \boxed{\hat\lambda_{\text{MLE}} = \frac{1}{\bar x}}$$
 
 **Mechanism:** Rate = reciprocal of sample mean. Second derivative $=-n/\lambda^2 < 0$ confirms maximum.
 

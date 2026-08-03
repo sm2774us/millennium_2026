@@ -594,7 +594,7 @@ if __name__ == "__main__":
 
 Price changes $S(t) - S_0$ follow a continuous power-law convolution over past execution velocity $v(s)$:
 
-$$S(t) = S_0 + \int_0^t G(t - s) v(s) ds + \sigma W(t), \quad G(\tau) = \Gamma \tau^{-\alpha}, \; \alpha \in (0, 0.5)$$
+$$S(t) = S_0 + \int_0^t G(t - s) v(s) ds + \sigma W(t), \quad G(\tau) = \Gamma \tau^{-\alpha}, \alpha \in (0, 0.5)$$
 
 Discretizing into $N$ uniform intervals $\Delta t$ yields the lower-triangular Toeplitz impact matrix $G_{ij} = \Gamma ((i - j + 1)\Delta t)^{-\alpha}$:
 
@@ -1483,7 +1483,7 @@ $$A_i = \min \left( O_i, \left\lfloor Q_{\text{inc}} \times \frac{O_i}{\sum_{k=1
 
 In FIFO matching engines, queue priority $Q(t)$ for a passive resting order decays continuously as execution fills $V_{\text{exec}}(t)$ and cancellations $C_{\text{ahead}}(t)$ occur ahead of its position:
 
-$$Q(t + \Delta t) = \max \left( 0, \; Q(t) - V_{\text{exec}}(t) - \alpha \cdot C_{\text{ahead}}(t) \right)$$
+$$Q(t + \Delta t) = \max \left( 0, Q(t) - V_{\text{exec}}(t) - \alpha \cdot C_{\text{ahead}}(t) \right)$$
 
 where $\alpha \in [0, 1]$ represents the empirical probability of cancellations occurring ahead of the order in the queue structure.
 
@@ -1912,7 +1912,7 @@ if __name__ == "__main__":
 
 Pre-trade token bucket algorithms regulate submission rates using capacity $C$ and refill rate $R$:
 
-$$T(t) = \min \left( C, \; T(t_{\text{last}}) + (t - t_{\text{last}}) \cdot R \right)$$
+$$T(t) = \min \left( C, T(t_{\text{last}}) + (t - t_{\text{last}}) \cdot R \right)$$
 
 Order submissions require $T(t) \ge 1.0$. Projected position limits enforce hard constraints across contract size $q$:
 
@@ -2972,7 +2972,7 @@ $$q_i = Q_{\text{target}} \times w_i$$
 
 3. **POV (Percentage of Volume):** Real-time participation rate $\rho \in (0, 1)$ tied to realized market volume $V_i^{\text{mkt}}$:
 
-$$q_i = \min \left( Q_{\text{remaining}}, \; \frac{\rho}{1 - \rho} V_i^{\text{mkt}} \right)$$
+$$q_i = \min \left( Q_{\text{remaining}}, \frac{\rho}{1 - \rho} V_i^{\text{mkt}} \right)$$
 
 #### Standalone Self-Validating q Script (`algoTaxonomy.q`)
 
@@ -3117,7 +3117,7 @@ if __name__ == "__main__":
 
 Smart Order Routers (SOR) solve quadratic optimization problems across $M$ execution venues to minimize total order execution costs:
 
-$$\min_{q_1, \dots, q_M} \sum_{j=1}^M \left( q_j P_j^{\text{ask}} + \frac{1}{2} \eta_j q_j^2 + \phi_j q_j \right), \quad \text{subject to } \sum_{j=1}^M q_j = Q_{\text{target}}, \; 0 \le q_j \le D_j^{\text{ask}}$$
+$$\min_{q_1, \dots, q_M} \sum_{j=1}^M \left( q_j P_j^{\text{ask}} + \frac{1}{2} \eta_j q_j^2 + \phi_j q_j \right), \quad \text{subject to } \sum_{j=1}^M q_j = Q_{\text{target}}, 0 \le q_j \le D_j^{\text{ask}}$$
 
 where $P_j^{\text{ask}}$ is venue ask price, $\eta_j$ is venue temporary impact, $\phi_j$ is exchange take fee, and $D_j^{\text{ask}}$ is displayed top-of-book depth.
 

@@ -294,7 +294,7 @@ $$dX_t = \frac{1}{S_t}\left(\mu S_t\, dt + \sigma S_t\, dW_t\right) + \frac{1}{2
 
 $$\boxed{dX_t = \left(\mu - \frac{\sigma^2}{2}\right)dt + \sigma\, dW_t}$$
 
-So $\ln S_t \sim \mathcal{N}\!\left(\ln S_0 + \left(\mu - \frac{\sigma^2}{2}\right)t,\; \sigma^2 t\right)$ → **Geometric Brownian Motion** → foundation of Black-Scholes.
+So $\ln S_t \sim \mathcal{N}\!\left(\ln S_0 + \left(\mu - \frac{\sigma^2}{2}\right)t, \sigma^2 t\right)$ → **Geometric Brownian Motion** → foundation of Black-Scholes.
 
 > 🔑 The $-\sigma^2/2$ is the **Itô correction** — a direct consequence of the quadratic variation of Brownian motion. Many candidates forget this term.
 
@@ -763,11 +763,11 @@ States per day $i$:
 
 **Recurrences:**
 
-$$\text{hold}[i] = \max(\text{hold}[i-1],\; \text{rest}[i-1] - \text{price}[i])$$
+$$\text{hold}[i] = \max(\text{hold}[i-1], \text{rest}[i-1] - \text{price}[i])$$
 
 $$\text{sold}[i] = \text{hold}[i-1] + \text{price}[i]$$
 
-$$\text{rest}[i] = \max(\text{rest}[i-1],\; \text{sold}[i-1])$$
+$$\text{rest}[i] = \max(\text{rest}[i-1], \text{sold}[i-1])$$
 
 ```python
 def max_profit_cooldown(prices: list[int]) -> int:

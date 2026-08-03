@@ -3430,7 +3430,7 @@ After observing $n$ daily returns $r_1, \ldots, r_n$ with known noise $\sigma^2$
 
 **Posterior (conjugate Gaussian):**
 
-$$\mu \mid r_1, \ldots, r_n \sim \mathcal{N}\!\left(\frac{\frac{\mu_0}{\sigma_0^2} + \frac{n\bar{r}}{\sigma^2}}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}}, \; \left(\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}\right)^{-1}\right)$$
+$$\mu \mid r_1, \ldots, r_n \sim \mathcal{N}\!\left(\frac{\frac{\mu_0}{\sigma_0^2} + \frac{n\bar{r}}{\sigma^2}}{\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}}, \left(\frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}\right)^{-1}\right)$$
 
 **Alpha Decay Model:**
 

@@ -205,7 +205,7 @@ $$\frac{d}{dx}[\csc x] = -\csc x \cot x$$
 
 For $f(x_1, x_2, \ldots, x_n)$:
 
-$$\frac{\partial f}{\partial x_i} \equiv \text{hold all } x_j \;(j \neq i) \text{ constant, differentiate w.r.t. } x_i$$
+$$\frac{\partial f}{\partial x_i} \equiv \text{hold all } x_j (j \neq i) \text{ constant, differentiate w.r.t. } x_i$$
 
 ### Total Differential
 $$df = \sum_{i=1}^n \frac{\partial f}{\partial x_i} dx_i$$
@@ -866,7 +866,7 @@ $$\boxed{f'(x) = -2\sin(2x)}$$
 **Step 2**: $\partial f/\partial x = \dfrac{1}{2}\cdot\dfrac{2x}{x^2+y^2} = \dfrac{x}{x^2+y^2}$  
 **Step 3**: $\partial f/\partial y = \dfrac{y}{x^2+y^2}$ (by symmetry)  
 
-$$\boxed{\nabla f = \left(\frac{x}{x^2+y^2},\; \frac{y}{x^2+y^2}\right)}$$
+$$\boxed{\nabla f = \left(\frac{x}{x^2+y^2}, \frac{y}{x^2+y^2}\right)}$$
 
 [🔝 Back to Top](#-table-of-contents)
 
