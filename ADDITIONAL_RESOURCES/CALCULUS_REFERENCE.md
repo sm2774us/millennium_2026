@@ -278,7 +278,7 @@ $$\int x^n e^x dx \text{ : use IBP } n \text{ times (tabular method)}$$
 
 $$\int \ln x dx = x\ln x - x + C$$
 
-- **Derivation**: IBP with $u=\ln x$, $dv=dx$ → $\int \ln x\,dx = x\ln x - \int x\cdot\frac{1}{x}\,dx = x\ln x - x + C$
+- **Derivation**: IBP with $u=\ln x$, $dv=dx$ → $\int \ln x dx = x\ln x - \int x\cdot\frac{1}{x} dx = x\ln x - x + C$
 
 $$\int \frac{\ln x}{x} dx = \frac{(\ln x)^2}{2} + C$$
 
@@ -340,13 +340,13 @@ $$\int \frac{1}{x\sqrt{x^2-a^2}} dx = \frac{1}{a}\text{arcsec}\frac{|x|}{a} + C$
 
 ## 3.6 Reduction Formulas
 
-$$\int \sin^n x dx = -\frac{\sin^{n-1}x\cos x}{n} + \frac{n-1}{n}\int\sin^{n-2}x\,dx$$
+$$\int \sin^n x dx = -\frac{\sin^{n-1}x\cos x}{n} + \frac{n-1}{n}\int\sin^{n-2}x dx$$
 
-$$\int \cos^n x dx = \frac{\cos^{n-1}x\sin x}{n} + \frac{n-1}{n}\int\cos^{n-2}x\,dx$$
+$$\int \cos^n x dx = \frac{\cos^{n-1}x\sin x}{n} + \frac{n-1}{n}\int\cos^{n-2}x dx$$
 
-$$\int \tan^n x dx = \frac{\tan^{n-1}x}{n-1} - \int\tan^{n-2}x\,dx$$
+$$\int \tan^n x dx = \frac{\tan^{n-1}x}{n-1} - \int\tan^{n-2}x dx$$
 
-$$\int x^n e^x dx = x^n e^x - n\int x^{n-1}e^x\,dx$$
+$$\int x^n e^x dx = x^n e^x - n\int x^{n-1}e^x dx$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -381,12 +381,12 @@ $$\sin x \cos x = \frac{1}{2}\sin 2x$$
 
 | Integral | Result |
 |---|---|
-| $\int \sinh x\,dx$ | $\cosh x + C$ |
-| $\int \cosh x\,dx$ | $\sinh x + C$ |
-| $\int \tanh x\,dx$ | $\ln(\cosh x) + C$ |
-| $\int \text{sech}^2 x\,dx$ | $\tanh x + C$ |
-| $\int \frac{1}{\sqrt{x^2+a^2}}\,dx$ | $\sinh^{-1}(x/a) + C = \ln(x+\sqrt{x^2+a^2})+C$ |
-| $\int \frac{1}{\sqrt{x^2-a^2}}\,dx$ | $\cosh^{-1}(x/a) + C = \ln(x+\sqrt{x^2-a^2})+C$ |
+| $\int \sinh x dx$ | $\cosh x + C$ |
+| $\int \cosh x dx$ | $\sinh x + C$ |
+| $\int \tanh x dx$ | $\ln(\cosh x) + C$ |
+| $\int \text{sech}^2 x dx$ | $\tanh x + C$ |
+| $\int \frac{1}{\sqrt{x^2+a^2}} dx$ | $\sinh^{-1}(x/a) + C = \ln(x+\sqrt{x^2+a^2})+C$ |
+| $\int \frac{1}{\sqrt{x^2-a^2}} dx$ | $\cosh^{-1}(x/a) + C = \ln(x+\sqrt{x^2-a^2})+C$ |
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -487,7 +487,7 @@ $$\int_{-\infty}^{\infty} e^{-ax^2} dx = \sqrt{\frac{\pi}{a}} \quad (a>0)$$
 
 $$\int_{-\infty}^{\infty} e^{-ax^2+bx} dx = \sqrt{\frac{\pi}{a}} e^{b^2/(4a)}$$
 
-**Proof sketch**: Square the integral, convert to polar → $\int_0^{2\pi}\int_0^\infty e^{-r^2}r\,dr\,d\theta = \pi$, take square root.
+**Proof sketch**: Square the integral, convert to polar → $\int_0^{2\pi}\int_0^\infty e^{-r^2}r dr d\theta = \pi$, take square root.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -495,9 +495,9 @@ $$\int_{-\infty}^{\infty} e^{-ax^2+bx} dx = \sqrt{\frac{\pi}{a}} e^{b^2/(4a)}$$
 
 ## 4.6 Itô's Lemma (Stochastic Chain Rule)
 
-For $f(t, X_t)$ where $dX = \mu\,dt + \sigma\,dW$:
+For $f(t, X_t)$ where $dX = \mu dt + \sigma dW$:
 
-$$df = \left(\frac{\partial f}{\partial t} + \mu\frac{\partial f}{\partial x} + \frac{1}{2}\sigma^2\frac{\partial^2 f}{\partial x^2}\right)dt + \sigma\frac{\partial f}{\partial x}\,dW$$
+$$df = \left(\frac{\partial f}{\partial t} + \mu\frac{\partial f}{\partial x} + \frac{1}{2}\sigma^2\frac{\partial^2 f}{\partial x^2}\right)dt + \sigma\frac{\partial f}{\partial x} dW$$
 
 **Key difference from classical chain rule**: The $\frac{1}{2}\sigma^2 f_{xx}$ term (Itô correction) — arises because $(dW)^2 = dt$.
 
@@ -514,7 +514,7 @@ Itô:          df = f_t dt + f_x dx + ½σ²f_xx dt
 
 ## 4.7 Leibniz Integral Rule (Differentiation Under the Integral)
 
-$$\frac{d}{d\alpha}\int_{a(\alpha)}^{b(\alpha)} f(x,\alpha)\,dx = f(b,\alpha)\cdot b'(\alpha) - f(a,\alpha)\cdot a'(\alpha) + \int_a^b \frac{\partial f}{\partial \alpha}\,dx$$
+$$\frac{d}{d\alpha}\int_{a(\alpha)}^{b(\alpha)} f(x,\alpha) dx = f(b,\alpha)\cdot b'(\alpha) - f(a,\alpha)\cdot a'(\alpha) + \int_a^b \frac{\partial f}{\partial \alpha} dx$$
 
 **Quant use**: Greeks calculation — $\Delta, \Gamma, \Vega$ via differentiation of option pricing integrals.
 
@@ -567,7 +567,7 @@ $$\lim_{x\to a}\frac{f(x)}{g(x)} = \lim_{x\to a}\frac{f'(x)}{g'(x)} \quad \text{
 
 ## 4.10 Moment Generating Function & Cumulants
 
-$$M_X(t) = E[e^{tX}] = \int_{-\infty}^\infty e^{tx} f(x)\,dx$$
+$$M_X(t) = E[e^{tX}] = \int_{-\infty}^\infty e^{tx} f(x) dx$$
 
 $$E[X^n] = M_X^{(n)}(0) = \left.\frac{d^n M}{dt^n}\right|_{t=0}$$
 
@@ -787,7 +787,7 @@ $$\boxed{f''(x) = e^x(x+2)}$$
 **Step 1**: $d/dx[\tanh u] = \text{sech}^2 u \cdot u'$  
 **Step 2**: $u = 3x$, $u' = 3$  
 
-$$\boxed{f'(x) = 3\,\text{sech}^2(3x)}$$
+$$\boxed{f'(x) = 3 \text{sech}^2(3x)}$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -798,7 +798,7 @@ $$\boxed{f'(x) = 3\,\text{sech}^2(3x)}$$
 **Step 1**: $\partial f/\partial y = x^2z + \sin z$ (hold $x,z$ constant)  
 **Step 2**: $\partial^2 f/\partial x\partial y = \partial/\partial x[x^2z + \sin z] = 2xz$  
 
-$$\boxed{\frac{\partial^2 f}{\partial x\,\partial y} = 2xz}$$
+$$\boxed{\frac{\partial^2 f}{\partial x \partial y} = 2xz}$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -929,7 +929,7 @@ $$\boxed{J = 4x^2 + 4y^2 = 4(x^2+y^2)}$$
 
 ---
 
-## Q25. Differentiate $f(x) = \int_0^{x^2} e^{t^3}\,dt$ using Leibniz rule
+## Q25. Differentiate $f(x) = \int_0^{x^2} e^{t^3} dt$ using Leibniz rule
 
 **Step 1**: By Fundamental Theorem of Calculus + chain rule:  
 **Step 2**: $f'(x) = e^{(x^2)^3} \cdot \dfrac{d}{dx}[x^2]$  
@@ -947,12 +947,12 @@ $$\boxed{f'(x) = 2xe^{x^6}}$$
 
 ---
 
-## Q26. $\displaystyle\int (3x^4 - 5x^2 + 2)\,dx$
+## Q26. $\displaystyle\int (3x^4 - 5x^2 + 2) dx$
 
 **Step 1**: Power rule term by term  
-**Step 2**: $\int 3x^4\,dx = \frac{3x^5}{5}$  
-**Step 3**: $\int -5x^2\,dx = -\frac{5x^3}{3}$  
-**Step 4**: $\int 2\,dx = 2x$  
+**Step 2**: $\int 3x^4 dx = \frac{3x^5}{5}$  
+**Step 3**: $\int -5x^2 dx = -\frac{5x^3}{3}$  
+**Step 4**: $\int 2 dx = 2x$  
 
 $$\boxed{\frac{3x^5}{5} - \frac{5x^3}{3} + 2x + C}$$
 
@@ -960,7 +960,7 @@ $$\boxed{\frac{3x^5}{5} - \frac{5x^3}{3} + 2x + C}$$
 
 ---
 
-## Q27. $\displaystyle\int \frac{1}{x^2+4}\,dx$
+## Q27. $\displaystyle\int \frac{1}{x^2+4} dx$
 
 **Step 1**: Match form $\int \dfrac{1}{a^2+x^2}dx = \dfrac{1}{a}\arctan\dfrac{x}{a}+C$  
 **Step 2**: $a^2=4$, so $a=2$  
@@ -971,9 +971,9 @@ $$\boxed{\frac{1}{2}\arctan\frac{x}{2} + C}$$
 
 ---
 
-## Q28. $\displaystyle\int xe^{x^2}\,dx$
+## Q28. $\displaystyle\int xe^{x^2} dx$
 
-**Step 1**: Substitution $u = x^2$, $du = 2x\,dx$, so $x\,dx = du/2$  
+**Step 1**: Substitution $u = x^2$, $du = 2x dx$, so $x dx = du/2$  
 **Step 2**: $\int e^u \dfrac{du}{2} = \dfrac{1}{2}e^u + C$  
 **Step 3**: Back-substitute $u = x^2$  
 
@@ -983,12 +983,12 @@ $$\boxed{\frac{1}{2}e^{x^2} + C}$$
 
 ---
 
-## Q29. $\displaystyle\int x\ln x\,dx$ (IBP)
+## Q29. $\displaystyle\int x\ln x dx$ (IBP)
 
-**Step 1**: LIATE — $u = \ln x$, $dv = x\,dx$  
-**Step 2**: $du = 1/x\,dx$, $v = x^2/2$  
-**Step 3**: $\int x\ln x\,dx = \dfrac{x^2}{2}\ln x - \int \dfrac{x^2}{2}\cdot\dfrac{1}{x}\,dx$  
-**Step 4**: $= \dfrac{x^2\ln x}{2} - \int \dfrac{x}{2}\,dx = \dfrac{x^2\ln x}{2} - \dfrac{x^2}{4}$  
+**Step 1**: LIATE — $u = \ln x$, $dv = x dx$  
+**Step 2**: $du = 1/x dx$, $v = x^2/2$  
+**Step 3**: $\int x\ln x dx = \dfrac{x^2}{2}\ln x - \int \dfrac{x^2}{2}\cdot\dfrac{1}{x} dx$  
+**Step 4**: $= \dfrac{x^2\ln x}{2} - \int \dfrac{x}{2} dx = \dfrac{x^2\ln x}{2} - \dfrac{x^2}{4}$  
 
 $$\boxed{\frac{x^2}{2}\ln x - \frac{x^2}{4} + C}$$
 
@@ -996,10 +996,10 @@ $$\boxed{\frac{x^2}{2}\ln x - \frac{x^2}{4} + C}$$
 
 ---
 
-## Q30. $\displaystyle\int \sin^2 x\,dx$
+## Q30. $\displaystyle\int \sin^2 x dx$
 
 **Step 1**: Half-angle identity: $\sin^2 x = \dfrac{1-\cos 2x}{2}$  
-**Step 2**: $\int \dfrac{1-\cos 2x}{2}\,dx = \dfrac{1}{2}\int dx - \dfrac{1}{2}\int\cos 2x\,dx$  
+**Step 2**: $\int \dfrac{1-\cos 2x}{2} dx = \dfrac{1}{2}\int dx - \dfrac{1}{2}\int\cos 2x dx$  
 **Step 3**: $= \dfrac{x}{2} - \dfrac{\sin 2x}{4}$  
 
 $$\boxed{\frac{x}{2} - \frac{\sin 2x}{4} + C}$$
@@ -1008,7 +1008,7 @@ $$\boxed{\frac{x}{2} - \frac{\sin 2x}{4} + C}$$
 
 ---
 
-## Q31. $\displaystyle\int \frac{2x+3}{x^2+3x+2}\,dx$
+## Q31. $\displaystyle\int \frac{2x+3}{x^2+3x+2} dx$
 
 **Step 1**: Note numerator $= d/dx[x^2+3x+2]$; this is a log form  
 **Step 2**: Let $u = x^2+3x+2$, $du = (2x+3)dx$  
@@ -1020,7 +1020,7 @@ $$\boxed{\ln|x^2+3x+2| + C}$$
 
 ---
 
-## Q32. $\displaystyle\int \frac{1}{x^2-4}\,dx$ (Partial Fractions)
+## Q32. $\displaystyle\int \frac{1}{x^2-4} dx$ (Partial Fractions)
 
 **Step 1**: Factor: $x^2-4 = (x-2)(x+2)$  
 **Step 2**: Decompose: $\dfrac{1}{(x-2)(x+2)} = \dfrac{A}{x-2} + \dfrac{B}{x+2}$  
@@ -1033,11 +1033,11 @@ $$\boxed{\frac{1}{4}\ln\left|\frac{x-2}{x+2}\right| + C}$$
 
 ---
 
-## Q33. $\displaystyle\int \sqrt{4-x^2}\,dx$ (Trig Substitution)
+## Q33. $\displaystyle\int \sqrt{4-x^2} dx$ (Trig Substitution)
 
-**Step 1**: $x = 2\sin\theta$, $dx = 2\cos\theta\,d\theta$  
+**Step 1**: $x = 2\sin\theta$, $dx = 2\cos\theta d\theta$  
 **Step 2**: $\sqrt{4-x^2} = \sqrt{4\cos^2\theta} = 2\cos\theta$  
-**Step 3**: $\int 2\cos\theta\cdot 2\cos\theta\,d\theta = 4\int\cos^2\theta\,d\theta$  
+**Step 3**: $\int 2\cos\theta\cdot 2\cos\theta d\theta = 4\int\cos^2\theta d\theta$  
 **Step 4**: $= 4\cdot\dfrac{\theta + \sin\theta\cos\theta}{2} = 2\theta + 2\sin\theta\cos\theta$  
 **Step 5**: Back-substitute: $\theta = \arcsin(x/2)$, $\sin\theta = x/2$, $\cos\theta = \sqrt{4-x^2}/2$  
 
@@ -1047,27 +1047,27 @@ $$\boxed{2\arcsin\frac{x}{2} + \frac{x\sqrt{4-x^2}}{2} + C}$$
 
 ---
 
-## Q34. $\displaystyle\int e^x\cos x\,dx$
+## Q34. $\displaystyle\int e^x\cos x dx$
 
-**Step 1**: IBP with $u=e^x$, $dv=\cos x\,dx$; $du=e^x dx$, $v=\sin x$  
-**Step 2**: $I = e^x\sin x - \int e^x\sin x\,dx$  
-**Step 3**: IBP again on remainder: $u=e^x$, $dv=\sin x\,dx$; $v=-\cos x$  
-**Step 4**: $I = e^x\sin x - [-e^x\cos x + \int e^x\cos x\,dx]$  
+**Step 1**: IBP with $u=e^x$, $dv=\cos x dx$; $du=e^x dx$, $v=\sin x$  
+**Step 2**: $I = e^x\sin x - \int e^x\sin x dx$  
+**Step 3**: IBP again on remainder: $u=e^x$, $dv=\sin x dx$; $v=-\cos x$  
+**Step 4**: $I = e^x\sin x - [-e^x\cos x + \int e^x\cos x dx]$  
 **Step 5**: $I = e^x\sin x + e^x\cos x - I$  
 **Step 6**: $2I = e^x(\sin x + \cos x)$  
 
-$$\boxed{\int e^x\cos x\,dx = \frac{e^x(\sin x + \cos x)}{2} + C}$$
+$$\boxed{\int e^x\cos x dx = \frac{e^x(\sin x + \cos x)}{2} + C}$$
 
 [🔝 Back to Top](#-table-of-contents)
 
 ---
 
-## Q35. $\displaystyle\int \tan^3 x\,dx$
+## Q35. $\displaystyle\int \tan^3 x dx$
 
 **Step 1**: Write $\tan^3 x = \tan x \cdot \tan^2 x = \tan x(\sec^2 x - 1)$  
-**Step 2**: $= \int\tan x\sec^2 x\,dx - \int\tan x\,dx$  
-**Step 3**: First: $u=\tan x$, $du=\sec^2 x\,dx$ → $\int u\,du = u^2/2 = \tan^2x/2$  
-**Step 4**: Second: $-\int\tan x\,dx = \ln|\cos x|$  
+**Step 2**: $= \int\tan x\sec^2 x dx - \int\tan x dx$  
+**Step 3**: First: $u=\tan x$, $du=\sec^2 x dx$ → $\int u du = u^2/2 = \tan^2x/2$  
+**Step 4**: Second: $-\int\tan x dx = \ln|\cos x|$  
 
 $$\boxed{\frac{\tan^2 x}{2} + \ln|\cos x| + C}$$
 
@@ -1075,11 +1075,11 @@ $$\boxed{\frac{\tan^2 x}{2} + \ln|\cos x| + C}$$
 
 ---
 
-## Q36. $\displaystyle\int_0^1 \frac{x}{(x^2+1)^2}\,dx$
+## Q36. $\displaystyle\int_0^1 \frac{x}{(x^2+1)^2} dx$
 
-**Step 1**: $u = x^2+1$, $du = 2x\,dx$  
+**Step 1**: $u = x^2+1$, $du = 2x dx$  
 **Step 2**: Limits: $x=0\to u=1$; $x=1\to u=2$  
-**Step 3**: $\dfrac{1}{2}\int_1^2 u^{-2}\,du = \dfrac{1}{2}\left[-\dfrac{1}{u}\right]_1^2 = \dfrac{1}{2}\left(-\dfrac{1}{2}+1\right)$  
+**Step 3**: $\dfrac{1}{2}\int_1^2 u^{-2} du = \dfrac{1}{2}\left[-\dfrac{1}{u}\right]_1^2 = \dfrac{1}{2}\left(-\dfrac{1}{2}+1\right)$  
 
 $$\boxed{\frac{1}{4}}$$
 
@@ -1087,7 +1087,7 @@ $$\boxed{\frac{1}{4}}$$
 
 ---
 
-## Q37. $\displaystyle\int \frac{x^2+1}{x^3+3x}\,dx$
+## Q37. $\displaystyle\int \frac{x^2+1}{x^3+3x} dx$
 
 **Step 1**: Factor denominator: $x(x^2+3)$  
 **Step 2**: Partial fractions: $\dfrac{A}{x} + \dfrac{Bx+C}{x^2+3}$  
@@ -1101,13 +1101,13 @@ $$\boxed{\frac{1}{3}\ln\left|x(x^2+3)\right| + C = \frac{1}{3}\ln|x^3+3x| + C}$$
 
 ---
 
-## Q38. $\displaystyle\int \sin^3 x\cos^2 x\,dx$
+## Q38. $\displaystyle\int \sin^3 x\cos^2 x dx$
 
 **Step 1**: $m=3$ (odd) — factor out $\sin x$  
 **Step 2**: $\sin^3 x = \sin x(1-\cos^2 x)$  
-**Step 3**: $\int\sin x(1-\cos^2 x)\cos^2 x\,dx$  
-**Step 4**: $u=\cos x$, $du=-\sin x\,dx$  
-**Step 5**: $-\int(1-u^2)u^2\,du = -\int(u^2-u^4)\,du = -\dfrac{u^3}{3}+\dfrac{u^5}{5}$  
+**Step 3**: $\int\sin x(1-\cos^2 x)\cos^2 x dx$  
+**Step 4**: $u=\cos x$, $du=-\sin x dx$  
+**Step 5**: $-\int(1-u^2)u^2 du = -\int(u^2-u^4) du = -\dfrac{u^3}{3}+\dfrac{u^5}{5}$  
 **Step 6**: Back-substitute:  
 
 $$\boxed{-\frac{\cos^3 x}{3} + \frac{\cos^5 x}{5} + C}$$
@@ -1118,8 +1118,8 @@ $$\boxed{-\frac{\cos^3 x}{3} + \frac{\cos^5 x}{5} + C}$$
 
 ## Q39. $\displaystyle\int \frac{dx}{\sqrt{x^2+9}}$ (Hyperbolic / trig sub)
 
-**Step 1**: $x = 3\sinh t$, $dx = 3\cosh t\,dt$; $\sqrt{x^2+9}=3\cosh t$  
-**Step 2**: $\int\dfrac{3\cosh t\,dt}{3\cosh t} = \int dt = t$  
+**Step 1**: $x = 3\sinh t$, $dx = 3\cosh t dt$; $\sqrt{x^2+9}=3\cosh t$  
+**Step 2**: $\int\dfrac{3\cosh t dt}{3\cosh t} = \int dt = t$  
 **Step 3**: $t = \sinh^{-1}(x/3) = \ln\!\left(x/3 + \sqrt{x^2/9+1}\right) = \ln(x+\sqrt{x^2+9})-\ln 3$  
 
 $$\boxed{\ln\!\left(x+\sqrt{x^2+9}\right) + C}$$
@@ -1128,7 +1128,7 @@ $$\boxed{\ln\!\left(x+\sqrt{x^2+9}\right) + C}$$
 
 ---
 
-## Q40. $\displaystyle\int x^2 e^x\,dx$ (Tabular IBP)
+## Q40. $\displaystyle\int x^2 e^x dx$ (Tabular IBP)
 
 ```
   Sign |  u derivatives  |  v integrals
@@ -1147,13 +1147,13 @@ $$\boxed{x^2e^x - 2xe^x + 2e^x + C = e^x(x^2-2x+2)+C}$$
 
 ---
 
-## Q41. $\displaystyle\int_0^{\pi/2} \sin^4 x\,dx$
+## Q41. $\displaystyle\int_0^{\pi/2} \sin^4 x dx$
 
 **Step 1**: $\sin^4 x = (\sin^2 x)^2 = \left(\dfrac{1-\cos 2x}{2}\right)^2 = \dfrac{1-2\cos 2x+\cos^2 2x}{4}$  
 **Step 2**: $\cos^2 2x = \dfrac{1+\cos 4x}{2}$  
 **Step 3**: $\sin^4 x = \dfrac{1}{4}\left(\dfrac{3}{2} - 2\cos 2x + \dfrac{\cos 4x}{2}\right)$  
 **Step 4**: Integrate from $0$ to $\pi/2$:  
-**Step 5**: $\int_0^{\pi/2} \cos 2x\,dx = 0$; $\int_0^{\pi/2}\cos 4x\,dx = 0$  
+**Step 5**: $\int_0^{\pi/2} \cos 2x dx = 0$; $\int_0^{\pi/2}\cos 4x dx = 0$  
 **Step 6**: $= \dfrac{1}{4}\cdot\dfrac{3}{2}\cdot\dfrac{\pi}{2} = \dfrac{3\pi}{16}$  
 
 $$\boxed{\frac{3\pi}{16}}$$
@@ -1162,7 +1162,7 @@ $$\boxed{\frac{3\pi}{16}}$$
 
 ---
 
-## Q42. $\displaystyle\int \frac{3x+1}{(x-1)(x^2+1)}\,dx$
+## Q42. $\displaystyle\int \frac{3x+1}{(x-1)(x^2+1)} dx$
 
 **Step 1**: $\dfrac{A}{x-1}+\dfrac{Bx+C}{x^2+1}$  
 **Step 2**: $3x+1 = A(x^2+1)+(Bx+C)(x-1)$  
@@ -1178,9 +1178,9 @@ $$\boxed{2\ln|x-1| - \ln(x^2+1) + \arctan x + C}$$
 
 ---
 
-## Q43. $\displaystyle\int_0^\infty e^{-3x}\,dx$
+## Q43. $\displaystyle\int_0^\infty e^{-3x} dx$
 
-**Step 1**: Improper integral: $\lim_{b\to\infty}\int_0^b e^{-3x}\,dx$  
+**Step 1**: Improper integral: $\lim_{b\to\infty}\int_0^b e^{-3x} dx$  
 **Step 2**: $= \lim_{b\to\infty}\left[-\dfrac{e^{-3x}}{3}\right]_0^b$  
 **Step 3**: $= \lim_{b\to\infty}\left(-\dfrac{e^{-3b}}{3}+\dfrac{1}{3}\right) = 0 + \dfrac{1}{3}$  
 
@@ -1190,11 +1190,11 @@ $$\boxed{\frac{1}{3}}$$
 
 ---
 
-## Q44. $\displaystyle\int \frac{\sin x}{\cos^3 x}\,dx$
+## Q44. $\displaystyle\int \frac{\sin x}{\cos^3 x} dx$
 
-**Step 1**: Rewrite: $= \int\sin x\cos^{-3}x\,dx$  
-**Step 2**: $u=\cos x$, $du=-\sin x\,dx$  
-**Step 3**: $-\int u^{-3}\,du = -\dfrac{u^{-2}}{-2} = \dfrac{1}{2u^2}$  
+**Step 1**: Rewrite: $= \int\sin x\cos^{-3}x dx$  
+**Step 2**: $u=\cos x$, $du=-\sin x dx$  
+**Step 3**: $-\int u^{-3} du = -\dfrac{u^{-2}}{-2} = \dfrac{1}{2u^2}$  
 **Step 4**: Back-substitute:  
 
 $$\boxed{\frac{1}{2\cos^2 x} + C = \frac{\sec^2 x}{2} + C}$$
@@ -1203,10 +1203,10 @@ $$\boxed{\frac{1}{2\cos^2 x} + C = \frac{\sec^2 x}{2} + C}$$
 
 ---
 
-## Q45. $\displaystyle\int \frac{x+2}{\sqrt{4-x^2}}\,dx$
+## Q45. $\displaystyle\int \frac{x+2}{\sqrt{4-x^2}} dx$
 
 **Step 1**: Split: $\int\dfrac{x}{\sqrt{4-x^2}}dx + \int\dfrac{2}{\sqrt{4-x^2}}dx$  
-**Step 2**: First part: $u=4-x^2$, $du=-2x\,dx$  
+**Step 2**: First part: $u=4-x^2$, $du=-2x dx$  
 → $-\dfrac{1}{2}\int u^{-1/2}du = -\sqrt{u} = -\sqrt{4-x^2}$  
 **Step 3**: Second part: $2\arcsin(x/2)$  
 
@@ -1216,11 +1216,11 @@ $$\boxed{-\sqrt{4-x^2} + 2\arcsin\frac{x}{2} + C}$$
 
 ---
 
-## Q46. $\displaystyle\int \ln^2 x\,dx$
+## Q46. $\displaystyle\int \ln^2 x dx$
 
 **Step 1**: IBP: $u=\ln^2 x$, $dv=dx$; $du=\dfrac{2\ln x}{x}dx$, $v=x$  
-**Step 2**: $= x\ln^2 x - 2\int\ln x\,dx$  
-**Step 3**: Use known result $\int\ln x\,dx = x\ln x - x$  
+**Step 2**: $= x\ln^2 x - 2\int\ln x dx$  
+**Step 3**: Use known result $\int\ln x dx = x\ln x - x$  
 **Step 4**: $= x\ln^2 x - 2(x\ln x - x)$  
 
 $$\boxed{x\ln^2 x - 2x\ln x + 2x + C}$$
@@ -1229,9 +1229,9 @@ $$\boxed{x\ln^2 x - 2x\ln x + 2x + C}$$
 
 ---
 
-## Q47. $\displaystyle\int_0^1 x\arctan x\,dx$
+## Q47. $\displaystyle\int_0^1 x\arctan x dx$
 
-**Step 1**: IBP: $u=\arctan x$, $dv=x\,dx$; $du=\dfrac{dx}{1+x^2}$, $v=\dfrac{x^2}{2}$  
+**Step 1**: IBP: $u=\arctan x$, $dv=x dx$; $du=\dfrac{dx}{1+x^2}$, $v=\dfrac{x^2}{2}$  
 **Step 2**: $= \left[\dfrac{x^2}{2}\arctan x\right]_0^1 - \int_0^1\dfrac{x^2}{2(1+x^2)}dx$  
 **Step 3**: First term: $\dfrac{1}{2}\cdot\dfrac{\pi}{4} = \dfrac{\pi}{8}$  
 **Step 4**: $\dfrac{x^2}{1+x^2} = 1-\dfrac{1}{1+x^2}$; integral $= \dfrac{1}{2}\int_0^1\left(1-\dfrac{1}{1+x^2}\right)dx = \dfrac{1}{2}\left[1-\dfrac{\pi}{4}\right]$  
@@ -1245,8 +1245,8 @@ $$\boxed{\frac{\pi}{4} - \frac{1}{2}}$$
 
 ## Q48. $\displaystyle\int \frac{dx}{x^2\sqrt{x^2-1}}$ (Trig sub)
 
-**Step 1**: $x=\sec\theta$, $dx=\sec\theta\tan\theta\,d\theta$, $\sqrt{x^2-1}=\tan\theta$  
-**Step 2**: $\int\dfrac{\sec\theta\tan\theta\,d\theta}{\sec^2\theta\cdot\tan\theta} = \int\cos\theta\,d\theta = \sin\theta$  
+**Step 1**: $x=\sec\theta$, $dx=\sec\theta\tan\theta d\theta$, $\sqrt{x^2-1}=\tan\theta$  
+**Step 2**: $\int\dfrac{\sec\theta\tan\theta d\theta}{\sec^2\theta\cdot\tan\theta} = \int\cos\theta d\theta = \sin\theta$  
 **Step 3**: $\sin\theta = \sqrt{x^2-1}/x$ (from right triangle where $\sec\theta=x$)  
 
 $$\boxed{\frac{\sqrt{x^2-1}}{x} + C}$$
@@ -1255,10 +1255,10 @@ $$\boxed{\frac{\sqrt{x^2-1}}{x} + C}$$
 
 ---
 
-## Q49. $\displaystyle\int\int_R xy\,dA$ over $R=[0,2]\times[0,3]$
+## Q49. $\displaystyle\int\int_R xy dA$ over $R=[0,2]\times[0,3]$
 
 **Step 1**: Iterated integral (Fubini's theorem — separate if no cross dependence)  
-**Step 2**: $\int_0^2 x\,dx \cdot \int_0^3 y\,dy$  
+**Step 2**: $\int_0^2 x dx \cdot \int_0^3 y dy$  
 **Step 3**: $= \left[\dfrac{x^2}{2}\right]_0^2 \cdot \left[\dfrac{y^2}{2}\right]_0^3$  
 **Step 4**: $= 2 \cdot \dfrac{9}{2} = 9$  
 
@@ -1268,7 +1268,7 @@ $$\boxed{9}$$
 
 ---
 
-## Q50. $\displaystyle\int \frac{e^x-e^{-x}}{e^x+e^{-x}}\,dx = \int\tanh x\,dx$
+## Q50. $\displaystyle\int \frac{e^x-e^{-x}}{e^x+e^{-x}} dx = \int\tanh x dx$
 
 **Step 1**: $u = e^x+e^{-x}$, $du = (e^x-e^{-x})dx$  
 **Step 2**: $\int\dfrac{du}{u} = \ln|u|$  

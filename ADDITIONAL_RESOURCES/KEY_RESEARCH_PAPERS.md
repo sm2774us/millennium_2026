@@ -54,7 +54,7 @@ $$S_t = S_0 + \sigma W_t, \qquad W_t \sim \mathcal{N}(0, t)$$
 
 **Bachelier option price (call):**
 
-$$C = (F - K)\,\Phi\!\left(\frac{F-K}{\sigma\sqrt{T}}\right) + \sigma\sqrt{T}\,\phi\!\left(\frac{F-K}{\sigma\sqrt{T}}\right)$$
+$$C = (F - K) \Phi\!\left(\frac{F-K}{\sigma\sqrt{T}}\right) + \sigma\sqrt{T} \phi\!\left(\frac{F-K}{\sigma\sqrt{T}}\right)$$
 
 where $F$ = forward price, $\Phi$ = standard normal CDF, $\phi$ = PDF.
 
@@ -85,7 +85,7 @@ $$\mu_p = \mathbf{w}^T \boldsymbol{\mu}, \qquad \sigma_p^2 = \mathbf{w}^T \Sigma
 
 **Efficient frontier** (parametric, risk-aversion $\gamma$):
 
-$$\max_{\mathbf{w}} \mathbf{w}^T\boldsymbol{\mu} - \frac{\gamma}{2}\,\mathbf{w}^T\Sigma\,\mathbf{w}$$
+$$\max_{\mathbf{w}} \mathbf{w}^T\boldsymbol{\mu} - \frac{\gamma}{2} \mathbf{w}^T\Sigma \mathbf{w}$$
 
 $$\Rightarrow \mathbf{w}^* = \frac{1}{\gamma}\Sigma^{-1}\boldsymbol{\mu} \quad \text{(unconstrained)}$$
 
@@ -200,13 +200,13 @@ Growth   SL      BL   }  HML = (SH+BH)/2   - (SL+BL)/2
 
 ### The PDE
 
-Assume $dS = \mu S\,dt + \sigma S\,dW$ (GBM). By Itô's lemma + no-arbitrage:
+Assume $dS = \mu S dt + \sigma S dW$ (GBM). By Itô's lemma + no-arbitrage:
 
 $$\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 V}{\partial S^2} + rS\frac{\partial V}{\partial S} - rV = 0$$
 
 ### Closed-Form (European Call)
 
-$$C = S_0\,\Phi(d_1) - K e^{-rT}\Phi(d_2)$$
+$$C = S_0 \Phi(d_1) - K e^{-rT}\Phi(d_2)$$
 
 $$d_{1,2} = \frac{\ln(S_0/K) + (r \pm \tfrac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}$$
 
@@ -222,7 +222,7 @@ $$d_{1,2} = \frac{\ln(S_0/K) + (r \pm \tfrac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}$$
 
 **P&L of delta-hedged position:**
 
-$$d\Pi \approx \underbrace{\frac{1}{2}\Gamma(\delta S)^2}_{\text{realised var gain}} - \underbrace{\Theta\,dt}_{\text{theta decay}}$$
+$$d\Pi \approx \underbrace{\frac{1}{2}\Gamma(\delta S)^2}_{\text{realised var gain}} - \underbrace{\Theta dt}_{\text{theta decay}}$$
 
 Profit when $\sigma_{\text{realised}} > \sigma_{\text{implied}}$.
 
@@ -293,13 +293,13 @@ $$\psi_T(u) = E\!\left[e^{iu \ln(S_T/S_0)}\right]$$
 
 The (dampened) call price has Fourier transform:
 
-$$\zeta_T(v) = \int_{-\infty}^{\infty} e^{ivk} c_T(k)\,dk = \frac{e^{-rT}\psi_T(v-(α+1)i)}{α^2 + α - v^2 + i(2α+1)v}$$
+$$\zeta_T(v) = \int_{-\infty}^{\infty} e^{ivk} c_T(k) dk = \frac{e^{-rT}\psi_T(v-(α+1)i)}{α^2 + α - v^2 + i(2α+1)v}$$
 
 where $k = \ln(K/S_0)$, $\alpha > 0$ is a damping factor.
 
 **Invert via FFT:**
 
-$$c_T(k) = \frac{e^{-\alpha k}}{\pi}\int_0^{\infty} e^{-ivk}\zeta_T(v)\,dv \approx \text{FFT}\{\zeta_T\}$$
+$$c_T(k) = \frac{e^{-\alpha k}}{\pi}\int_0^{\infty} e^{-ivk}\zeta_T(v) dv \approx \text{FFT}\{\zeta_T\}$$
 
 ### Why It Matters
 
@@ -665,7 +665,7 @@ Previous position ────────────
 
 ### The Estimator
 
-$$\hat{\Sigma}^* = (1 - \alpha)\,\hat{\Sigma} + \alpha F$$
+$$\hat{\Sigma}^* = (1 - \alpha) \hat{\Sigma} + \alpha F$$
 
 Common target $F$: **single-index model** (market factor) or **constant correlation** matrix.
 

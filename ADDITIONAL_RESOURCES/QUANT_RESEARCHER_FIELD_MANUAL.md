@@ -95,7 +95,7 @@ $$\theta_{\text{annual}} = \kappa \cdot V_0 \cdot N = 0.01 \times V_0 \times 365
 
 When $\kappa$ parameterises the **Ornstein–Uhlenbeck (Vasicek) process** for rates or inflation:
 
-$$dX_t = \kappa(\mu - X_t)\,dt + \sigma\,dW_t$$
+$$dX_t = \kappa(\mu - X_t) dt + \sigma dW_t$$
 
 $\kappa = 0.01$ means the process closes **1% of the gap to $\mu$ per day**.
 
@@ -154,7 +154,7 @@ Gap to μ
 
 The **JP Morgan RiskMetrics** universal constant. Daily variance estimate:
 
-$$\hat{\sigma}^2_t = \lambda\,\hat{\sigma}^2_{t-1} + (1-\lambda)\,r^2_{t-1}$$
+$$\hat{\sigma}^2_t = \lambda \hat{\sigma}^2_{t-1} + (1-\lambda) r^2_{t-1}$$
 
 **Effective memory window:**
 
@@ -162,7 +162,7 @@ $$N_{\text{eff}} = \frac{1}{1-\lambda} = \frac{1}{0.06} \approx \boxed{16.7\ \te
 
 The weight assigned to a return $k$ days ago:
 
-$$w_k = (1-\lambda)\,\lambda^k$$
+$$w_k = (1-\lambda) \lambda^k$$
 
 ```
 EWMA Weight Profile  (λ = 0.94)
@@ -195,7 +195,7 @@ Weight
 
 ### 2.2 VaR Confidence Levels — $\alpha \in \{0.05, 0.01\}$
 
-$$\text{VaR}_\alpha = \mu - z_\alpha\,\sigma \quad\text{where}\quad z_{0.05} = 1.645,\quad z_{0.01} = 2.326$$
+$$\text{VaR}_\alpha = \mu - z_\alpha \sigma \quad\text{where}\quad z_{0.05} = 1.645,\quad z_{0.01} = 2.326$$
 
 ```
 Normal P&L Distribution
@@ -518,7 +518,7 @@ Max Drawdown from Single Position Blowup
 
 Macro asset returns are **not Gaussian**. The Student-t distribution with $\nu \approx 4\text{–}6$ degrees of freedom matches empirical tail probabilities far better:
 
-$$f(x;\nu) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\left(\frac{\nu}{2}\right)} \left(1+\frac{x^2}{\nu}\right)^{-\frac{\nu+1}{2}}$$
+$$f(x;\nu) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi} \Gamma\left(\frac{\nu}{2}\right)} \left(1+\frac{x^2}{\nu}\right)^{-\frac{\nu+1}{2}}$$
 
 **Excess kurtosis:** $\kappa_4 = \frac{6}{\nu - 4}$ for $\nu > 4$
 
@@ -639,7 +639,7 @@ Participation Rate vs. Market Impact
 
 The **Ledoit-Wolf (2004)** shrinkage estimator:
 
-$$\hat{\Sigma}_{\text{shrunk}} = (1-\alpha)\,\hat{\Sigma}_{\text{sample}} + \alpha\,F$$
+$$\hat{\Sigma}_{\text{shrunk}} = (1-\alpha) \hat{\Sigma}_{\text{sample}} + \alpha F$$
 
 where $F$ is the shrinkage target (e.g., constant-correlation matrix, identity, or factor model).
 

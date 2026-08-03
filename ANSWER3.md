@@ -76,7 +76,7 @@
 >
 > Rearranged into the classic decomposition (for a buy order, cost is positive when price rises against you):
 >
-> $$IS = \underbrace{X_{exec}\,(P_A - P_D)}_{\text{Delay Cost}} + \underbrace{\sum_i Q_i\,(P_i - P_A)}_{\text{Market Impact (Execution) Cost}} + \underbrace{(X - X_{exec})\,(P_{end} - P_A)}_{\text{Opportunity Cost}}$$
+> $$IS = \underbrace{X_{exec} (P_A - P_D)}_{\text{Delay Cost}} + \underbrace{\sum_i Q_i (P_i - P_A)}_{\text{Market Impact (Execution) Cost}} + \underbrace{(X - X_{exec}) (P_{end} - P_A)}_{\text{Opportunity Cost}}$$
 >
 > - **Delay cost**: price drift between the *decision* to trade and the order *arriving* at the market — reflects latency/decision-to-desk friction, not the trader's execution skill.
 > - **Market impact (execution) cost**: the cost of the fills themselves relative to arrival price — this is what most people mean by 'slippage' and is the piece attributable to the algo/broker/venue choice.

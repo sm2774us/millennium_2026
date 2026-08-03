@@ -1734,7 +1734,7 @@ $$
 **Bayes' theorem:**
 
 $$
-P(\text{Informed}\mid\text{Move}) = \frac{P(\text{Move}\mid\text{Informed})\,P(\text{Informed})}{P(\text{Move}\mid\text{Informed})P(\text{Informed}) + P(\text{Move}\mid\text{Uninformed})P(\text{Uninformed})}
+P(\text{Informed}\mid\text{Move}) = \frac{P(\text{Move}\mid\text{Informed}) P(\text{Informed})}{P(\text{Move}\mid\text{Informed})P(\text{Informed}) + P(\text{Move}\mid\text{Uninformed})P(\text{Uninformed})}
 $$
 
 $$
@@ -1954,7 +1954,7 @@ $$
 $$
 
 $$
-\Delta P=\sigma\,Y\sqrt{Q/V}\quad\text{(square-root market impact law)}
+\Delta P=\sigma Y\sqrt{Q/V}\quad\text{(square-root market impact law)}
 $$
 
 $$

@@ -562,7 +562,7 @@ $$C = S_0 P_1 - K e^{-rT} P_2, \quad P_j = \frac{1}{2} + \frac{1}{\pi} \int_0^\i
 where $\varphi_j$ involves the Heston characteristic function:
 
 $$
-\varphi(\phi) = \exp\Big\lbrace i\phi(r T + \ln S_0) + \frac{\kappa\bar{v}}{\xi^2}\big[(\kappa - \rho\xi i\phi - d)\,T - 2\ln\!\tfrac{1 - g e^{-dT}}{1-g}\big] + \frac{v_0}{\xi^2}(\kappa - \rho\xi i\phi - d)\frac{1 - e^{-dT}}{1 - g e^{-dT}}\Big\rbrace
+\varphi(\phi) = \exp\Big\lbrace i\phi(r T + \ln S_0) + \frac{\kappa\bar{v}}{\xi^2}\big[(\kappa - \rho\xi i\phi - d) T - 2\ln\!\tfrac{1 - g e^{-dT}}{1-g}\big] + \frac{v_0}{\xi^2}(\kappa - \rho\xi i\phi - d)\frac{1 - e^{-dT}}{1 - g e^{-dT}}\Big\rbrace
 $$
 
 with $d = \sqrt{(\rho\xi i\phi - \kappa)^2 + \xi^2(i\phi + \phi^2)}$ and $g = (\kappa - \rho\xi i\phi - d)/(\kappa - \rho\xi i\phi + d)$.
@@ -748,7 +748,7 @@ Define $u(t, x) = \mathbb{E}^{\mathbb{Q}}\!\left[e^{-\int_t^T r(s,X_s)ds} \Psi(X
 
 Then $u$ satisfies the backward parabolic PDE:
 
-$$\frac{\partial u}{\partial t} + \mu(t,x)\frac{\partial u}{\partial x} + \frac{1}{2}\sigma^2(t,x)\frac{\partial^2 u}{\partial x^2} - r(t,x)\,u = 0$$
+$$\frac{\partial u}{\partial t} + \mu(t,x)\frac{\partial u}{\partial x} + \frac{1}{2}\sigma^2(t,x)\frac{\partial^2 u}{\partial x^2} - r(t,x) u = 0$$
 
 with terminal condition $u(T, x) = \Psi(x)$.
 

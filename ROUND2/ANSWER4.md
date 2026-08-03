@@ -403,7 +403,7 @@ if __name__ == "__main__":
 
 
 
-$$\text{Slippage}_i = \beta_0 + \beta_1 \cdot \mathbb{1}[\text{Algo}_i = A] + \beta_2 \ln(\text{Size}_i) + \beta_3 \text{Spread}_i + \beta_4\,\sigma_i + \varepsilon_i$$
+$$\text{Slippage}_i = \beta_0 + \beta_1 \cdot \mathbb{1}[\text{Algo}_i = A] + \beta_2 \ln(\text{Size}_i) + \beta_3 \text{Spread}_i + \beta_4 \sigma_i + \varepsilon_i$$
 
 $$H_0: \beta_1 = 0 \quad \text{vs} \quad H_1: \beta_1 < 0 (\text{Algo A cheaper})$$
 
@@ -741,7 +741,7 @@ if __name__ == "__main__":
 
 
 
-$$\text{Slippage}_t = \beta_0 + \beta_1\,\mathbb{1}[t \ge t^*] + \beta_2\ln(\text{Size}_t) + \beta_3\,\text{Spread}_t + \beta_4\,\sigma_t + \varepsilon_t$$
+$$\text{Slippage}_t = \beta_0 + \beta_1 \mathbb{1}[t \ge t^*] + \beta_2\ln(\text{Size}_t) + \beta_3 \text{Spread}_t + \beta_4 \sigma_t + \varepsilon_t$$
 
 $$F = \frac{(SSR_{\text{pooled}} - (SSR_1 + SSR_2))/k}{(SSR_1+SSR_2)/(n_1+n_2-2k)}$$
 
@@ -1400,7 +1400,7 @@ if __name__ == "__main__":
 ### C) Mathematical Derivation (MathJax)
 
 $$
-p_{(1)} \le p_{(2)} \le \dots \le p_{(m)}, \quad \text{reject } H_{0,(i)} \text{ for all } i \le \max \lbrace i : p_{(i)} \le \frac{i}{m}\,q \rbrace
+p_{(1)} \le p_{(2)} \le \dots \le p_{(m)}, \quad \text{reject } H_{0,(i)} \text{ for all } i \le \max \lbrace i : p_{(i)} \le \frac{i}{m} q \rbrace
 $$
 
 ### D) Architectural & Algorithmic ASCII Diagram
@@ -1568,7 +1568,7 @@ if __name__ == "__main__":
 
 
 
-$$\hat{\alpha} \pm t_{n-k,\,1-\gamma/2} \cdot SE_{HAC}(\hat{\alpha})$$
+$$\hat{\alpha} \pm t_{n-k, 1-\gamma/2} \cdot SE_{HAC}(\hat{\alpha})$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 

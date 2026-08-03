@@ -64,7 +64,7 @@ Lesson: rare priors resist updating — need many observations
 
 $$F_{M_n}(x) = x^n \Rightarrow f_{M_n}(x) = nx^{n-1}$$
 
-$$\mathbb{E}[\max(U_1,\ldots,U_n)] = \int_0^1 x\cdot nx^{n-1}\,dx = \boxed{\dfrac{n}{n+1}}$$
+$$\mathbb{E}[\max(U_1,\ldots,U_n)] = \int_0^1 x\cdot nx^{n-1} dx = \boxed{\dfrac{n}{n+1}}$$
 
 **Check:** $n=1 \Rightarrow \tfrac{1}{2}$ ✓; $n\to\infty \Rightarrow 1$ ✓
 
@@ -174,11 +174,11 @@ Flip coin → result c_i, compare to b_i:
 
 ### Q8 · Itô's Lemma → GBM Log Return
 
-**GBM:** $dS_t = \mu S_t\,dt + \sigma S_t\,dW_t$. Apply $f=\ln S$:
+**GBM:** $dS_t = \mu S_t dt + \sigma S_t dW_t$. Apply $f=\ln S$:
 
-$$f_S = \frac{1}{S},\quad f_{SS} = -\frac{1}{S^2},\quad (dS)^2 = \sigma^2 S^2\,dt$$
+$$f_S = \frac{1}{S},\quad f_{SS} = -\frac{1}{S^2},\quad (dS)^2 = \sigma^2 S^2 dt$$
 
-$$\boxed{d\ln S_t = \left(\mu - \frac{\sigma^2}{2}\right)dt + \sigma\,dW_t}$$
+$$\boxed{d\ln S_t = \left(\mu - \frac{\sigma^2}{2}\right)dt + \sigma dW_t}$$
 
 ```
 The -σ²/2 is the ITÔ CORRECTION
@@ -207,7 +207,7 @@ rS·∂V/∂S        │ Risk-neutral drift
 -rV             │ Discounting
 ```
 
-**Mechanism:** No-arbitrage forces $d\Pi = r\Pi\,dt$. The stochastic $dW$ term cancels with the $\Delta$ hedge.
+**Mechanism:** No-arbitrage forces $d\Pi = r\Pi dt$. The stochastic $dW$ term cancels with the $\Delta$ hedge.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -218,7 +218,7 @@ rS·∂V/∂S        │ Risk-neutral drift
 **Local Vol (Dupire):** $\sigma=\sigma(S,t)$ fits today's smile exactly but **future smile dynamics wrong** (predicts flattening, market shows sticky-strike/delta).
 
 **Heston:**
-$$dv_t = \kappa(\theta-v_t)\,dt + \xi\sqrt{v_t}\,dW^v_t,\quad \langle dW^S,dW^v\rangle=\rho\,dt$$
+$$dv_t = \kappa(\theta-v_t) dt + \xi\sqrt{v_t} dW^v_t,\quad \langle dW^S,dW^v\rangle=\rho dt$$
 
 | Param | Meaning |
 |-------|---------|
@@ -251,7 +251,7 @@ $$V_0 = e^{-rT}\cdot\mathbb{E}^\mathbb{Q}[\text{Payoff}(S_T)]$$
 
 ### Q12 · Vasicek Model & Bond Price
 
-$$dr_t = \kappa(\theta - r_t)\,dt + \sigma\,dW_t \quad\text{(Ornstein-Uhlenbeck)}$$
+$$dr_t = \kappa(\theta - r_t) dt + \sigma dW_t \quad\text{(Ornstein-Uhlenbeck)}$$
 
 **Affine bond price:** $P(t,T) = e^{A(\tau)-B(\tau)r_t}$, $\tau=T-t$
 
@@ -673,9 +673,9 @@ $$G_{m+1} = \frac{\phi^{m+1}-\psi^{m+1}}{\sqrt5} = G_m + G_{m-1} = F_m+F_{m-1} =
 | **Cointegration test** | ADF on residuals of $P^A=\alpha+\beta P^B+\varepsilon$ |
 | **GARCH persistence** | $\alpha+\beta$; long-run $\bar\sigma^2=\omega/(1-\alpha-\beta)$ |
 | **Coin → prob $p$** | Binary expansion; compare flip to bit |
-| **Itô correction** | $d\ln S=(\mu-\sigma^2/2)\,dt+\sigma\,dW$ |
+| **Itô correction** | $d\ln S=(\mu-\sigma^2/2) dt+\sigma dW$ |
 | **BS PDE** | $V_t+\tfrac{1}{2}\sigma^2S^2V_{SS}+rSV_S-rV=0$ |
-| **Heston** | $dv=\kappa(\theta-v)\,dt+\xi\sqrt v\,dW^v$; corr $\rho$ |
+| **Heston** | $dv=\kappa(\theta-v) dt+\xi\sqrt v dW^v$; corr $\rho$ |
 | **FTAP** | No-arb ↔ $\exists\mathbb{Q}$; complete ↔ unique $\mathbb{Q}$ |
 | **Vasicek bond** | $P=e^{A(\tau)-B(\tau)r}$; $B=(1-e^{-\kappa\tau})/\kappa$ |
 | **PCA variance** | $\text{EVR}(k)=\sum_{i=1}^k\lambda_i/\sum\lambda_i$ |

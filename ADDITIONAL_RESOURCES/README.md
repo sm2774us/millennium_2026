@@ -310,13 +310,13 @@ Construct a **delta-hedged portfolio** $\Pi = V - \Delta S$. Choose $\Delta = \p
 
 By Itô's Lemma on $V(S,t)$:
 
-$$dV = \frac{\partial V}{\partial t}\,dt + \frac{\partial V}{\partial S}\,dS + \frac{1}{2}\frac{\partial^2 V}{\partial S^2}(dS)^2$$
+$$dV = \frac{\partial V}{\partial t} dt + \frac{\partial V}{\partial S} dS + \frac{1}{2}\frac{\partial^2 V}{\partial S^2}(dS)^2$$
 
 Portfolio change:
 
-$$d\Pi = dV - \frac{\partial V}{\partial S}\,dS = \left(\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 V}{\partial S^2}\right)dt$$
+$$d\Pi = dV - \frac{\partial V}{\partial S} dS = \left(\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 V}{\partial S^2}\right)dt$$
 
-By no-arbitrage, $d\Pi = r\Pi\,dt = r\left(V - \frac{\partial V}{\partial S}S\right)dt$:
+By no-arbitrage, $d\Pi = r\Pi dt = r\left(V - \frac{\partial V}{\partial S}S\right)dt$:
 
 $$\boxed{\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 V}{\partial S^2} + rS\frac{\partial V}{\partial S} - rV = 0}$$
 
@@ -340,7 +340,7 @@ Black-Scholes PDE terms:
 
 **Local Vol (Dupire, 1994):** $\sigma = \sigma(S, t)$ — deterministic function of spot and time.
 
-$$dS_t = rS_t\,dt + \sigma(S_t, t) \cdot S_t\,dW_t$$
+$$dS_t = rS_t dt + \sigma(S_t, t) \cdot S_t dW_t$$
 
 **Limitations:**
 - Fits today's smile perfectly by construction, but **future smile dynamics are wrong** — it predicts the skew flattens as spot moves, while markets show sticky-strike or sticky-delta behaviour
@@ -349,9 +349,9 @@ $$dS_t = rS_t\,dt + \sigma(S_t, t) \cdot S_t\,dW_t$$
 
 **Heston Model** (stochastic vol):
 
-$$dS_t = rS_t\,dt + \sqrt{v_t} \cdot S_t\,dW_t^S$$
+$$dS_t = rS_t dt + \sqrt{v_t} \cdot S_t dW_t^S$$
 
-$$dv_t = \kappa(\theta - v_t)\,dt + \xi\sqrt{v_t}\,dW_t^v, \quad \langle dW^S, dW^v \rangle = \rho\,dt$$
+$$dv_t = \kappa(\theta - v_t) dt + \xi\sqrt{v_t} dW_t^v, \quad \langle dW^S, dW^v \rangle = \rho dt$$
 
 Parameters:
 - $\kappa$: mean-reversion speed
@@ -396,7 +396,7 @@ $$V_0 = e^{-rT} \cdot \mathbb{E}^{\mathbb{Q}}[\text{Payoff}(S_T)]$$
 
 **Answer:**
 
-$$dr_t = \kappa(\theta - r_t)\,dt + \sigma\,dW_t$$
+$$dr_t = \kappa(\theta - r_t) dt + \sigma dW_t$$
 
 $r_t$ is an **Ornstein-Uhlenbeck** process. Under $\mathbb{Q}$, bond price has affine form:
 

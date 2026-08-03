@@ -55,7 +55,7 @@ $$E[C] = \sum_{k=1}^{N} \eta v_k^2 \Delta t + \frac{\gamma}{2} X^2, \qquad \text
 
 $$\min_{\{x_k\}} E[C] + \lambda \text{Var}[C]$$
 
-$$x_j = X\,\frac{\sinh\!\big(\kappa (T - t_j)\big)}{\sinh(\kappa T)}, \qquad \kappa = \sqrt{\lambda \sigma^2 / \eta}$$
+$$x_j = X \frac{\sinh\!\big(\kappa (T - t_j)\big)}{\sinh(\kappa T)}, \qquad \kappa = \sqrt{\lambda \sigma^2 / \eta}$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
@@ -1558,7 +1558,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\min_{\{v_k\}} E[C] + \lambda\,\text{Var}[C] \quad \text{s.t.} \quad \frac{v_k}{\text{MktVol}_k} \le \text{POV}_{\max} \forall k$$
+$$\min_{\{v_k\}} E[C] + \lambda \text{Var}[C] \quad \text{s.t.} \quad \frac{v_k}{\text{MktVol}_k} \le \text{POV}_{\max} \forall k$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
@@ -1707,7 +1707,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\text{Var}[C] = \sigma_1^2 \sum x_{1,k}^2 \Delta t + \sigma_2^2 \sum x_{2,k}^2 \Delta t + 2\rho\,\sigma_1\sigma_2 \sum x_{1,k}x_{2,k}\Delta t$$
+$$\text{Var}[C] = \sigma_1^2 \sum x_{1,k}^2 \Delta t + \sigma_2^2 \sum x_{2,k}^2 \Delta t + 2\rho \sigma_1\sigma_2 \sum x_{1,k}x_{2,k}\Delta t$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
