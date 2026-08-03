@@ -174,9 +174,9 @@ $$\frac{d}{dx}[\csc x] = -\csc x \cot x$$
 | $\arcsin x$ | $\dfrac{1}{\sqrt{1-x^2}}$ | $\|x\|<1$ |
 | $\arccos x$ | $-\dfrac{1}{\sqrt{1-x^2}}$ | $\|x\|<1$ |
 | $\arctan x$ | $\dfrac{1}{1+x^2}$ | all $x$ |
-| $\text{arccot}\, x$ | $-\dfrac{1}{1+x^2}$ | all $x$ |
-| $\text{arcsec}\, x$ | $\dfrac{1}{\|x\|\sqrt{x^2-1}}$ | $\|x\|>1$ |
-| $\text{arccsc}\, x$ | $-\dfrac{1}{\|x\|\sqrt{x^2-1}}$ | $\|x\|>1$ |
+| $\text{arccot} x$ | $-\dfrac{1}{1+x^2}$ | all $x$ |
+| $\text{arcsec} x$ | $\dfrac{1}{\|x\|\sqrt{x^2-1}}$ | $\|x\|>1$ |
+| $\text{arccsc} x$ | $-\dfrac{1}{\|x\|\sqrt{x^2-1}}$ | $\|x\|>1$ |
 
 **Quant Note**: $\arctan$ appears in the Black-Scholes $N(d_1)$ via the normal CDF; inverse trig integrals arise in barrier option pricing.
 
@@ -191,9 +191,9 @@ $$\frac{d}{dx}[\csc x] = -\csc x \cot x$$
 | $\sinh x$ | $\cosh x$ |
 | $\cosh x$ | $\sinh x$ |
 | $\tanh x$ | $\text{sech}^2 x$ |
-| $\text{coth}\, x$ | $-\text{csch}^2 x$ |
-| $\text{sech}\, x$ | $-\text{sech}\,x\tanh x$ |
-| $\text{csch}\, x$ | $-\text{csch}\,x\coth x$ |
+| $\text{coth} x$ | $-\text{csch}^2 x$ |
+| $\text{sech} x$ | $-\text{sech}\,x\tanh x$ |
+| $\text{csch} x$ | $-\text{csch}\,x\coth x$ |
 
 **Note**: No minus sign on $\cosh' = \sinh$ (unlike circular: $\cos' = -\sin$)
 
@@ -238,19 +238,19 @@ H = [ f_xx  f_xy ]   ← 2×2 Hessian for f(x,y)
 
 ## 3.1 Power & Algebraic
 
-$$\int x^n \, dx = \frac{x^{n+1}}{n+1} + C \qquad (n \neq -1)$$
+$$\int x^n dx = \frac{x^{n+1}}{n+1} + C \qquad (n \neq -1)$$
 
 - **Line 1**: Raise power by 1, divide by new power, add $C$
 
-$$\int x^{-1} \, dx = \int \frac{1}{x} \, dx = \ln|x| + C$$
+$$\int x^{-1} dx = \int \frac{1}{x} dx = \ln|x| + C$$
 
 - **Line 1**: Exception to power rule (would give $0$ in denominator)
 
-$$\int \sqrt{x} \, dx = \frac{2}{3} x^{3/2} + C$$
+$$\int \sqrt{x} dx = \frac{2}{3} x^{3/2} + C$$
 
-$$\int \frac{1}{\sqrt{x}} \, dx = 2\sqrt{x} + C$$
+$$\int \frac{1}{\sqrt{x}} dx = 2\sqrt{x} + C$$
 
-$$\int c \, dx = cx + C$$
+$$\int c dx = cx + C$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -258,17 +258,17 @@ $$\int c \, dx = cx + C$$
 
 ## 3.2 Exponential Integrals
 
-$$\int e^x \, dx = e^x + C$$
+$$\int e^x dx = e^x + C$$
 
-$$\int e^{ax} \, dx = \frac{e^{ax}}{a} + C$$
+$$\int e^{ax} dx = \frac{e^{ax}}{a} + C$$
 
 - **Line 1**: Integrate $e^{ax}$; by chain rule intuition, divide by the inner derivative $a$
 
-$$\int a^x \, dx = \frac{a^x}{\ln a} + C \qquad (a>0, a\neq 1)$$
+$$\int a^x dx = \frac{a^x}{\ln a} + C \qquad (a>0, a\neq 1)$$
 
-$$\int x e^x \, dx = e^x(x-1) + C \quad \text{[IBP]}$$
+$$\int x e^x dx = e^x(x-1) + C \quad \text{[IBP]}$$
 
-$$\int x^n e^x \, dx \text{ : use IBP } n \text{ times (tabular method)}$$
+$$\int x^n e^x dx \text{ : use IBP } n \text{ times (tabular method)}$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -276,15 +276,15 @@ $$\int x^n e^x \, dx \text{ : use IBP } n \text{ times (tabular method)}$$
 
 ## 3.3 Logarithmic Integrals
 
-$$\int \ln x \, dx = x\ln x - x + C$$
+$$\int \ln x dx = x\ln x - x + C$$
 
 - **Derivation**: IBP with $u=\ln x$, $dv=dx$ → $\int \ln x\,dx = x\ln x - \int x\cdot\frac{1}{x}\,dx = x\ln x - x + C$
 
-$$\int \frac{\ln x}{x} \, dx = \frac{(\ln x)^2}{2} + C$$
+$$\int \frac{\ln x}{x} dx = \frac{(\ln x)^2}{2} + C$$
 
 - **Sub**: $u=\ln x$, $du=dx/x$
 
-$$\int \frac{1}{x\ln x} \, dx = \ln|\ln x| + C$$
+$$\int \frac{1}{x\ln x} dx = \ln|\ln x| + C$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -292,29 +292,29 @@ $$\int \frac{1}{x\ln x} \, dx = \ln|\ln x| + C$$
 
 ## 3.4 Trigonometric Integrals
 
-$$\int \sin x \, dx = -\cos x + C$$
+$$\int \sin x dx = -\cos x + C$$
 
-$$\int \cos x \, dx = \sin x + C$$
+$$\int \cos x dx = \sin x + C$$
 
-$$\int \tan x \, dx = -\ln|\cos x| + C = \ln|\sec x| + C$$
+$$\int \tan x dx = -\ln|\cos x| + C = \ln|\sec x| + C$$
 
 - **Line 1**: Write $\tan x = \sin x / \cos x$; substitute $u = \cos x$
 
-$$\int \cot x \, dx = \ln|\sin x| + C$$
+$$\int \cot x dx = \ln|\sin x| + C$$
 
-$$\int \sec x \, dx = \ln|\sec x + \tan x| + C$$
+$$\int \sec x dx = \ln|\sec x + \tan x| + C$$
 
 - **Trick**: Multiply numerator & denominator by $(\sec x + \tan x)$
 
-$$\int \csc x \, dx = \ln|\csc x - \cot x| + C = -\ln|\csc x + \cot x| + C$$
+$$\int \csc x dx = \ln|\csc x - \cot x| + C = -\ln|\csc x + \cot x| + C$$
 
-$$\int \sec^2 x \, dx = \tan x + C$$
+$$\int \sec^2 x dx = \tan x + C$$
 
-$$\int \csc^2 x \, dx = -\cot x + C$$
+$$\int \csc^2 x dx = -\cot x + C$$
 
-$$\int \sec x \tan x \, dx = \sec x + C$$
+$$\int \sec x \tan x dx = \sec x + C$$
 
-$$\int \csc x \cot x \, dx = -\csc x + C$$
+$$\int \csc x \cot x dx = -\csc x + C$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -322,17 +322,17 @@ $$\int \csc x \cot x \, dx = -\csc x + C$$
 
 ## 3.5 Inverse Trig Integrals (Critical for Quant Work)
 
-$$\int \frac{1}{\sqrt{1-x^2}} \, dx = \arcsin x + C$$
+$$\int \frac{1}{\sqrt{1-x^2}} dx = \arcsin x + C$$
 
-$$\int \frac{-1}{\sqrt{1-x^2}} \, dx = \arccos x + C$$
+$$\int \frac{-1}{\sqrt{1-x^2}} dx = \arccos x + C$$
 
-$$\int \frac{1}{1+x^2} \, dx = \arctan x + C$$
+$$\int \frac{1}{1+x^2} dx = \arctan x + C$$
 
-$$\int \frac{1}{a^2+x^2} \, dx = \frac{1}{a}\arctan\frac{x}{a} + C$$
+$$\int \frac{1}{a^2+x^2} dx = \frac{1}{a}\arctan\frac{x}{a} + C$$
 
-$$\int \frac{1}{\sqrt{a^2-x^2}} \, dx = \arcsin\frac{x}{a} + C$$
+$$\int \frac{1}{\sqrt{a^2-x^2}} dx = \arcsin\frac{x}{a} + C$$
 
-$$\int \frac{1}{x\sqrt{x^2-a^2}} \, dx = \frac{1}{a}\text{arcsec}\frac{|x|}{a} + C$$
+$$\int \frac{1}{x\sqrt{x^2-a^2}} dx = \frac{1}{a}\text{arcsec}\frac{|x|}{a} + C$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -340,13 +340,13 @@ $$\int \frac{1}{x\sqrt{x^2-a^2}} \, dx = \frac{1}{a}\text{arcsec}\frac{|x|}{a} +
 
 ## 3.6 Reduction Formulas
 
-$$\int \sin^n x \, dx = -\frac{\sin^{n-1}x\cos x}{n} + \frac{n-1}{n}\int\sin^{n-2}x\,dx$$
+$$\int \sin^n x dx = -\frac{\sin^{n-1}x\cos x}{n} + \frac{n-1}{n}\int\sin^{n-2}x\,dx$$
 
-$$\int \cos^n x \, dx = \frac{\cos^{n-1}x\sin x}{n} + \frac{n-1}{n}\int\cos^{n-2}x\,dx$$
+$$\int \cos^n x dx = \frac{\cos^{n-1}x\sin x}{n} + \frac{n-1}{n}\int\cos^{n-2}x\,dx$$
 
-$$\int \tan^n x \, dx = \frac{\tan^{n-1}x}{n-1} - \int\tan^{n-2}x\,dx$$
+$$\int \tan^n x dx = \frac{\tan^{n-1}x}{n-1} - \int\tan^{n-2}x\,dx$$
 
-$$\int x^n e^x \, dx = x^n e^x - n\int x^{n-1}e^x\,dx$$
+$$\int x^n e^x dx = x^n e^x - n\int x^{n-1}e^x\,dx$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -420,7 +420,7 @@ flowchart TD
 
 ## 4.2 Integration by Parts (IBP) — LIATE Rule
 
-$$\int u \, dv = uv - \int v \, du$$
+$$\int u dv = uv - \int v du$$
 
 ### LIATE Priority for choosing $u$:
 
@@ -481,11 +481,11 @@ Factor Type          Partial Fraction Form
 
 ## 4.5 Gaussian Integral (Quant #1 Must-Know)
 
-$$\int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}$$
+$$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$$
 
-$$\int_{-\infty}^{\infty} e^{-ax^2} \, dx = \sqrt{\frac{\pi}{a}} \quad (a>0)$$
+$$\int_{-\infty}^{\infty} e^{-ax^2} dx = \sqrt{\frac{\pi}{a}} \quad (a>0)$$
 
-$$\int_{-\infty}^{\infty} e^{-ax^2+bx} \, dx = \sqrt{\frac{\pi}{a}} \, e^{b^2/(4a)}$$
+$$\int_{-\infty}^{\infty} e^{-ax^2+bx} dx = \sqrt{\frac{\pi}{a}} e^{b^2/(4a)}$$
 
 **Proof sketch**: Square the integral, convert to polar → $\int_0^{2\pi}\int_0^\infty e^{-r^2}r\,dr\,d\theta = \pi$, take square root.
 

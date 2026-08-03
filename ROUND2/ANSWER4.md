@@ -403,7 +403,7 @@ if __name__ == "__main__":
 
 
 
-$$\text{Slippage}_i = \beta_0 + \beta_1 \cdot \mathbb{1}[\text{Algo}_i = A] + \beta_2 \ln(\text{Size}_i) + \beta_3\, \text{Spread}_i + \beta_4\,\sigma_i + \varepsilon_i$$
+$$\text{Slippage}_i = \beta_0 + \beta_1 \cdot \mathbb{1}[\text{Algo}_i = A] + \beta_2 \ln(\text{Size}_i) + \beta_3 \text{Spread}_i + \beta_4\,\sigma_i + \varepsilon_i$$
 
 $$H_0: \beta_1 = 0 \quad \text{vs} \quad H_1: \beta_1 < 0 (\text{Algo A cheaper})$$
 

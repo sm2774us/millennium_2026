@@ -251,10 +251,10 @@
 > "The Almgren-Chriss (2000) framework minimizes expected execution cost plus a risk penalty for price uncertainty during execution. For a position of size $X$ liquidated over $[0,T]$ with holdings $x_k$ remaining at time $k$:
 >
 > **Total cost objective:**
-> $$\min_{\{x_k\}} \mathbb{E}[C] + \lambda \, \text{Var}[C]$$
+> $$\min_{\{x_k\}} \mathbb{E}[C] + \lambda \text{Var}[C]$$
 > where cost $C$ has a **temporary impact** component (cost of trading *this* slice, reverts after) and a **permanent impact** component (moves the price for *all remaining* slices):
-> $$\text{Temporary impact}: h(v_k) = \epsilon \cdot \text{sign}(v_k) + \eta \, v_k \quad (\text{linear in trade rate } v_k)$$
-> $$\text{Permanent impact}: g(v_k) = \gamma \, v_k$$
+> $$\text{Temporary impact}: h(v_k) = \epsilon \cdot \text{sign}(v_k) + \eta v_k \quad (\text{linear in trade rate } v_k)$$
+> $$\text{Permanent impact}: g(v_k) = \gamma v_k$$
 >
 > The optimal trading trajectory (risk-neutral case, $\lambda=0$) is simply linear/TWAP-like; with risk-aversion $\lambda > 0$, the solution is a **hyperbolic-sine trajectory** — trade faster early to reduce exposure to price variance, front-loading execution as risk aversion increases.
 >

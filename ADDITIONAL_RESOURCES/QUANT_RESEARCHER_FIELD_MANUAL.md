@@ -193,7 +193,7 @@ Weight
 
 ---
 
-### 2.2 VaR Confidence Levels — $\alpha \in \{0.05,\, 0.01\}$
+### 2.2 VaR Confidence Levels — $\alpha \in \{0.05, 0.01\}$
 
 $$\text{VaR}_\alpha = \mu - z_\alpha\,\sigma \quad\text{where}\quad z_{0.05} = 1.645,\quad z_{0.01} = 2.326$$
 
@@ -225,7 +225,7 @@ Normal P&L Distribution
 
 ---
 
-### 2.3 Z-Score Entry Threshold — $\tau \in [2,\, 3]$
+### 2.3 Z-Score Entry Threshold — $\tau \in [2, 3]$
 
 For a stat-arb or macro mean-reversion signal:
 
@@ -577,7 +577,7 @@ Transaction costs (bps/day)
 
 For a market-neutral systematic macro strategy, the target beta to the index (SPX, aggregate global equities) should be:
 
-$$\beta_{\text{portfolio}} \in [0.95,\, 1.05]$$
+$$\beta_{\text{portfolio}} \in [0.95, 1.05]$$
 
 This range accounts for:
 - **Estimation error** in rolling beta ($\pm 0.05$ is within 1 standard error for 60-day windows)

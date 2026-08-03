@@ -81,7 +81,7 @@ Bachelier (1900) ──→ Wiener (1923) formal BM ──→ Itô (1944) stochas
 
 Portfolio of $N$ assets with weights $\mathbf{w}$, $\mathbf{1}^T\mathbf{w}=1$:
 
-$$\mu_p = \mathbf{w}^T \boldsymbol{\mu}, \qquad \sigma_p^2 = \mathbf{w}^T \Sigma\, \mathbf{w}$$
+$$\mu_p = \mathbf{w}^T \boldsymbol{\mu}, \qquad \sigma_p^2 = \mathbf{w}^T \Sigma \mathbf{w}$$
 
 **Efficient frontier** (parametric, risk-aversion $\gamma$):
 
@@ -631,7 +631,7 @@ X ─┐
 
 ### The Optimal Policy
 
-$$x_t = (1 - a_\Lambda)\, x_{t-1} + a_\Lambda \cdot x^{\text{aim}}_t$$
+$$x_t = (1 - a_\Lambda) x_{t-1} + a_\Lambda \cdot x^{\text{aim}}_t$$
 
 $$x^{\text{aim}}_t = \sum_{\tau=0}^{\infty}(1-a_\Lambda)^\tau \cdot \bar{x}_{t+\tau \mid t}$$
 
@@ -665,7 +665,7 @@ Previous position ────────────
 
 ### The Estimator
 
-$$\hat{\Sigma}^* = (1 - \alpha)\,\hat{\Sigma} + \alpha\, F$$
+$$\hat{\Sigma}^* = (1 - \alpha)\,\hat{\Sigma} + \alpha F$$
 
 Common target $F$: **single-index model** (market factor) or **constant correlation** matrix.
 
@@ -714,7 +714,7 @@ Partition $[0,T]$ into $M$ intervals of length $\Delta = T/M$. Return over inter
 $$r_{t,k} = \ln P_{t+k\Delta} - \ln P_{t+(k-1)\Delta}$$
 
 Realised Variance:
-$$RV_t = \sum_{k=1}^{M} r_{t,k}^2 \xrightarrow{M\to\infty} \int_0^T \sigma^2_s\, ds \quad \text{(Integrated Variance)}$$
+$$RV_t = \sum_{k=1}^{M} r_{t,k}^2 \xrightarrow{M\to\infty} \int_0^T \sigma^2_s ds \quad \text{(Integrated Variance)}$$
 
 ### The 5-Minute Rule
 
@@ -805,7 +805,7 @@ Wider bandwidth → fewer trades → lower cost but more replication error.
 
 > Note: ES at 97.5% ≈ VaR at 99% for normal distributions but captures tail better.
 
-$$\text{ES}_\alpha = \frac{1}{1-\alpha}\int_\alpha^1 \text{VaR}_u\, du = E[L \mid L > \text{VaR}_\alpha]$$
+$$\text{ES}_\alpha = \frac{1}{1-\alpha}\int_\alpha^1 \text{VaR}_u du = E[L \mid L > \text{VaR}_\alpha]$$
 
 ### FRTB Architecture
 
@@ -839,11 +839,11 @@ FRTB Capital Charge
 
 **EWMA variance:**
 
-$$\sigma_t^2 = \lambda\, \sigma_{t-1}^2 + (1-\lambda)\, r_{t-1}^2$$
+$$\sigma_t^2 = \lambda \sigma_{t-1}^2 + (1-\lambda) r_{t-1}^2$$
 
 **EWMA covariance:**
 
-$$\sigma_{xy,t} = \lambda\, \sigma_{xy,t-1} + (1-\lambda)\, r_{x,t-1}\, r_{y,t-1}$$
+$$\sigma_{xy,t} = \lambda \sigma_{xy,t-1} + (1-\lambda) r_{x,t-1} r_{y,t-1}$$
 
 Equivalent to infinite MA with exponentially decaying weights:
 

@@ -122,7 +122,7 @@ $$f_{M_n}(x) = n x^{n-1}$$
 
 Expected value:
 
-$$\mathbb{E}[M_n] = \int_0^1 x \cdot n x^{n-1}\, dx = n \int_0^1 x^n\, dx = n \cdot \frac{1}{n+1} = \boxed{\frac{n}{n+1}}$$
+$$\mathbb{E}[M_n] = \int_0^1 x \cdot n x^{n-1} dx = n \int_0^1 x^n dx = n \cdot \frac{1}{n+1} = \boxed{\frac{n}{n+1}}$$
 
 **Intuition check:** For $n=1$: $\mathbb{E}[U_1] = \frac{1}{2}$ ✓. For $n \to \infty$: $\mathbb{E}[M_n] \to 1$ ✓.
 
@@ -276,7 +276,7 @@ $$\mathbb{P}(\text{win}) = \frac{m}{n} = p \checkmark$$
 
 ### Q8 — Itô's Lemma Applied to $\ln S_t$ `[2026 · Glassdoor / dataloopr]`
 
-> **"Given $dS_t = \mu S_t\, dt + \sigma S_t\, dW_t$, apply Itô's Lemma to derive the SDE for $X_t = \ln S_t$."**
+> **"Given $dS_t = \mu S_t dt + \sigma S_t dW_t$, apply Itô's Lemma to derive the SDE for $X_t = \ln S_t$."**
 
 **Answer:**
 
@@ -286,13 +286,13 @@ $$f_S = \frac{1}{S}, \quad f_{SS} = -\frac{1}{S^2}, \quad f_t = 0$$
 
 **Itô's Lemma:**
 
-$$dX_t = f_S\, dS_t + \frac{1}{2} f_{SS} (dS_t)^2$$
+$$dX_t = f_S dS_t + \frac{1}{2} f_{SS} (dS_t)^2$$
 
-Using $(dS_t)^2 = \sigma^2 S_t^2\, dt$ (Itô table: $dW_t^2 = dt$):
+Using $(dS_t)^2 = \sigma^2 S_t^2 dt$ (Itô table: $dW_t^2 = dt$):
 
-$$dX_t = \frac{1}{S_t}\left(\mu S_t\, dt + \sigma S_t\, dW_t\right) + \frac{1}{2}\left(-\frac{1}{S_t^2}\right)\sigma^2 S_t^2\, dt$$
+$$dX_t = \frac{1}{S_t}\left(\mu S_t dt + \sigma S_t dW_t\right) + \frac{1}{2}\left(-\frac{1}{S_t^2}\right)\sigma^2 S_t^2 dt$$
 
-$$\boxed{dX_t = \left(\mu - \frac{\sigma^2}{2}\right)dt + \sigma\, dW_t}$$
+$$\boxed{dX_t = \left(\mu - \frac{\sigma^2}{2}\right)dt + \sigma dW_t}$$
 
 So $\ln S_t \sim \mathcal{N}\!\left(\ln S_0 + \left(\mu - \frac{\sigma^2}{2}\right)t, \sigma^2 t\right)$ → **Geometric Brownian Motion** → foundation of Black-Scholes.
 

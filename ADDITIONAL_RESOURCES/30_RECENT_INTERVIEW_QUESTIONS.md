@@ -122,7 +122,7 @@ flowchart LR
 
 Assume the stock price $S_t$ follows Geometric Brownian Motion (GBM) under $\mathbb{P}$:
 
-$$dS_t = \mu S_t \,\mathrm{d}t + \sigma S_t \,\mathrm{d}W_t$$
+$$dS_t = \mu S_t \mathrm{d}t + \sigma S_t \mathrm{d}W_t$$
 
 where $W_t$ is a standard Brownian motion, $\mu$ is the drift, and $\sigma$ is the (constant) volatility.
 
@@ -143,7 +143,7 @@ Construct a portfolio $\Pi = f - \Delta \cdot S$ where $\Delta = \partial f / \p
 $$d\Pi = \left(\frac{\partial f}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 f}{\partial S^2}\right) dt$$
 
 This portfolio is **instantaneously risk-free**, so it must earn the risk-free rate $r$:
-$$d\Pi = r\Pi \,\mathrm{d}t = r\left(f - S\frac{\partial f}{\partial S}\right) dt$$
+$$d\Pi = r\Pi \mathrm{d}t = r\left(f - S\frac{\partial f}{\partial S}\right) dt$$
 
 **Step 4 — The Black-Scholes PDE**
 
@@ -354,24 +354,24 @@ Given a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ with a Brownian mo
 Mathjax to render above ( can be tested and viewed on https://stackedit.io/ ) :
 
 $$
-\left. \frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mathbb{P}} \right\vert{}_{\mathcal{F}_T} = \mathcal{E}(-\theta \cdot W)_T = \exp\Bigl\{ -\int_0^T \theta_s \,\mathrm{d}W_s^{\mathbb{P}} - \frac{1}{2}\int_0^T \theta_s^2 \,\mathrm{d}s \Bigr\}
+\left. \frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mathbb{P}} \right\vert{}_{\mathcal{F}_T} = \mathcal{E}(-\theta \cdot W)_T = \exp\Bigl\{ -\int_0^T \theta_s \mathrm{d}W_s^{\mathbb{P}} - \frac{1}{2}\int_0^T \theta_s^2 \mathrm{d}s \Bigr\}
 $$
 ```
 
-Then under $\mathbb{Q}$, the process $W_t^{\mathbb{Q}} = W_t^{\mathbb{P}} + \int_0^t \theta_s \,\mathrm{d}s$ is a standard Brownian motion.
+Then under $\mathbb{Q}$, the process $W_t^{\mathbb{Q}} = W_t^{\mathbb{P}} + \int_0^t \theta_s \mathrm{d}s$ is a standard Brownian motion.
 
 |     |
 | :-- |
-| $`W_t^\mathbb{Q} = W_t^\mathbb{P} + \int_0^t \theta_s \,\mathrm{d}s`$ |
+| $`W_t^\mathbb{Q} = W_t^\mathbb{P} + \int_0^t \theta_s \mathrm{d}s`$ |
 
 The above is also known as **Girsanov drift transformation**.
 
 **Why this enables risk-neutral pricing:**
 
-Under GBM, $dS_t = \mu S_t \,\mathrm{d}t + \sigma S_t \,\mathrm{d}W_t^{\mathbb{P}}$.
+Under GBM, $dS_t = \mu S_t \mathrm{d}t + \sigma S_t \mathrm{d}W_t^{\mathbb{P}}$.
 Choose $\theta = (\mu - r)/\sigma$ (the Sharpe ratio). Then:
 
-$$dS_t = r S_t \,\mathrm{d}t + \sigma S_t \,\mathrm{d}W_t^{\mathbb{Q}}$$
+$$dS_t = r S_t \mathrm{d}t + \sigma S_t \mathrm{d}W_t^{\mathbb{Q}}$$
 
 The drift becomes the risk-free rate $r$, so discounted asset prices are $\mathbb{Q}$-martingales. The **price** of any derivative with payoff $H$ at $T$ is then:
 
@@ -531,9 +531,9 @@ if __name__ == "__main__":
 
 **Heston Model SDEs (under $\mathbb{Q}$)**
 
-$$dS_t = r S_t \,\mathrm{d}t + \sqrt{v_t} \, S_t \,\mathrm{d}W_t^S$$
-$$dv_t = \kappa(\bar{v} - v_t) \,\mathrm{d}t + \xi \sqrt{v_t} \,\mathrm{d}W_t^v$$
-$$d\langle W^S, W^v \rangle_t = \rho \,\mathrm{d}t$$
+$$dS_t = r S_t \mathrm{d}t + \sqrt{v_t} S_t \mathrm{d}W_t^S$$
+$$dv_t = \kappa(\bar{v} - v_t) \mathrm{d}t + \xi \sqrt{v_t} \mathrm{d}W_t^v$$
+$$d\langle W^S, W^v \rangle_t = \rho \mathrm{d}t$$
 
 where:
 - $v_t$ = instantaneous variance (not volatility)
@@ -742,9 +742,9 @@ if __name__ == "__main__":
 **Statement**
 
 Let $X_t$ satisfy the SDE:
-$$dX_t = \mu(t, X_t) \,\mathrm{d}t + \sigma(t, X_t) \,\mathrm{d}W_t$$
+$$dX_t = \mu(t, X_t) \mathrm{d}t + \sigma(t, X_t) \mathrm{d}W_t$$
 
-Define $u(t, x) = \mathbb{E}^{\mathbb{Q}}\!\left[e^{-\int_t^T r(s,X_s)ds} \Psi(X_T) \,\Big|\, X_t = x\right]$.
+Define $u(t, x) = \mathbb{E}^{\mathbb{Q}}\!\left[e^{-\int_t^T r(s,X_s)ds} \Psi(X_T) \Big| X_t = x\right]$.
 
 Then $u$ satisfies the backward parabolic PDE:
 
@@ -756,7 +756,7 @@ with terminal condition $u(T, x) = \Psi(x)$.
 
 - **PDE → MC:** The Feynman-Kac formula tells you that a PDE expectation can be evaluated by simulating the underlying SDE paths. This is why Monte Carlo works.
 - **MC → PDE:** Conversely, if you have a PDE that's hard to solve analytically, simulate the associated diffusion and average the payoff.
-- **Path-dependent options (Asian, Barrier):** These augment the state space. For an Asian option, introduce $A_t = \frac{1}{t}\int_0^t S_u \,\mathrm{d}u$; then $(S_t, A_t)$ is Markov and Feynman-Kac applies in 2D.
+- **Path-dependent options (Asian, Barrier):** These augment the state space. For an Asian option, introduce $A_t = \frac{1}{t}\int_0^t S_u \mathrm{d}u$; then $(S_t, A_t)$ is Markov and Feynman-Kac applies in 2D.
 
 ---
 
@@ -1158,7 +1158,7 @@ if __name__ == "__main__":
 
 **Merton Jump-Diffusion SDE:**
 
-$$dS_t = (\mu - \lambda\bar{k}) S_t \,\mathrm{d}t + \sigma S_t \,\mathrm{d}W_t + S_{t^-}(J - 1) \,\mathrm{d}N_t$$
+$$dS_t = (\mu - \lambda\bar{k}) S_t \mathrm{d}t + \sigma S_t \mathrm{d}W_t + S_{t^-}(J - 1) \mathrm{d}N_t$$
 
 where:
 - $N_t$ is a Poisson process with intensity $\lambda$ (jumps per year)
@@ -1362,11 +1362,11 @@ if __name__ == "__main__":
 
 **CIR SDE (Cox-Ingersoll-Ross, 1985):**
 
-$$dr_t = \kappa(\theta - r_t) \,\mathrm{d}t + \sigma \sqrt{r_t} \,\mathrm{d}W_t$$
+$$dr_t = \kappa(\theta - r_t) \mathrm{d}t + \sigma \sqrt{r_t} \mathrm{d}W_t$$
 
 **CIR vs Vasicek:**
 
-| Feature | Vasicek ($\sigma \,\mathrm{d}W$) | CIR ($\sigma\sqrt{r} \,\mathrm{d}W$) |
+| Feature | Vasicek ($\sigma \mathrm{d}W$) | CIR ($\sigma\sqrt{r} \mathrm{d}W$) |
 |---|---|---|
 | Rates go negative | Yes | **No** (if $2\kappa\theta \geq \sigma^2$) |
 | Volatility | Constant | **Proportional to $\sqrt{r}$** |
@@ -3932,7 +3932,7 @@ $$\text{VaR}_\alpha = \inf\{l \in \mathbb{R} : P(L > l) \leq 1 - \alpha\} = -F_L
 **Conditional Value at Risk (Expected Shortfall):**
 
 $$
-\text{CVaR}_\alpha = \mathbb{E}[-R \mid R \leq -\text{VaR}_\alpha] = -\frac{1}{1-\alpha}\int_0^{1-\alpha} F_R^{-1}(u) \,\mathrm{d}u
+\text{CVaR}_\alpha = \mathbb{E}[-R \mid R \leq -\text{VaR}_\alpha] = -\frac{1}{1-\alpha}\int_0^{1-\alpha} F_R^{-1}(u) \mathrm{d}u
 $$
 
 **Why CVaR is preferred:**

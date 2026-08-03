@@ -78,7 +78,7 @@ Annualised: $\Sigma_{\text{ann}} = 252 \cdot \hat{\Sigma}$
 
 **Minimum Variance Portfolio** (unconstrained, long-only relaxed):
 
-$$\mathbf{w}^* = \frac{\Sigma^{-1} \mathbf{1}}{\mathbf{1}^\top \Sigma^{-1} \mathbf{1}}, \quad \sigma_p^* = \sqrt{(\mathbf{w}^*)^\top \Sigma \, \mathbf{w}^*}$$
+$$\mathbf{w}^* = \frac{\Sigma^{-1} \mathbf{1}}{\mathbf{1}^\top \Sigma^{-1} \mathbf{1}}, \quad \sigma_p^* = \sqrt{(\mathbf{w}^*)^\top \Sigma \mathbf{w}^*}$$
 
 ```python
 # ── quant_A_1_1_covariance.py ──────────────────────────────────────────────
@@ -247,11 +247,11 @@ Top factor loadings (PC1 — Market Factor):
 
 Under $\mathbb{Q}$, the GBM SDE:
 
-$$dS_t = r S_t \, dt + \sigma S_t \, dW_t^{\mathbb{Q}}$$
+$$dS_t = r S_t dt + \sigma S_t dW_t^{\mathbb{Q}}$$
 
 Exact discretisation:
 
-$$S_{t+\Delta t} = S_t \exp\!\left[\left(r - \tfrac{1}{2}\sigma^2\right)\Delta t + \sigma \sqrt{\Delta t} \, Z\right], \quad Z \sim \mathcal{N}(0,1)$$
+$$S_{t+\Delta t} = S_t \exp\!\left[\left(r - \tfrac{1}{2}\sigma^2\right)\Delta t + \sigma \sqrt{\Delta t} Z\right], \quad Z \sim \mathcal{N}(0,1)$$
 
 **European Call (risk-neutral pricing):**
 
@@ -360,7 +360,7 @@ $$\tilde{\mathbf{z}} = L \mathbf{z} \implies \text{Cov}(\tilde{\mathbf{z}}) = L 
 
 **Correlated GBM:**
 
-$$S_i(t+\Delta t) = S_i(t) \exp\!\left[\mu_i^{\mathbb{Q}} \Delta t + \sigma_i \sqrt{\Delta t}\, \tilde{z}_i\right]$$
+$$S_i(t+\Delta t) = S_i(t) \exp\!\left[\mu_i^{\mathbb{Q}} \Delta t + \sigma_i \sqrt{\Delta t} \tilde{z}_i\right]$$
 
 ```python
 # ── quant_A_1_4_cholesky_paths.py ─────────────────────────────────────────
@@ -580,7 +580,7 @@ $$R_{0,T} = \exp\!\left(\sum_{t=1}^{T} r_t\right) - 1$$
 
 **Winsorisation** at level $k$ (MAD-robust):
 
-$$r_t^{\text{win}} = \text{clip}\!\left(r_t,\, \tilde{r} - k \cdot \text{MAD},\, \tilde{r} + k \cdot \text{MAD}\right)$$
+$$r_t^{\text{win}} = \text{clip}\!\left(r_t, \tilde{r} - k \cdot \text{MAD}, \tilde{r} + k \cdot \text{MAD}\right)$$
 
 ```python
 # ── quant_A_2_1_returns_pipeline.py ───────────────────────────────────────

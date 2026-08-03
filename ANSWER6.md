@@ -40,7 +40,7 @@
 > where $\bar d$ is the mean paired difference and $s_d$ its sample standard deviation.
 >
 > If assignment is **observational** (algos used non-randomly, e.g., algo choice correlated with order size/urgency), a raw two-sample t-test is confounded — instead I'd run a regression controlling for order characteristics:
-> $$\text{slippage}_i = \beta_0 + \beta_1 \cdot \mathbb{1}[\text{Algo A}]_i + \beta_2 \, \text{size}_i + \beta_3 \, \text{urgency}_i + \varepsilon_i$$
+> $$\text{slippage}_i = \beta_0 + \beta_1 \cdot \mathbb{1}[\text{Algo A}]_i + \beta_2 \text{size}_i + \beta_3 \text{urgency}_i + \varepsilon_i$$
 > and test $H_0: \beta_1 = 0$ using **Newey-West standard errors** (Q2) since trading-cost residuals are typically heteroskedastic and autocorrelated. I'd also check the effect size, not just the p-value — statistical significance with a trivial economic magnitude (e.g., 0.1bps) isn't actionable even if $p<0.05$ given large sample sizes typical of execution data."
 
 **D) Feynman summary:** If you can literally flip a coin to decide which algo trades each order, a simple paired comparison is enough — the coin flip already removed the confounders. If the algo choice wasn't randomized, you have to statistically remove the confounders yourself via regression before the comparison means anything.

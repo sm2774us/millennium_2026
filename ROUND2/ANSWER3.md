@@ -49,11 +49,11 @@
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\underbrace{h(v_t)}_{\text{temporary impact}} = \eta \, v_t, \qquad \underbrace{g(v_t)}_{\text{permanent impact}} = \gamma \, v_t$$
+$$\underbrace{h(v_t)}_{\text{temporary impact}} = \eta v_t, \qquad \underbrace{g(v_t)}_{\text{permanent impact}} = \gamma v_t$$
 
-$$E[C] = \sum_{k=1}^{N} \eta \, v_k^2 \,\Delta t + \frac{\gamma}{2} X^2, \qquad \text{Var}[C] = \sigma^2 \sum_{k=1}^N x_k^2 \, \Delta t$$
+$$E[C] = \sum_{k=1}^{N} \eta v_k^2 \Delta t + \frac{\gamma}{2} X^2, \qquad \text{Var}[C] = \sigma^2 \sum_{k=1}^N x_k^2 \Delta t$$
 
-$$\min_{\{x_k\}} E[C] + \lambda \,\text{Var}[C]$$
+$$\min_{\{x_k\}} E[C] + \lambda \text{Var}[C]$$
 
 $$x_j = X\,\frac{\sinh\!\big(\kappa (T - t_j)\big)}{\sinh(\kappa T)}, \qquad \kappa = \sqrt{\lambda \sigma^2 / \eta}$$
 
@@ -1263,7 +1263,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$E[C] = \sum_{k=1}^N \eta(t_k)\, v_k^2\, \Delta t$$
+$$E[C] = \sum_{k=1}^N \eta(t_k) v_k^2 \Delta t$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 

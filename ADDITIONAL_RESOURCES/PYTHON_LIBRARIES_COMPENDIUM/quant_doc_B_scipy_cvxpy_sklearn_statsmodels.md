@@ -78,13 +78,13 @@ graph TD
 
 **Merton Jump-Diffusion SDE:**
 
-$$dS_t = (\mu - \lambda \bar{k}) S_t \, dt + \sigma S_t \, dW_t + (e^J - 1) S_t \, dN_t$$
+$$dS_t = (\mu - \lambda \bar{k}) S_t dt + \sigma S_t dW_t + (e^J - 1) S_t dN_t$$
 
 where $N_t \sim \text{Poisson}(\lambda t)$, $J \sim \mathcal{N}(\mu_J, \sigma_J^2)$, $\bar{k} = e^{\mu_J + \sigma_J^2/2} - 1$
 
 **Log-return PDF** (mixture of Gaussians):
 
-$$p(r) = \sum_{n=0}^{\infty} \frac{e^{-\lambda} \lambda^n}{n!} \phi\!\left(r;\, \mu + n\mu_J - \tfrac{1}{2}(\sigma^2 + n\sigma_J^2),\, \sigma^2 + n\sigma_J^2\right)$$
+$$p(r) = \sum_{n=0}^{\infty} \frac{e^{-\lambda} \lambda^n}{n!} \phi\!\left(r; \mu + n\mu_J - \tfrac{1}{2}(\sigma^2 + n\sigma_J^2), \sigma^2 + n\sigma_J^2\right)$$
 
 **Log-Likelihood:**
 

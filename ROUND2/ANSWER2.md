@@ -518,7 +518,7 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\text{Deduplicated Dataset} = \lbrace r_i \mid \nexists \, r_j \text{ s.t. } \text{sym}_i = \text{sym}_j \land P_i = P_j \land S_i = S_j \land \vert{}t_i - t_j\vert{} \le \epsilon \land \text{Rank}(v_i) > \text{Rank}(v_j) \rbrace$$
+$$\text{Deduplicated Dataset} = \lbrace r_i \mid \nexists r_j \text{ s.t. } \text{sym}_i = \text{sym}_j \land P_i = P_j \land S_i = S_j \land \vert{}t_i - t_j\vert{} \le \epsilon \land \text{Rank}(v_i) > \text{Rank}(v_j) \rbrace$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
