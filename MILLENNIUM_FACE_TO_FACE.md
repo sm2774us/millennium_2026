@@ -2078,13 +2078,13 @@ Therefore:
 
 ### Part 2 — Square-Root Law (empirical scaling result, heuristic derivation)
 
-**Motivating derivation via a diffusive order-book argument.** Model the limit order book's available liquidity at each price level as roughly uniform density $\rho$ (contracts per tick), so walking the book to absorb quantity $q$ moves the price by $\Delta P \approx q/\rho$ — this is the *naive linear* impact law. Empirically (and theoretically, under a self-similar/fractal liquidity-replenishment argument — see Gabaix et al. 2003, Toth et al. 2011), the *effective* density that matters is not the instantaneous book but the liquidity that arrives *dynamically* over the execution horizon, which scales with $\sqrt{q}$ rather than $q$ because order-flow autocorrelation is long-memory (Hurst exponent $H\approx 0.5$–$0.7$), causing realized impact to under-scale relative to the naive linear law. The resulting empirical law:
+**Motivating derivation via a diffusive order-book argument.** Model the limit order book's available liquidity at each price level as roughly uniform density $\rho$ (contracts per tick), so walking the book to absorb quantity $q$ moves the price by $\Delta P \approx q/\rho$ — this is the *naive linear* impact law. Empirically (and theoretically, under a self-similar/fractal liquidity-replenishment argument — see Gabaix et al. 2003, Toth et al. 2011), the *effective* density that matters is not the instantaneous book but the liquidity that arrives *dynamically* over the execution horizon, which scales with $\sqrt{q}$ rather than $q$ because order-flow autocorrelation is long-memory ( Hurst exponent $H\approx 0.5–0.7$ ), causing realized impact to under-scale relative to the naive linear law. The resulting empirical law:
 
 $$
 \Delta P = \sigma Y \sqrt{\frac{Q}{V}}
 $$
 
-where $\sigma$ = daily volatility, $V$ = average daily volume, $Q$ = order quantity, $Y\approx 0.5$–$1$ an empirically calibrated constant (varies by venue/asset class). **Dimensional-consistency check:** $\Delta P/\sigma$ is dimensionless (a fraction of one day's volatility), and $\sqrt{Q/V}$ is dimensionless (participation-rate square root) — the law is dimensionally sound, which is the standard sanity-check when an interviewer asks "why square root and not linear."
+where $\sigma$ = daily volatility, $V$ = average daily volume, $Q$ = order quantity, $Y\approx 0.5–1$ an empirically calibrated constant (varies by venue/asset class). **Dimensional-consistency check:** $\Delta P/\sigma$ is dimensionless (a fraction of one day's volatility), and $\sqrt{Q/V}$ is dimensionless (participation-rate square root) — the law is dimensionally sound, which is the standard sanity-check when an interviewer asks "why square root and not linear."
 
 ### Part 3 — Almgren-Chriss Optimal Execution Trajectory (full continuous derivation)
 
@@ -2125,7 +2125,7 @@ $$
 
 |     |
 | :-- |
-| $`\ddot x(t) = \kappa^2 x(t)}, \qquad \kappa \equiv \sqrt{\frac{\lambda\sigma^2}{\eta}`$ |
+| $`\ddot x(t) = \kappa^2 x(t) \qquad \kappa \equiv \sqrt{\frac{\lambda\sigma^2}{\eta}}`$ |
 
 **Step 2 — General solution of the linear 2nd-order ODE.** The characteristic equation $r^2=\kappa^2$ has roots $r=\pm\kappa$, giving general solution $x(t) = A\,e^{\kappa t} + B\,e^{-\kappa t}$, equivalently in hyperbolic form (more numerically convenient and boundary-condition friendly):
 
