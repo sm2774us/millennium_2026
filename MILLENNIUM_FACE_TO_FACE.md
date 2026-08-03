@@ -2295,7 +2295,7 @@ $$
 \mathbb{E}[N] = p\cdot\frac{1}{(1-q)^2} = p\cdot\frac{1}{p^2} = \frac1p
 $$
 
-**Step 2 — General $r$ via linearity of expectation (memorylessness decomposition).** Write $N = T_1+T_2+\dots+T_r$ where $T_i$ = number of attempts *between* the $(i-1)$-th and $i$-th success. By the memoryless property of the geometric distribution, each $T_i$ is itself Geometric$(p)$ and independent of the others (the process "resets" after each success). By linearity of expectation (which requires **no** independence assumption, only additivity):
+**Step 2 — General $r$ via linearity of expectation (memorylessness decomposition).** Write $N = T_1+T_2+\dots+T_r$ where $T_i$ = number of attempts *between* the $(i-1)$-th and $i$-th success. By the memoryless property of the geometric distribution, each $T_i$ is itself Geometric $(p)$ and independent of the others (the process "resets" after each success). By linearity of expectation (which requires **no** independence assumption, only additivity):
 
 $$
 \mathbb{E}[N] = \sum_{i=1}^r \mathbb{E}[T_i] = \frac{r}{p}
