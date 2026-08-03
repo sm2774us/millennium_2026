@@ -297,7 +297,7 @@ $$
 $$
 
 $$
-\text{Total Cost} = \int_0^T \Big[\eta \, \dot{x}(t)^2 \Big] dt + \frac{1}{2}\gamma X^2 + \lambda \int_0^T \sigma^2 x(t)^2 \, dt
+\text{Total Cost} = \int_0^T \Big[\eta \dot{x}(t)^2 \Big] dt + \frac{1}{2}\gamma X^2 + \lambda \int_0^T \sigma^2 x(t)^2 dt
 $$
 
 **Say it out loud, plainly:** *"There are three terms. Temporary impact is the cost you pay for trading fast right now — it scales with the square of your trading rate, so trading twice as fast costs four times as much in impact per unit time. Permanent impact is a one-time cost proportional to total size regardless of speed — the market permanently reprices to reflect your information. Risk penalty is how much you're paying for the privilege of taking longer, because your remaining unexecuted position sits exposed to price volatility the whole time. The optimal trajectory is whatever balances 'faster costs more in impact' against 'slower costs more in risk,' weighted by the trader's risk aversion λ."*
@@ -311,7 +311,7 @@ $$
 
 ## B3 · Optimal Execution — Almgren-Chriss Trading Trajectory Derivation
 
-**Setup:** minimize $\mathbb{E}[\text{Cost}] + \lambda \, \text{Var}[\text{Cost}]$ over remaining-inventory path $x(t)$, $x(0)=X$, $x(T)=0$.
+**Setup:** minimize $\mathbb{E}[\text{Cost}] + \lambda \text{Var}[\text{Cost}]$ over remaining-inventory path $x(t)$, $x(0)=X$, $x(T)=0$.
 
 **Result (the famous sinh trajectory):**
 
