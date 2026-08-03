@@ -295,7 +295,7 @@ where Delay Cost = drift from decision time to first order release, Trading Cost
 
 $$\Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}$$
 
-**Say it out loud:** *"Price impact scales with volatility times the square root of your participation rate ( $\frac{Q}{V}$ ) — it is strictly sub-linear. Doubling your order size only increases impact by about 41%, not 100%. That concave, square-root shape is one of the most robust empirical facts in market microstructure."*
+**Say it out loud: "Price impact scales with volatility times the square root of your participation rate ( $\frac{Q}{V}$ ) — it is strictly sub-linear. Doubling your order size only increases impact by about 41%, not 100%. That concave, square-root shape is one of the most robust empirical facts in market microstructure."**
 
 **Almgren-Chriss Cost Function (The Mathematical Tug-of-War):**
 
