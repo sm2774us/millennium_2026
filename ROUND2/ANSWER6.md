@@ -523,7 +523,13 @@ if __name__ == "__main__":
 
 ### C) Mathematical Derivation (MathJax)
 
-$$\text{MatchStatus} = \begin{cases} 1 & \text{if } \text{ExecDetails} \equiv \text{ClearingAgreement} \\ 0 & \text{otherwise (DK Break)} \end{cases}$$
+$$
+\text{MatchStatus} =
+\begin{cases}
+1 & \text{if } \text{ExecDetails} \equiv \text{ClearingAgreement} \\
+0 & \text{otherwise (DK Break)}
+\end{cases}
+$$
 
 ### D) Architectural & Algorithmic ASCII Diagram
 
