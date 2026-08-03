@@ -121,7 +121,10 @@ BEHAVIORAL (RESUME-DRIVEN)       F1 – F10    Conversational            Hiring 
 - **BTIC (Basis Trade at Index Close)** — the equity-index equivalent: trade the futures at a basis to the *cash index closing print* (e.g. S&P 500 official close), fixing basis risk instead of price risk.
 
 **Execution risk implication (the part they actually want):**
-$$P_{\text{TAS}} = S_{\text{settle}} + \delta, \qquad \delta \text{ agreed at execution, } S_{\text{settle}} \text{ unknown until close}$$
+
+$$
+P_{\text{TAS}} = S_{\text{settle}} + \delta, \qquad \delta \text{ agreed at execution, } S_{\text{settle}} \text{ unknown until close}
+$$
 
 **Say it out loud:** *"My fill price is the eventual settlement price plus or minus a fixed number of ticks I locked in now. I've removed price risk relative to settlement, but I've taken on pure benchmark risk — I need the *settlement process itself*, which is often an auction or VWAP over a defined window, to behave normally. TAS volume is disproportionately large in the closing minutes, which is exactly why CME and other exchanges publish TAS volume separately and why liquidity in TAS can evaporate around index rebalance days."*
 
@@ -158,7 +161,9 @@ $$P_{\text{TAS}} = S_{\text{settle}} + \delta, \qquad \delta \text{ agreed at ex
 - **Initial margin (IM)** — performance bond posted to open a position, sized to cover a worst-case 1–2 day move (99% confidence typically) — CME's methodology is now largely unified under **SPAN 2** and increasingly **CME's own portfolio margining (CME PMH / SPAN 2)**, which nets offsetting risk across correlated products (e.g. calendar spreads require far less margin than two outrights).
 - **Variation margin (VM)** — the daily (or intraday, for cleared futures — this is *mark-to-market settled daily*, unlike OTC) cash settlement of gains/losses, paid/received in cash, resetting the contract's economic value to par each day.
 
-$$\text{VM}_t = (F_t - F_{t-1}) \times \text{Multiplier} \times N$$
+$$
+\text{VM}_t = (F_t - F_{t-1}) \times \text{Multiplier} \times N
+$$
 
 **Say it out loud:** *"Every day, my futures position is marked to the settlement price and the difference in dollars — price change times contract multiplier times number of contracts — moves as cash, either into or out of my margin account. That's the fundamental difference from a forward or a bilateral swap: futures don't accumulate value, they reset it daily, which is why futures and OTC-equivalent forwards can have materially different valuations under stochastic interest rates (this is the classic futures-forward convexity adjustment)."*
 
@@ -231,7 +236,10 @@ Iceberg/Peg         Hide true size, show small clip     Thin book, avoid signali
 ## A7 · Roll Mechanics & Calendar Spread Execution
 
 **Roll yield:**
-$$\text{Roll Yield} \approx -\frac{F(t,T_{\text{next}}) - F(t,T_{\text{front}})}{F(t,T_{\text{front}})} \times \frac{365}{T_{\text{next}}-T_{\text{front}}}$$
+
+$$
+\text{Roll Yield} \approx -\frac{F(t,T_{\text{next}}) - F(t,T_{\text{front}})}{F(t,T_{\text{front}})} \times \frac{365}{T_{\text{next}}-T_{\text{front}}}
+$$
 
 **Say it out loud:** *"If the next-month contract trades above the front month — contango — mechanically rolling a long position means selling low and buying high every cycle, which is a persistent negative drag scaled to an annual rate. In backwardation it's a tailwind. This is why passive commodity index rollers structurally underperform an outright spot proxy in contango regimes."*
 
@@ -293,13 +301,17 @@ where Delay Cost = drift from decision time to first order release, Trading Cost
 
 **The Empirical Square-Root Law:**
 
-$$\Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}$$
+$$
+\Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}
+$$
 
 **Say it out loud: "Price impact scales with volatility times the square root of your participation rate ( $\frac{Q}{V}$ ) — it is strictly sub-linear. Doubling your order size only increases impact by about 41%, not 100%. That concave, square-root shape is one of the most robust empirical facts in market microstructure."**
 
 **Almgren-Chriss Cost Function (The Mathematical Tug-of-War):**
 
-$$\text{Total Cost} = \underbrace{\int_0^T \Big[\eta \dot{x}(t)^2 \Big] dt}_{\text{Term 1: Temporary Impact}} + \underbrace{\frac{1}{2}\gamma X^2}_{\text{Term 2: Permanent Impact}} + \underbrace{\lambda \int_0^T \sigma^2 x(t)^2 dt}_{\text{Term 3: Risk Penalty}}$$
+$$
+\text{Total Cost} = \underbrace{\int_0^T \Big[\eta \dot{x}(t)^2 \Big] dt}_{\text{Term 1: Temporary Impact}} + \underbrace{\frac{1}{2}\gamma X^2}_{\text{Term 2: Permanent Impact}} + \underbrace{\lambda \int_0^T \sigma^2 x(t)^2 dt}_{\text{Term 3: Risk Penalty}}
+$$
 
 **Say it out loud, plainly:** *"This equation is a mechanical tug-of-war, and breaking down the three terms reveals exactly how an execution algorithm makes decisions."*
 
@@ -1726,7 +1738,7 @@ $$
 **Trading reframe (what they're actually testing):** *"Monty Hall's power isn't the puzzle itself, it's that Monty's action — always opening a door he KNOWS is empty — carries information, because his choice is conditioned on the true state. The trading analogy: if a counterparty only shows me a two-sided market, or only lets me trade against them, when they have information (e.g., a broker's last-look rejection is more likely exactly when the market is about to move against me), then their *decision to interact with me at all* is informative, and I have to update on it — that's the core intuition behind adverse selection and why 'the fact that this order got filled easily' can itself be bad news."*
 
 $$
-P(\text{win by switching}) = \frac{2}{3}, \qquad P(\text{win by staying}) = \frac{1}{3}
+\mathbb{P}(\text{win by switching}) = \frac{2}{3}, \qquad \mathbb{P}(\text{win by staying}) = \frac{1}{3}
 $$
 
 **Feynman explanation:** *"Before any door opens, my initial pick has a 1/3 chance of being right, so the other two doors combined have a 2/3 chance of hiding the prize. Monty then removes one wrong option from that 2/3 group with certainty — he never removes the prize — so all of that 2/3 probability collapses onto the single remaining unopened door. Switching just lets me buy that whole 2/3 bucket instead of keeping my original 1/3 bucket."*
@@ -1743,7 +1755,7 @@ $$
 **Bayes' theorem:**
 
 $$
-P(\text{Informed}\mid\text{Move}) = \frac{P(\text{Move}\mid\text{Informed})\,P(\text{Informed})}{P(\text{Move}\mid\text{Informed})P(\text{Informed}) + P(\text{Move}\mid\text{Uninformed})P(\text{Uninformed})}
+\mathbb{P}(\text{Informed}\mid\text{Move}) = \frac{\mathbb{P}(\text{Move}\mid\text{Informed})\,\mathbb{P}(\text{Informed})}{\mathbb{P}(\text{Move}\mid\text{Informed})\mathbb{P}(\text{Informed}) + \mathbb{P}(\text{Move}\mid\text{Uninformed})\mathbb{P}(\text{Uninformed})}
 $$
 
 $$
@@ -1767,7 +1779,7 @@ $$
 \mathbb{E}[T] = a \cdot b
 $$
 
-Probability of hitting $+b$ first: $P(+b) = \dfrac{a}{a+b}$ (by the martingale/optional-stopping argument, since the walk is a martingale and $\mathbb{E}[X_T]=0=b\cdot P(+b) - a\cdot(1-P(+b))$ ).
+Probability of hitting $+b$ first: $\mathbb{P}(+b) = \dfrac{a}{a+b}$ (by the martingale/optional-stopping argument, since the walk is a martingale and $\mathbb{E}[X_T]=0=b\cdot \mathbb{P}(+b) - a\cdot(1-\mathbb{P}(+b))$ ).
 
 **Say it out loud:** *"Because a fair random walk is a martingale, its expected value never changes — so the expected value at the stopping time must still be zero. That single constraint, plus the fact that the walk must end at exactly +b or exactly −a, is enough to solve for the hit probabilities without simulating anything: probability of the upper barrier is just a/(a+b), proportional to how far away the barrier you're NOT trying to hit is. Intuitively, if your stop-loss is very close (small a) and your take-profit is far away (large b), you're much more likely to get stopped out first — which is obvious once you see it, but people get it wrong constantly when sizing stops relative to targets."*
 
@@ -1780,7 +1792,7 @@ Probability of hitting $+b$ first: $P(+b) = \dfrac{a}{a+b}$ (by the martingale/o
 
 ## E6 · Central Limit Theorem & Why VWAP Slippage Is Approximately Normal
 
-**Statement:** For i.i.d. (or weakly dependent, finite-variance) increments $X_i$ with mean $\mu$ and variance $\sigma^2$:
+**Statement:** For i.i.d. (or weakly dependent, finite-variance) increments $X_i$ with mean $\mu$ and variance $\sigma^2$ :
 
 $$
 \frac{\sum_{i=1}^n X_i - n\mu}{\sigma\sqrt{n}} \xrightarrow{d} N(0,1) \text{ as } n \to \infty
@@ -1799,13 +1811,13 @@ $$
 
 **Problem:** Two coins, each fair marginally, but flipped so that they agree (both heads or both tails) with probability $q$. Find the correlation between the two outcomes (coded as $\pm 1$).
 
-**Solution:** Let $X, Y \in \{-1,+1\}$, each marginally $P(X{=}1)=0.5$. $P(X{=}Y)=q$.
+**Solution:** Let $X, Y \in \{-1,+1\}$, each marginally $\mathbb{P}(X{=}1)=0.5$. $\mathbb{P}(X{=}Y)=q$.
 
 $$
 \mathbb{E}[XY] = (+1)\cdot q + (-1)\cdot(1-q) = 2q - 1
 $$
 
-Since $\mathbb{E}[X]=\mathbb{E}[Y]=0$ and $\text{Var}(X)=\text{Var}(Y)=1$:
+Since $\mathbb{E}[X]=\mathbb{E}[Y]=0$ and $\text{Var}(X)=\text{Var}(Y)=1$ :
 
 $$
 \rho = \text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X] \mathbb{E}[Y] = 2q-1
@@ -1975,10 +1987,12 @@ t=\frac{\bar X}{s/\sqrt n}\sim t_{n-1}\quad\text{(TCA significance test)}
 $$
 
 $$
-\mathbb{E}[T]=ab,\qquad P(+b\text{ first})=\frac{a}{a+b}\quad\text{(gambler's ruin, symmetric walk)}
+\mathbb{E}[T]=ab,\qquad \mathbb{P}(+b\text{ first})=\frac{a}{a+b}\quad\text{(gambler's ruin, symmetric walk)}
 $$
 
-$$\rho = 2q-1 \quad\text{(correlation from ±1-coded agreement probability }q\text{)}$$
+$$
+\rho = 2q-1 \quad\text{(correlation from ±1-coded agreement probability }q\text{)}
+$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2049,13 +2063,13 @@ $$
 **Derivation of $\lambda$ from market-maker zero-profit condition.** Let the informed trader's private signal be $v \sim \mathcal N(P_0,\Sigma_0)$ (true asset value) and noise trader flow $\omega_{\text{noise}}\sim\mathcal N(0,\sigma_u^2)$, independent of $v$. The informed trader optimally submits $\omega_{\text{informed}} = \beta (v - P_0)$ for some constant $\beta$ (linear strategy, verified below to be optimal). The market maker, observing total flow $\omega=\beta(v-P_0)+\omega_{\text{noise}}$, sets price equal to the conditional expectation (semi-strong-form efficiency, zero expected profit):
 
 $$
-P = \mathbb E[v \mid \omega]
+P = \mathbb{E}[v \mid \omega]
 $$
 
 Since $(v,\omega)$ are jointly Gaussian, the standard conditional-expectation formula for bivariate normals gives:
 
 $$
-\mathbb E[v\mid \omega] = P_0 + \frac{\text{Cov}(v,\omega)}{\text{Var}(\omega)}\,\omega
+\mathbb{E}[v\mid \omega] = P_0 + \frac{\text{Cov}(v,\omega)}{\text{Var}(\omega)}\,\omega
 $$
 
 Compute the two required moments directly from the linear strategy:
@@ -2098,7 +2112,7 @@ where $\sigma$ = daily volatility, $V$ = average daily volume, $Q$ = order quant
 **Objective functional (mean-variance):**
 
 $$
-J[x(\cdot)] = \mathbb E[\text{Cost}] + \lambda\,\text{Var}[\text{Cost}] = \int_0^T \Big(\eta\,\dot x(t)^2 + \lambda\sigma^2 x(t)^2\Big)\,dt
+J[x(\cdot)] = \mathbb{E}[\text{Cost}] + \lambda\,\text{Var}[\text{Cost}] = \int_0^T \Big(\eta\,\dot x(t)^2 + \lambda\sigma^2 x(t)^2\Big)\,dt
 $$
 
 **Step 1 — Euler-Lagrange equation.** For a functional $J=\int_0^T L(x,\dot x, t)\,dt$ with $L = \eta\dot x^2 + \lambda\sigma^2 x^2$, the Euler-Lagrange stationarity condition is:
@@ -2135,7 +2149,7 @@ $$
 
 **Step 3 — Apply boundary conditions.** $x(0)=X \Rightarrow A' = X$ (since $\cosh 0=1,\sinh 0=0$). $x(T)=0 \Rightarrow X\cosh(\kappa T) + B'\sinh(\kappa T) = 0 \Rightarrow B' = -X\dfrac{\cosh(\kappa T)}{\sinh(\kappa T)}$.
 
-**Step 4 — Substitute back and simplify via the hyperbolic subtraction identity** $\cosh(a)\sinh(b) - \sinh(a)\cosh(b) = \sinh(b-a)$:
+**Step 4 — Substitute back and simplify via the hyperbolic subtraction identity** $\cosh(a)\sinh(b) - \sinh(a)\cosh(b) = \sinh(b-a)$ :
 
 $$
 x(t) = X\cosh(\kappa t) - X\frac{\cosh(\kappa T)}{\sinh(\kappa T)}\sinh(\kappa t) = X\cdot\frac{\cosh(\kappa t)\sinh(\kappa T) - \sinh(\kappa t)\cosh(\kappa T)}{\sinh(\kappa T)} = X\cdot\frac{\sinh\big(\kappa(T-t)\big)}{\sinh(\kappa T)}
@@ -2143,7 +2157,7 @@ $$
 
 which is exactly the trajectory quoted in the Quick-Reference Equation Sheet. $\blacksquare$
 
-**Step 5 — Risk-neutral limit sanity check ($\lambda\to 0 \Rightarrow \kappa\to 0$).** Using the small-argument expansion $\sinh(z)\approx z$ for $z\to 0$:
+**Step 5 — Risk-neutral limit sanity check ($\lambda\to 0 \Rightarrow \kappa\to 0$).** Using the small-argument expansion $\sinh(z)\approx z$ for $z\to 0$ :
 
 $$
 \lim_{\kappa\to 0}\frac{\sinh(\kappa(T-t))}{\sinh(\kappa T)} = \lim_{\kappa\to 0}\frac{\kappa(T-t)+O(\kappa^3)}{\kappa T + O(\kappa^3)} = \frac{T-t}{T}
@@ -2238,7 +2252,27 @@ $n(13)=13\cdot14/2=91<100$ ✗.
 
 **Answer: 14 drops**, with first test floor at 14, then (if survives) 14+13=27, then 27+12=39, ..., decrementing by one each surviving trial — a triangular-number strategy, not naive binary search (binary search with 2 eggs is a strictly worse, greedy-but-not-optimal heuristic since a broken first egg on floor 50 leaves 49 floors to search linearly with only 1 egg, costing up to 50 drops worst case).
 
-**Generalization ($e$ eggs, $n$ floors):** the recursion is $f(k,e) = f(k-1,e-1) + f(k-1,e) + 1$ (drop; if breaks, $e-1$ eggs & $k-1$ drops left below; if survives, $e$ eggs & $k-1$ drops left above), solved by $n(k,e)=\sum_{i=1}^{e}\binom{k}{i}$ — the 2-egg triangular-number result is the $e=2$ special case since $\binom{k}{1}+\binom{k}{2}=k+\frac{k(k-1)}2=\frac{k(k+1)}2$.
+**Generalization ($e$ eggs, $n$ floors):** 
+
+The recursion is:
+
+$$
+f(k,e) = f(k-1,e-1) + f(k-1,e) + 1
+$$
+
+(drop; if breaks, $e-1$ eggs & $k-1$ drops left below; if survives, $e$ eggs & $k-1$ drops left above),
+
+solved by:
+
+$$
+n(k,e)=\sum_{i=1}^{e}\binom{k}{i}
+$$
+
+— the 2-egg triangular-number result is the $e=2$ special case since:
+
+$$
+\binom{k}{1}+\binom{k}{2}=k+\frac{k(k-1)}2=\frac{k(k+1)}2
+$$
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2249,21 +2283,25 @@ $n(13)=13\cdot14/2=91<100$ ✗.
 
 **Setup.** Each child order slice fills independently with probability $p$ per attempt (Bernoulli), and we need exactly $r$ successful fills to complete the parent order. Let $N$ = number of attempts until the $r$-th success (Negative Binomial).
 
-**Step 1 — Base case $r=1$ (Geometric distribution).** $P(N=k) = (1-p)^{k-1}p$ for $k=1,2,\dots$ (fail $k-1$ times, then succeed). Expectation derivation via the standard generating-function/telescoping trick:
+**Step 1 — Base case $r=1$ (Geometric distribution).** $\mathbb{P}(N=k) = (1-p)^{k-1}p$ for $k=1,2,\dots$ (fail $k-1$ times, then succeed). Expectation derivation via the standard generating-function/telescoping trick:
+
 $$
-\mathbb E[N] = \sum_{k=1}^\infty k(1-p)^{k-1}p
+\mathbb{E}[N] = \sum_{k=1}^\infty k(1-p)^{k-1}p
 $$
+
 Let $q=1-p$. Use $\sum_{k=1}^\infty k q^{k-1} = \frac{1}{(1-q)^2}$ (derivative of the geometric series $\sum q^k = 1/(1-q)$ with respect to $q$):
+
 $$
-\mathbb E[N] = p\cdot\frac{1}{(1-q)^2} = p\cdot\frac{1}{p^2} = \frac1p
+\mathbb{E}[N] = p\cdot\frac{1}{(1-q)^2} = p\cdot\frac{1}{p^2} = \frac1p
 $$
 
 **Step 2 — General $r$ via linearity of expectation (memorylessness decomposition).** Write $N = T_1+T_2+\dots+T_r$ where $T_i$ = number of attempts *between* the $(i-1)$-th and $i$-th success. By the memoryless property of the geometric distribution, each $T_i$ is itself Geometric$(p)$ and independent of the others (the process "resets" after each success). By linearity of expectation (which requires **no** independence assumption, only additivity):
+
 $$
-\mathbb E[N] = \sum_{i=1}^r \mathbb E[T_i] = \frac{r}{p}
+\mathbb{E}[N] = \sum_{i=1}^r \mathbb{E}[T_i] = \frac{r}{p}
 $$
 
-**Application:** if a resting child order fills with probability $p=0.2$ per venue ping and the parent needs $r=5$ full slices filled, $\mathbb E[N] = 5/0.2 = 25$ attempts. **Variance** (needed for confidence bands on fill-time forecasts): $\text{Var}(N) = r(1-p)/p^2$, derived identically by summing $r$ iid geometric variances $\text{Var}(T_i)=(1-p)/p^2$ (itself from $\mathbb E[T^2]-\mathbb E[T]^2$ via the geometric series second-derivative trick).
+**Application:** if a resting child order fills with probability $p=0.2$ per venue ping and the parent needs $r=5$ full slices filled, $\mathbb{E}[N] = 5/0.2 = 25$ attempts. **Variance** (needed for confidence bands on fill-time forecasts): $\text{Var}(N) = r(1-p)/p^2$, derived identically by summing $r$ iid geometric variances $\text{Var}(T_i)=(1-p)/p^2$ (itself from $\mathbb{E}[T^2]-\mathbb{E}[T]^2$ via the geometric series second-derivative trick).
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2272,24 +2310,29 @@ $$
 
 ## Appendix E3-D · Monty Hall (Adverse-Selection Framing) — Full Bayesian Derivation
 
-**Setup.** 3 doors, 1 prize (informed counterparty) behind a random door, host (market) knows which and always opens a losing door after your initial pick. Let $C_i$ = event "car behind door $i$", prior $P(C_i)=1/3$ each. You pick door 1; host opens door 3 (revealing no prize, and host **never** opens door 1 or the prize door). Question: $P(C_1\mid \text{host opens }3)$ vs $P(C_2\mid\text{host opens }3)$.
+**Setup.** 3 doors, 1 prize (informed counterparty) behind a random door, host (market) knows which and always opens a losing door after your initial pick. Let $C_i$ = event "car behind door $i$", prior $\mathbb{P}(C_i)=1/3$ each. You pick door 1; host opens door 3 (revealing no prize, and host **never** opens door 1 or the prize door). Question: $\mathbb{P}(C_1\mid \text{host opens }3)$ vs $\mathbb{P}(C_2\mid\text{host opens }3)$.
 
 **Step 1 — Likelihood of host's action under each hypothesis.**
-- If $C_1$ (prize behind your door): host may open either door 2 or 3 (both are losers) — by symmetry, $P(\text{opens }3\mid C_1)=1/2$.
-- If $C_2$: host is forced to open door 3 (door 2 has the prize, can't open your door 1) — $P(\text{opens }3\mid C_2)=1$.
-- If $C_3$: host could never open door 3 (it has the prize) — $P(\text{opens }3\mid C_3)=0$.
+- If $C_1$ (prize behind your door): host may open either door 2 or 3 (both are losers) — by symmetry, $\mathbb{P}(\text{opens }3\mid C_1)=1/2$.
+- If $C_2$ : host is forced to open door 3 (door 2 has the prize, can't open your door 1) — $\mathbb{P}(\text{opens }3\mid C_2)=1$.
+- If $C_3$ : host could never open door 3 (it has the prize) — $\mathbb{P}(\text{opens }3\mid C_3)=0$.
 
 **Step 2 — Bayes' theorem.**
+
 $$
-P(C_1\mid \text{opens }3) = \frac{P(\text{opens }3\mid C_1)P(C_1)}{P(\text{opens }3)}
+\mathbb{P}(C_1\mid \text{opens }3) = \frac{\mathbb{P}(\text{opens }3\mid C_1)\mathbb{P}(C_1)}{\mathbb{P}(\text{opens }3)}
 $$
+
 Compute the denominator via the law of total probability:
+
 $$
-P(\text{opens }3) = \tfrac12\cdot\tfrac13 + 1\cdot\tfrac13 + 0\cdot\tfrac13 = \tfrac16+\tfrac13 = \tfrac12
+\mathbb{P}(\text{opens }3) = \tfrac12\cdot\tfrac13 + 1\cdot\tfrac13 + 0\cdot\tfrac13 = \tfrac16+\tfrac13 = \tfrac12
 $$
+
 Therefore:
+
 $$
-P(C_1\mid\text{opens }3) = \frac{\tfrac12\cdot\tfrac13}{\tfrac12} = \frac13, \qquad P(C_2\mid\text{opens }3) = \frac{1\cdot\tfrac13}{\tfrac12}=\frac23
+\mathbb{P}(C_1\mid\text{opens }3) = \frac{\tfrac12\cdot\tfrac13}{\tfrac12} = \frac13, \qquad \mathbb{P}(C_2\mid\text{opens }3) = \frac{1\cdot\tfrac13}{\tfrac12}=\frac23
 $$
 
 **Conclusion: switching doubles win probability from 1/3 to 2/3.** $\blacksquare$
@@ -2301,21 +2344,23 @@ $$
 ---
 ---
 
-## Appendix E4-D · Bayesian Updating — P(Informed | Price Move) Full Derivation
+## Appendix E4-D · Bayesian Updating — \mathbb{P}(Informed | Price Move) Full Derivation
 
-**Setup.** Prior probability an incoming order is "informed" (has private information) is $P(I)=\pi$. Given informed, probability of observing a large adverse price move within the next $\Delta t$ is $P(M\mid I) = \alpha$ (high). Given uninformed (noise), $P(M\mid U) = \beta$ (low, $\beta\ll\alpha$). Observe move $M$; find $P(I\mid M)$.
+**Setup.** Prior probability an incoming order is "informed" (has private information) is $\mathbb{P}(I)=\pi$. Given informed, probability of observing a large adverse price move within the next $\Delta t$ is $\mathbb{P}(M\mid I) = \alpha$ (high). Given uninformed (noise), $\mathbb{P}(M\mid U) = \beta$ (low, $\beta\ll\alpha$). Observe move $M$; find $\mathbb{P}(I\mid M)$.
 
 **Bayes' theorem with full law-of-total-probability expansion:**
+
 $$
-P(I\mid M) = \frac{P(M\mid I)P(I)}{P(M\mid I)P(I) + P(M\mid U)P(U)} = \frac{\alpha\pi}{\alpha\pi + \beta(1-\pi)}
+\mathbb{P}(I\mid M) = \frac{\mathbb{P}(M\mid I)\mathbb{P}(I)}{\mathbb{P}(M\mid I)\mathbb{P}(I) + \mathbb{P}(M\mid U)\mathbb{P}(U)} = \frac{\alpha\pi}{\alpha\pi + \beta(1-\pi)}
 $$
 
-**Worked numeric example (as would be whiteboarded live):** $\pi=0.1$ (10% of flow is informed, a typical microstructure estimate), $\alpha=0.6$, $\beta=0.05$:
+**Worked numeric example (as would be whiteboarded live):** $\pi=0.1$ (10% of flow is informed, a typical microstructure estimate), $\alpha=0.6$, $\beta=0.05$ :
+
 $$
-P(I\mid M) = \frac{0.6\times0.1}{0.6\times0.1 + 0.05\times0.9} = \frac{0.06}{0.06+0.045} = \frac{0.06}{0.105} \approx 0.571
+\mathbb{P}(I\mid M) = \frac{0.6\times0.1}{0.6\times0.1 + 0.05\times0.9} = \frac{0.06}{0.06+0.045} = \frac{0.06}{0.105} \approx 0.571
 $$
 
-**Sequential updating (why this generalizes to a real-time desk tool):** after observing a *second* independent signal $M_2$ with the same likelihoods, the **posterior from step 1 becomes the prior for step 2** — this is the defining recursive property of Bayesian updating, derivable by re-applying Bayes' rule with $\pi' = P(I\mid M_1)=0.571$ in place of $\pi$, requiring no re-derivation of the formula, only substitution — which is exactly how a real-time "toxicity score" on an incoming order flow stream would be implemented: multiply likelihood ratios sequentially (equivalently, sum log-likelihood-ratios) as each new tick arrives, an $O(1)$ update per tick.
+**Sequential updating (why this generalizes to a real-time desk tool):** after observing a *second* independent signal $M_2$ with the same likelihoods, the **posterior from step 1 becomes the prior for step 2** — this is the defining recursive property of Bayesian updating, derivable by re-applying Bayes' rule with $\pi' = \mathbb{P}(I\mid M_1)=0.571$ in place of $\pi$, requiring no re-derivation of the formula, only substitution — which is exactly how a real-time "toxicity score" on an incoming order flow stream would be implemented: multiply likelihood ratios sequentially (equivalently, sum log-likelihood-ratios) as each new tick arrives, an $O(1)$ update per tick.
 
 [🔝 Back to Top](#-table-of-contents)
 
@@ -2324,31 +2369,37 @@ $$
 
 ## Appendix E5-D · Random Walk / Gambler's Ruin — Full Difference-Equation Derivation
 
-**Setup.** Symmetric simple random walk starting at position $0$, absorbing barriers at $-a$ (stop-loss) and $+b$ (take-profit), $a,b>0$ integers. Let $p_k = P(\text{hit }+b\text{ before }-a \mid \text{start at }k)$ for $k\in[-a,b]$.
+**Setup.** Symmetric simple random walk starting at position $0$, absorbing barriers at $-a$ (stop-loss) and $+b$ (take-profit), $a,b>0$ integers. Let $p_k = \mathbb{P}(\text{hit }+b\text{ before }-a \mid \text{start at }k)$ for $k\in[-a,b]$.
 
 **Step 1 — Difference equation from first-step analysis.** Conditioning on the first step ($\pm1$ each with prob $1/2$):
+
 $$
 p_k = \tfrac12 p_{k+1} + \tfrac12 p_{k-1} \quad\Longrightarrow\quad p_{k+1}-p_k = p_k - p_{k-1}
 $$
+
 i.e., $p_k$ is a **linear function** of $k$ (constant first differences) — this follows because the recursion says consecutive differences are equal, so by induction all differences equal the first one.
 
 **Step 2 — Apply boundary conditions.** $p_{-a}=0$ (already lost), $p_b=1$ (already won). A linear function through these two points:
+
 $$
 p_k = \frac{k-(-a)}{b-(-a)} = \frac{k+a}{a+b}
 $$
+
 Evaluate at start $k=0$ (shifting to the problem's original $+b/-a$ from origin convention):
 
 |     |
 | :-- |
-| $`P(+b\text{ first}) = \frac{a}{a+b}`$ |
+| $`\mathbb{P}(+b\text{ first}) = \frac{a}{a+b}`$ |
 
 (using symmetric relabeling — the probability of reaching the barrier $b$ away first is proportional to the *distance to the other barrier*, an intuitive "gravity" result confirmed algebraically.)
 
-**Step 3 — Expected time to absorption, via a martingale/Wald argument.** For the *symmetric* walk, $S_k$ itself is a martingale, but $S_k^2 - k$ is *also* a martingale (since $\mathbb E[S_{k+1}^2\mid S_k] = S_k^2+1$ for a $\pm1$ step, so $\mathbb E[S_{k+1}^2-(k+1)\mid \mathcal F_k] = S_k^2-k$). By the Optional Stopping Theorem applied to stopping time $T=\min\{k: S_k\in\{-a,b\}\}$ (finite a.s. and bounded increments justify OST here):
+**Step 3 — Expected time to absorption, via a martingale/Wald argument.** For the *symmetric* walk, $S_k$ itself is a martingale, but $S_k^2 - k$ is *also* a martingale (since $\mathbb{E}[S_{k+1}^2\mid S_k] = S_k^2+1$ for a $\pm1$ step, so $\mathbb{E}[S_{k+1}^2-(k+1)\mid \mathcal F_k] = S_k^2-k$). By the Optional Stopping Theorem applied to stopping time $T=\min\{k: S_k\in\{-a,b\}\}$ (finite a.s. and bounded increments justify OST here):
+
 $$
-\mathbb E[S_T^2 - T] = S_0^2 - 0 = 0 \quad\Longrightarrow\quad \mathbb E[T] = \mathbb E[S_T^2]
+\mathbb{E}[S_T^2 - T] = S_0^2 - 0 = 0 \quad\Longrightarrow\quad \mathbb{E}[T] = \mathbb{E}[S_T^2]
 $$
-Compute $\mathbb E[S_T^2]$ using the hitting probabilities from Step 2 (with the origin at 0, barriers at $-a,+b$): $\mathbb E[S_T^2] = b^2\cdot\frac{a}{a+b} + a^2\cdot\frac{b}{a+b} = \frac{ab(a+b)}{a+b} = ab$. Therefore:
+
+Compute $\mathbb{E}[S_T^2]$ using the hitting probabilities from Step 2 (with the origin at 0, barriers at $-a,+b$): $\mathbb{E}[S_T^2] = b^2\cdot\frac{a}{a+b} + a^2\cdot\frac{b}{a+b} = \frac{ab(a+b)}{a+b} = ab$. Therefore:
 
 |     |
 | :-- |
@@ -2366,8 +2417,9 @@ exactly the closed-form quoted in the Equation Sheet. **Trading interpretation:*
 **Setup.** VWAP slippage over a parent order is $\text{Slip} = \sum_{i=1}^n w_i (P_i - \text{VWAP}_{\text{bench}})$, a volume-weighted sum of $n$ child-fill deviations, where the individual per-fill deviations $\varepsilon_i = P_i-\text{VWAP}_{\text{bench}}$ are driven largely by independent-ish exogenous order-flow/noise shocks between successive child fills.
 
 **Step 1 — Why CLT applies despite weights.** The (weighted) Lindeberg-Feller CLT extends the classical iid CLT to **independent, non-identically-distributed, weighted** sums, provided the Lindeberg condition holds (no single term's variance dominates the total — true here since no single child fill is typically more than a few % of the parent's total quantity):
+
 $$
-\frac{\sum_i w_i\varepsilon_i - \mathbb E[\sum_i w_i \varepsilon_i]}{\sqrt{\sum_i w_i^2\text{Var}(\varepsilon_i)}} \xrightarrow{d} \mathcal N(0,1)
+\frac{\sum_i w_i\varepsilon_i - \mathbb{E}[\sum_i w_i \varepsilon_i]}{\sqrt{\sum_i w_i^2\text{Var}(\varepsilon_i)}} \xrightarrow{d} \mathcal N(0,1)
 $$
 
 **Step 2 — Why it's only *approximate*, not exact (the caveat interviewers want).** Two violations degrade Gaussianity in practice: (a) **autocorrelation** between consecutive child fills (violates independence — same root issue as Appendix B8-D's block-bootstrap discussion), reducing the *effective* number of independent terms below $n$; (b) **fat tails** in $\varepsilon_i$ from occasional large adverse-selection events (informed counterflow), meaning the Lindeberg condition is only "approximately" satisfied for moderate $n$, so higher moments (skew, kurtosis) matter for small-$n$ parent orders — precisely why B8's bootstrap approach is preferred over the naive Gaussian/t-test for TCA in practice, even though the CLT gives a reasonable large-$n$ justification for the normal approximation used in quick, back-of-envelope significance checks.
@@ -2379,18 +2431,21 @@ $$
 
 ## Appendix E7-D · Correlated Coin Flips — Covariance/Correlation Derivation
 
-**Setup.** Two $\pm1$-coded correlated Bernoulli variables $X,Y\in\{-1,+1\}$ with $P(X=Y)=q$ (agreement probability), $P(X\ne Y)=1-q$, and marginally fair coins $P(X=1)=P(X=-1)=1/2$ (so $\mathbb E[X]=\mathbb E[Y]=0$).
+**Setup.** Two $\pm1$-coded correlated Bernoulli variables $X,Y\in\{-1,+1\}$ with $\mathbb{P}(X=Y)=q$ (agreement probability), $\mathbb{P}(X\ne Y)=1-q$, and marginally fair coins $\mathbb{P}(X=1)=\mathbb{P}(X=-1)=1/2$ (so $\mathbb{E}[X]=\mathbb{E}[Y]=0$).
 
-**Step 1 — Compute $\mathbb E[XY]$ directly from the joint law.** $XY=+1$ exactly when $X=Y$ (both agree, product of like signs is positive), and $XY=-1$ when $X\ne Y$:
+**Step 1 — Compute $\mathbb{E}[XY]$ directly from the joint law.** $XY=+1$ exactly when $X=Y$ (both agree, product of like signs is positive), and $XY=-1$ when $X\ne Y$ :
+
 $$
-\mathbb E[XY] = (+1)\cdot P(X=Y) + (-1)\cdot P(X\ne Y) = q - (1-q) = 2q-1
+\mathbb{E}[XY] = (+1)\cdot \mathbb{P}(X=Y) + (-1)\cdot \mathbb{P}(X\ne Y) = q - (1-q) = 2q-1
 $$
 
-**Step 2 — Covariance and correlation.** Since $\mathbb E[X]=\mathbb E[Y]=0$:
+**Step 2 — Covariance and correlation.** Since $\mathbb{E}[X]=\mathbb{E}[Y]=0$ :
+
 $$
-\text{Cov}(X,Y) = \mathbb E[XY]-\mathbb E[X]\mathbb E[Y] = 2q-1
+\text{Cov}(X,Y) = \mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y] = 2q-1
 $$
-Since $\text{Var}(X)=\mathbb E[X^2]-\mathbb E[X]^2 = 1-0=1$ (as $X^2\equiv1$ always for $\pm1$-coding), and likewise $\text{Var}(Y)=1$ :
+
+Since $\text{Var}(X)=\mathbb{E}[X^2]-\mathbb{E}[X]^2 = 1-0=1$ (as $X^2\equiv1$ always for $\pm1$-coding), and likewise $\text{Var}(Y)=1$ :
 
 $$
 \rho = \frac{\text{Cov}(X,Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}} = \frac{2q-1}{\sqrt{1\cdot1}} = \boxed{2q-1}
@@ -2406,11 +2461,13 @@ matching the Equation Sheet exactly. **Sanity checks:** $q=1$ (always agree) $\R
 ## Appendix E8-D · Fermi Estimation — CME Daily Futures Volume — Structured Derivation
 
 **Step 1 — Decompose into a product of independently-estimable factors** (the core Fermi technique: turn one hard number into a product of several easy-to-guess-order-of-magnitude numbers, so errors partially cancel):
+
 $$
 \text{Daily Contracts} \approx \sum_{\text{product families}} (\text{Open Interest or ADV proxy per family})
 $$
 
 **Step 2 — Anchor on known reference points and scale.** E-mini S&P 500 (ES) trades on the order of $\sim1.5$–$2.5$ million contracts/day (a number a desk quant should have memorized as an anchor); Treasury futures (ZN/ZB complex) collectively trade a comparable order of magnitude; energy (CL, NG) somewhat less per single product but many products; agricultural and metals smaller still per product but numerous. **Order-of-magnitude aggregation:** a handful ($\sim$5–10) of "mega" products at $10^6$–$10^7$/day, plus a long tail of hundreds of smaller products at $10^4$–$10^5$/day each:
+
 $$
 \text{Total} \approx \underbrace{8\times 2\times10^6}_{\text{mega products}} + \underbrace{300\times5\times10^4}_{\text{long tail}} \approx 1.6\times10^7 + 1.5\times10^7 \approx 3\times10^7
 $$
