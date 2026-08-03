@@ -426,9 +426,10 @@ exit 0;
 
 ### G) Standalone Self-Validating Python 3.13 Module (`btic_engine.py`)
 
+```python
 """High-performance BTIC pricing and basis simulation engine with validation."""
 
-from **future** import annotations
+from __future__ import annotations
 
 import logging
 import sys
@@ -461,39 +462,36 @@ def compute_btic_native(self, index_close: float, basis_diff: np.ndarray) -> np.
     """Computes BTIC prices natively in Python 3.13."""
     return index_close + basis_diff
 
-```
-
 def run_self_validation() -> None:
-"""Executes standalone self-validation assertions for BTICEngine."""
-logging.basicConfig(level=logging.INFO)
-logger.info("Running BTICEngine standalone validation suite...")
+    """Executes standalone self-validation assertions for BTICEngine."""
+    logging.basicConfig(level=logging.INFO)
+    logger.info("Running BTICEngine standalone validation suite...")
 
-```
-idx_close = 4510.50
-basis = np.array([2.25, -1.50, 0.00])
+    idx_close = 4510.50
+    basis = np.array([2.25, -1.50, 0.00])
 
-engine = BTICEngine()
+    engine = BTICEngine()
 
-res_native = engine.compute_btic_native(idx_close, basis)
-assert len(res_native) == 3, "Length mismatch"
-assert np.isclose(res_native[0], 4512.75), "BTIC calculation incorrect"
+    res_native = engine.compute_btic_native(idx_close, basis)
+    assert len(res_native) == 3, "Length mismatch"
+    assert np.isclose(res_native[0], 4512.75), "BTIC calculation incorrect"
 
-try:
-    res_q = engine.compute_btic_via_q(idx_close, basis)
-    assert len(res_q) == 3, "Q IPC length mismatch"
-    assert np.isclose(res_q[0], 4512.75), "Q IPC BTIC calculation incorrect"
-except Exception as e:
-    logger.info("Q IPC server not detected (expected in isolated test environments): %s", e)
+    try:
+        res_q = engine.compute_btic_via_q(idx_close, basis)
+        assert len(res_q) == 3, "Q IPC length mismatch"
+        assert np.isclose(res_q[0], 4512.75), "Q IPC BTIC calculation incorrect"
+    except Exception as e:
+        logger.info("Q IPC server not detected (expected in isolated test environments): %s", e)
 
-logger.info("SUCCESS: BTICEngine passed all validation assertions.")
+    logger.info("SUCCESS: BTICEngine passed all validation assertions.")
 
-if **name** == "**main**":
-try:
-run_self_validation()
-sys.exit(0)
-except Exception as e:
-logger.error("FAILURE in BTICEngine execution: %s", e)
-sys.exit(1)
+if __name__ == "__main__":
+    try:
+        run_self_validation()
+        sys.exit(0)
+    except Exception as e:
+        logger.error("FAILURE in BTICEngine execution: %s", e)
+        sys.exit(1)
 
 ```
 
