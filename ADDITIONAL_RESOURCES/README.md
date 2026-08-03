@@ -219,7 +219,7 @@ $$\sigma_t^2 = \omega + \alpha \varepsilon_{t-1}^2 + \beta \sigma_{t-1}^2$$
 
 - If $\alpha + \beta < 1$: variance is mean-reverting (stationary)
 - If $\alpha + \beta = 1$: IGARCH — shocks are permanent (VaR understates risk)
-- Typical equity data: $\alpha + \beta \approx 0.97$–$0.99$
+- Typical equity data: $\alpha + \beta \approx 0.97-0.99$
 
 **Long-run variance:**
 

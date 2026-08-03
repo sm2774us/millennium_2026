@@ -2478,7 +2478,7 @@ $$
 \text{Daily Contracts} \approx \sum_{\text{product families}} (\text{Open Interest or ADV proxy per family})
 $$
 
-**Step 2 — Anchor on known reference points and scale.** E-mini S&P 500 (ES) trades on the order of $\sim1.5$–$2.5$ million contracts/day (a number a desk quant should have memorized as an anchor); Treasury futures (ZN/ZB complex) collectively trade a comparable order of magnitude; energy (CL, NG) somewhat less per single product but many products; agricultural and metals smaller still per product but numerous. **Order-of-magnitude aggregation:** a handful ($\sim$5–10) of "mega" products at $10^6$–$10^7$/day, plus a long tail of hundreds of smaller products at $10^4$–$10^5$/day each:
+**Step 2 — Anchor on known reference points and scale.** E-mini S&P 500 (ES) trades on the order of $\sim1.5-2.5$ million contracts/day (a number a desk quant should have memorized as an anchor); Treasury futures (ZN/ZB complex) collectively trade a comparable order of magnitude; energy (CL, NG) somewhat less per single product but many products; agricultural and metals smaller still per product but numerous. **Order-of-magnitude aggregation:** a handful ( $\sim 5–10$ ) of "mega" products at $10^6-10^7$ per day, plus a long tail of hundreds of smaller products at $10^4-10^5$ per day each:
 
 $$
 \text{Total} \approx \underbrace{8\times 2\times10^6}_{\text{mega products}} + \underbrace{300\times5\times10^4}_{\text{long tail}} \approx 1.6\times10^7 + 1.5\times10^7 \approx 3\times10^7
