@@ -441,26 +441,24 @@ from qpython import QConnection
 logger = logging.getLogger(**name**)
 
 class BTICEngine:
-"""Computes BTIC prices via Q IPC or NumPy."""
+    """Computes BTIC prices via Q IPC or NumPy."""
+    def __init__(self, q_host: str = "localhost", q_port: int = 5000) -> None:
+        self.q_host = q_host
+        self.q_port = q_port
 
-```
-def __init__(self, q_host: str = "localhost", q_port: int = 5000) -> None:
-    self.q_host = q_host
-    self.q_port = q_port
+    def compute_btic_via_q(self, index_close: float, basis_diff: np.ndarray) -> np.ndarray:
+        """Invokes the native q computeBTICPrice function over KDB+ IPC."""
+        with QConnection(host=self.q_host, port=self.q_port) as q_conn:
+            q_conn.open()
+            q_conn.sync(".q.idxClose", index_close)
+            q_conn.sync(".q.basis", basis_diff)
+            result = q_conn.sync("computeBTICPrice[idxClose; basis]")
+            logger.info("Successfully executed BTIC pricing via Q IPC.")
+            return np.array(result)
 
-def compute_btic_via_q(self, index_close: float, basis_diff: np.ndarray) -> np.ndarray:
-    """Invokes the native q computeBTICPrice function over KDB+ IPC."""
-    with QConnection(host=self.q_host, port=self.q_port) as q_conn:
-        q_conn.open()
-        q_conn.sync(".q.idxClose", index_close)
-        q_conn.sync(".q.basis", basis_diff)
-        result = q_conn.sync("computeBTICPrice[idxClose; basis]")
-        logger.info("Successfully executed BTIC pricing via Q IPC.")
-        return np.array(result)
-
-def compute_btic_native(self, index_close: float, basis_diff: np.ndarray) -> np.ndarray:
-    """Computes BTIC prices natively in Python 3.13."""
-    return index_close + basis_diff
+    def compute_btic_native(self, index_close: float, basis_diff: np.ndarray) -> np.ndarray:
+        """Computes BTIC prices natively in Python 3.13."""
+        return index_close + basis_diff
 
 def run_self_validation() -> None:
     """Executes standalone self-validation assertions for BTICEngine."""
