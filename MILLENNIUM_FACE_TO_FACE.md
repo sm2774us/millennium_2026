@@ -2346,7 +2346,7 @@ $$
 
 ## Appendix E4-D · Bayesian Updating — \mathbb{P}(Informed | Price Move) Full Derivation
 
-**Setup.** Prior probability an incoming order is "informed" (has private information) is $\mathbb{P}(I)=\pi$. Given informed, probability of observing a large adverse price move within the next $\Delta t$ is $\mathbb{P}(M\mid I) = \alpha$ (high). Given uninformed (noise), $\mathbb{P}(M\mid U) = \beta$ (low, $\beta\ll\alpha$). Observe move $M$; find $\mathbb{P}(I\mid M)$.
+**Setup.** Prior probability an incoming order is "informed" (has private information) is $\mathbb{P}(I)=\pi$. Given informed, probability of observing a large adverse price move within the next $\Delta t$ is $\mathbb{P}(M\mid I) = \alpha$ (high). Given uninformed (noise), $\mathbb{P}(M\mid U) = \beta$ (low, $\beta \ll \alpha$). Observe move $M$; find $\mathbb{P}(I\mid M)$.
 
 **Bayes' theorem with full law-of-total-probability expansion:**
 
@@ -3427,11 +3427,11 @@ main:{[args]
 
 ### E) Detailed q Solution Explanation
 * **`raze`** flattens the list of k per-venue tables into one unsorted table via vectorized concatenation — O(n) in total row count, no per-stream iteration required since q's columnar storage makes concatenation a bulk memory operation rather than a row-by-row append.
-* **`` `ts xasc ``** performs a single vectorized sort keyed on `ts` — q delegates this to a highly optimized native sort (typically an introsort/quicksort variant over primitive vectors), which for the moderate k / large n regime typical of a daily consolidated tape **outperforms** a heap-based incremental merge due to better cache locality and no per-element heap-adjust overhead, even though its worst-case asymptotic ( $\mathcal{O}(n\log n)$ ) is nominally worse than the heap merge's $\mathcal{O}(n\log k)$ for $k \ll n$.
+* **`` `ts xasc ``** performs a single vectorized sort keyed on `ts` — q delegates this to a highly optimized native sort (typically an introsort/quicksort variant over primitive vectors), which for the moderate k / large n regime typical of a daily consolidated tape **outperforms** a heap-based incremental merge due to better cache locality and no per-element heap-adjust overhead, even though its worst-case asymptotic ( $\mathcal{O}(n\log n)$ ) is nominally worse than the heap merge's $\mathcal{O}(n\log k)$ for $k \ll n$ .
 * **Trade-off explicitly called out live:** the Python D5 heap-merge is *asymptotically* better when $k$ is large relative to $n$ per-stream, and is *streaming* (doesn't require all data resident); the q bulk-sort is simpler, fully vectorized, and faster in wall-clock time for the common "merge today's k venue files, entirely in memory, once" batch case — the right choice depends on whether the tape must be produced incrementally in real time (favor a heap/streaming design) or once in bulk at end-of-day (favor the vectorized sort).
 
 ### F) Time & Space Complexity Analysis
-* **Time Complexity:** $\mathcal{O}(n\log n)$ for the vectorized sort over all $n$ ticks (versus the Python heap-merge's $\mathcal{O}(n\log k)$) — asymptotically worse when $k\ll n$, but with a much smaller constant factor in practice due to vectorization.
+* **Time Complexity:** $\mathcal{O}(n\log n)$ for the vectorized sort over all $n$ ticks ( versus the Python heap-merge's $\mathcal{O}(n \log k)$ ) — asymptotically worse when $k \ll n$, but with a much smaller constant factor in practice due to vectorization.
 * **Space Complexity:** $\mathcal{O}(n)$ to materialize the full concatenated-then-sorted tape (not streaming), versus the Python generator's $\mathcal{O}(k)$ auxiliary space — a genuine batch-vs-streaming space trade-off.
 
 [🔝 Back to Top](#-table-of-contents)
