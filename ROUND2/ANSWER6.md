@@ -220,7 +220,7 @@ Where $P_{\text{settlement}}$ is the official exchange settlement price and $d$ 
 09:30 ──────────────────── TAS differential trades all day ──────────── close/settlement
    │  TAS buyer/seller agree on d (e.g. flat, or +1 tick)                    │
    │  No dollar price is fixed yet — only the differential                   │
-   │                                                                          ▼
+   │                                                                         ▼
    │                                                          Official settlement published
    │                                                          P_TAS = P_settlement + d
    └────────────────────────────────────────────────────────────────────────►
@@ -378,15 +378,15 @@ Where $b$ represents the agreed basis differential and $\text{IndexClose}_t$ is 
 
 ```
 BTIC vs TAS — REFERENCE MECHANISM
-──────────────────  ────────────────────────────────__________________
+──────────────────   ──────────────────────────────────────────────────
 TAS                  P = futures own SETTLEMENT price + d
-                      Risk: futures settlement-timing / basis-free
+                     Risk: futures settlement-timing / basis-free
 
 BTIC                 P = CASH INDEX close + b
-                      Risk: futures-vs-INDEX basis, driven by index
-                      constituent closing-auction dynamics (hundreds
-                      of individual stock closes aggregating into one
-                      index print) — genuinely higher-dimensional risk
+                     Risk: futures-vs-INDEX basis, driven by index
+                     constituent closing-auction dynamics (hundreds
+                     of individual stock closes aggregating into one
+                     index print) — genuinely higher-dimensional risk
 
 ```
 
