@@ -2198,7 +2198,7 @@ $$
 n_{\text{eff}} = \frac{n}{1+2\rho\frac{m-1}{m}} < n
 $$
 
-so the naive $s/\sqrt n$ **understates** the true standard error, inflating false-positive rates. The **block bootstrap** fix: resample entire parent-order blocks (not individual fills) with replacement, recompute $\bar X^{*(b)}$ for $b=1,\dots,B$ resamples, and use the empirical distribution of $\{\bar X^{*(b)}\}$ directly for the confidence interval — this requires no normality assumption and automatically inherits whatever within-block correlation structure exists in the real data, because resampling preserves it at the block level.
+so the naive $s/\sqrt n$ **understates** the true standard error, inflating false-positive rates. The **block bootstrap** fix: resample entire parent-order blocks (not individual fills) with replacement, recompute $\bar X^{\*(b)}$ for $b=1,\dots,B$ resamples, and use the empirical distribution of $\{\bar X^{\*(b)}\}$ directly for the confidence interval — this requires no normality assumption and automatically inherits whatever within-block correlation structure exists in the real data, because resampling preserves it at the block level.
 
 [🔝 Back to Top](#-table-of-contents)
 
