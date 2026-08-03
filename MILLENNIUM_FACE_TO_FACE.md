@@ -2211,11 +2211,30 @@ so the naive $s/\sqrt n$ **understates** the true standard error, inflating fals
 **Step 1 — Worst-case balancing condition.** With a budget of $k$ total drops, the strategy is: first drop at floor $x_1=k$; if survives, next drop at $x_1+x_2 = k+(k-1)$; if survives, next at $k+(k-1)+(k-2)$; etc. The logic: **every branch of the worst-case tree must cost exactly $k$ total drops**, so each time the egg survives we have "used up" one drop but must still guarantee success in $k-1$ remaining drops — hence the gap to the next test floor **shrinks by one** each time (since if egg-1 eventually breaks, we only have $k-i$ linear drops of egg-2 left to cover the gap of size $x_{i}$).
 
 **Step 2 — Sum the maximal coverage.** With $k$ drops we can cover:
+
 $$
 n(k) = k + (k-1) + (k-2) + \dots + 1 = \sum_{i=1}^{k} i = \frac{k(k+1)}{2}
 $$
 
-**Step 3 — Solve for minimal $k$ such that $n(k)\ge 100$.** Solve the quadratic $\frac{k(k+1)}{2}\ge 100 \Rightarrow k^2+k-200\ge 0$. Quadratic formula: $k \ge \dfrac{-1+\sqrt{1+800}}{2} = \dfrac{-1+\sqrt{801}}{2}\approx\dfrac{-1+28.30}{2}\approx13.65$. Since $k$ must be an integer, $k=14$ ⇒ check: $n(14)=14\cdot15/2=105\ge100$ ✓; $n(13)=13\cdot14/2=91<100$ ✗.
+**Step 3 — Solve for minimal $k$ such that $n(k)\ge 100$.** Solve the quadratic: 
+
+$$
+\frac{k(k+1)}{2}\ge 100 \Rightarrow k^2+k-200\ge 0
+$$
+
+Quadratic formula:
+
+$$
+k \ge \dfrac{-1+\sqrt{1+800}}{2} = \dfrac{-1+\sqrt{801}}{2}\approx\dfrac{-1+28.30}{2}\approx13.65
+$$
+
+Since $k$ must be an integer, $k=14$ ⇒ 
+
+check: 
+
+$n(14)=14\cdot15/2=105\ge100$ ✓;
+
+$n(13)=13\cdot14/2=91<100$ ✗.
 
 **Answer: 14 drops**, with first test floor at 14, then (if survives) 14+13=27, then 27+12=39, ..., decrementing by one each surviving trial — a triangular-number strategy, not naive binary search (binary search with 2 eggs is a strictly worse, greedy-but-not-optimal heuristic since a broken first egg on floor 50 leaves 49 floors to search linearly with only 1 egg, costing up to 50 drops worst case).
 
