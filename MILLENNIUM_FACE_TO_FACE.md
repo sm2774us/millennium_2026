@@ -2414,7 +2414,19 @@ exactly the closed-form quoted in the Equation Sheet. **Trading interpretation:*
 
 ## Appendix E6-D · CLT & Why VWAP Slippage Is Approximately Normal — Derivation Sketch
 
-**Setup.** VWAP slippage over a parent order is $\text{Slip} = \sum_{i=1}^n w_i (P_i - \text{VWAP}_{\text{bench}})$, a volume-weighted sum of $n$ child-fill deviations, where the individual per-fill deviations $\varepsilon_i = P_i-\text{VWAP}_{\text{bench}}$ are driven largely by independent-ish exogenous order-flow/noise shocks between successive child fills.
+**Setup.** VWAP slippage over a parent order is:
+
+$$
+\text{Slip} = \sum_{i=1}^n w_i (P_i - \text{VWAP}_{\text{bench}})
+$$
+
+a volume-weighted sum of $n$ child-fill deviations, where the individual per-fill deviations: 
+
+$$
+\varepsilon_i = P_i-\text{VWAP}_{\text{bench}}
+$$
+
+are driven largely by independent-ish exogenous order-flow/noise shocks between successive child fills.
 
 **Step 1 — Why CLT applies despite weights.** The (weighted) Lindeberg-Feller CLT extends the classical iid CLT to **independent, non-identically-distributed, weighted** sums, provided the Lindeberg condition holds (no single term's variance dominates the total — true here since no single child fill is typically more than a few % of the parent's total quantity):
 
