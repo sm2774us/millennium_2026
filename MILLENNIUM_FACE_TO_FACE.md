@@ -282,25 +282,37 @@ where Delay Cost = drift from decision time to first order release, Trading Cost
 
 ## B2 · Market Impact Models — Square-Root Law & Almgren-Chriss
 
-**The empirical square-root law:**
+**The Empirical Square-Root Law:**
 
-$$
-\Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}
-$$
+$$\Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}$$
 
-**Say it out loud:** *"Price impact scales with volatility times the square root of the fraction of daily volume you trade — not linearly. Doubling your order size only increases impact by about 41%, not 100%. That square-root shape is one of the most robust empirical facts in market microstructure, replicated across equities, futures, and FX, and it's the backbone of every impact-aware execution algo, including the ones I'd build here."*
+**Say it out loud:** *"Price impact scales with volatility times the square root of your participation rate ($Q/V$) — it is strictly sub-linear. Doubling your order size only increases impact by about 41%, not 100%. That concave, square-root shape is one of the most robust empirical facts in market microstructure."*
 
-**Almgren-Chriss cost function** (temporary + permanent impact):
+**Almgren-Chriss Cost Function (The Mathematical Tug-of-War):**
 
-$$
-\eta(v) = \eta v \quad (\text{temporary, linear in trade rate}), \qquad g(v) = \gamma v \quad (\text{permanent})
-$$
+$$\text{Total Cost} = \underbrace{\int_0^T \Big[\eta \dot{x}(t)^2 \Big] dt}_{\text{Term 1: Temporary Impact}} + \underbrace{\frac{1}{2}\gamma X^2}_{\text{Term 2: Permanent Impact}} + \underbrace{\lambda \int_0^T \sigma^2 x(t)^2 dt}_{\text{Term 3: Risk Penalty}}$$
 
-$$
-\text{Total Cost} = \int_0^T \Big[\eta \dot{x}(t)^2 \Big] dt + \frac{1}{2}\gamma X^2 + \lambda \int_0^T \sigma^2 x(t)^2 dt
-$$
+**Say it out loud, plainly:** *"This equation is a mechanical tug-of-war, and breaking down the three terms reveals exactly how an execution algorithm makes decisions."*
 
 **Say it out loud, plainly:** *"There are three terms. Temporary impact is the cost you pay for trading fast right now — it scales with the square of your trading rate, so trading twice as fast costs four times as much in impact per unit time. Permanent impact is a one-time cost proportional to total size regardless of speed — the market permanently reprices to reflect your information. Risk penalty is how much you're paying for the privilege of taking longer, because your remaining unexecuted position sits exposed to price volatility the whole time. The optimal trajectory is whatever balances 'faster costs more in impact' against 'slower costs more in risk,' weighted by the trader's risk aversion λ."*
+
+* **Term 1 (Temporary Impact): $\int_0^T [\eta \dot{x}(t)^2] dt$**
+  * **The Math:** $\dot{x}(t)$ is the derivative of your inventory—your instantaneous speed of trading. Because this term squares your speed ($\dot{x}^2$), liquidity costs are strictly convex.
+  * **How it Dominates:** If you halve the time you have to trade, you must double your speed, which *quadruples* this specific cost. This term constantly pulls the algorithm to trade as slowly, evenly, and passively as possible to avoid the squared penalty.
+
+
+* **Term 2 (Permanent Impact): $\frac{1}{2}\gamma X^2$**
+  * **The Math:** $X$ is your total starting parent order size. Notice there is no $t$ and no trajectory variable $x(t)$ in this term.
+  * **How it Dominates:** It doesn't. From an optimization standpoint, this term is completely irrelevant. Because it depends entirely on total size $X$ and not *how* you trade $x(t)$, it acts as a constant. When we take the derivative to find the optimal trading path, Term 2 drops to zero. You cannot optimize your way out of permanent impact; it is the sunk, fixed cost of pushing your alpha into the market.
+
+* **Term 3 (Risk Penalty): $\lambda \int_0^T \sigma^2 x(t)^2 dt$**
+  * **The Math:** $x(t)$ is your unexecuted inventory sitting on the book at time $t$. We integrate the square of this remaining exposure against market variance ($\sigma^2$) and the PM's risk aversion parameter ($\lambda$).
+  * **How it Dominates:** This term punishes time. It dominates when the asset is highly volatile (high $\sigma$) or the alpha decays instantly (high $\lambda$). When this term takes over, it violently overpowers Term 1, forcing the algorithm to front-load the trade and aggressively cross the spread, gladly paying the convex temporary impact just to burn down $x(t)$ and escape the variance exposure.
+
+**The Internal Relationship (The Synthesis):**
+
+> *"Term 2 is just a spectator. The actual execution trajectory is a ruthless, localized negotiation strictly between Term 1 and Term 3. Term 1 wants us to stretch the trade over the entire day to minimize the $\dot{x}^2$ speed penalty. Term 3 is terrified of volatility and wants us to execute the entire block right now to crush the $x^2$ variance exposure. The mathematical solution to this exact tension is what produces the optimal trading curve."*
+> 
 
 **Job tie-back:** "experience fitting trading cost and market impact models" is a direct JD line item — this is likely a whiteboard-derivation question.
 
