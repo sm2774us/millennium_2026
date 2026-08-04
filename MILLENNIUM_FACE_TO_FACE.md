@@ -1794,7 +1794,7 @@ if __name__ == "__main__":
 
 ##### Complexity Analysis
 
-* **Time Complexity:** **$O(1)$ amortized** per incoming trade print. Maintaining a fixed-size deque of length `min_prints` ensures constant-time mathematical evaluations ($O(K)$ where $K = \text{min\_prints}$ is a small constant, typically $4 \le K \le 10$).
+* **Time Complexity:** **$O(1)$ amortized** per incoming trade print. Maintaining a fixed-size deque of length `min_prints` ensures constant-time mathematical evaluations ($O(K)$ where $K = \text{min\\_prints}$ is a small constant, typically $4 \le K \le 10$).
 * **Space Complexity:** **$O(P)$**, where $P$ is the max allowed active price levels (`max_price_levels`). The combination of a strict capacity cap and time-to-live (TTL) stale eviction guarantees absolute memory boundedness, preventing memory leaks during extended trading sessions.
 
 [🔝 Back to Top](#-table-of-contents)
