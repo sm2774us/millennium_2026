@@ -2250,9 +2250,63 @@ if __name__ == "__main__":
 
 ---
 
-* **Time & Space Efficiency ( $O(N \log N)$ ):** Offloading aggregations to Pandas' C-backed Cython engine avoids slow Python loops, easily processing millions of fills.
-* **Structural Rigor:** The use of an `outer join` guarantees that completely missing positions (e.g., a rogue fill present internally but dropped by the clearing broker, or vice versa) are correctly flagged rather than silently lost.
-* **Operational Design:** Sorting by absolute break magnitude descending ensures that analysts triage high-exposure breaks first.
+## 100% Accurate Complexity Breakdown
+
+Let's define the variables clearly:
+
+* $n$: Number of rows in `internal_fills` (individual trade fills).
+* $m$: Number of rows in `broker_positions` (broker-reported positions).
+* $U$: Number of unique `(account, sym)` pairs across both datasets ($U \le n + m$).
+
+### 1. Time Complexity: $O(n + m + U \log U)$
+
+* **Internal Fills Groupby (`internal_fills.groupby(...)`):** Takes **$O(n)$** average time using hash-based grouping in Pandas/Cython to hash keys and accumulate sums.
+* **Broker Positions Prep (`broker_positions.rename(...)`):** Takes **$O(m)$** time to rename columns.
+* **Outer Merge (`internal_net.merge(..., how="outer")`):** Takes **$O(U)$** time using hash joins on the unique keys.
+* **Sorting Breaks (`sort_values(...)`):** Takes **$O(U \log U)$** time to sort the resulting breaks by magnitude.
+* **Overall Time Complexity:** **$O(n + m + U \log U)$**. Since $U \le n + m$, in the worst case where every fill has a unique account/symbol pair ($U = n$), it simplifies to **$O(n \log n)$**.
+
+### 2. Space Complexity: $O(n + m)$
+
+* **Inputs:** Storing `internal_fills` ($O(n)$ space) and `broker_positions` ($O(m)$ space).
+* **Intermediates & Output:** `internal_net`, `broker_net`, `merged`, and `breaks` all scale linearly with the number of unique keys or filtered rows, bounded by $O(n + m)$.
+* **Overall Space Complexity:** **$O(n + m)$** auxiliary and total memory footprint.
+
+## Refactored Explanation block (Ready to drop-in)
+
+> **Complexity:**
+> * **Time:** **$O(n + m + U \log U)$**, where $n$ is the number of internal fills, $m$ is the number of broker positions, and $U$ is the number of unique `(account, sym)` pairs ($U \le n + m$). It is linear $O(n + m)$ for the hash-based groupby and merge phases, bounded by **$O(n \log n)$** in the worst-case due to the final `.sort_values()` step.
+> * **Space:** **$O(n + m)$** to store the input DataFrames, intermediate aggregated structures, and final output frames.
+>
+
+## Real World Complexity
+
+When $m \ll n$ (meaning the number of broker positions, or more accurately the number of unique account/symbol pairs $U$, is much smaller than the total number of raw fills $n$), the execution profile shifts significantly.
+
+Here is what happens under the hood when $m \ll n$:
+
+---
+
+### 1. Time Complexity Simplifies to $O(n)$
+
+* **The Bottleneck Shifts:** The $O(U \log U)$ sorting cost becomes negligible because $U$ is small.
+* **The Dominant Term:** The time complexity is entirely dominated by the hash-aggregation pass over the $n$ fills ($\text{groupby}$), making the effective time complexity **$O(n)$** (strictly linear with respect to the input size).
+* **Why:** Hashing $n$ rows into a smaller hash table of size $U$ is a fast, single-pass operation in Cython. Once reduced to $U$ rows, the subsequent merge, math operations, and sorting operate on a tiny dataset.
+
+### 2. Space Complexity is Optimized by Grouping
+
+* **Memory Compression:** While the input DataFrame still requires $O(n)$ memory, the intermediate objects (`internal_net`, `broker_net`, `merged`, and `breaks`) shrink drastically in memory footprint because they only scale with $U$ instead of $n$.
+* **Peak Memory:** Peak memory is still bounded by the initial load of the raw $n$-row fills DataFrame, but the working memory for joins and sorts drops close to $O(m)$ or $O(U)$.
+
+---
+
+### Real-World Trading Context
+
+In high-frequency or active trading environments, this $m \ll n$ scenario is the standard operating condition:
+
+* You might have **1,000,000 individual fills ($n$)** executed throughout the day.
+* However, you might only hold positions across **50 unique symbols/accounts ($m$)** at close.
+* **Result:** Because of Pandas' efficient hash-aggregation, your millions of rows are instantly compressed down to 50 rows, meaning the reconciliation script will run extremely fast and use very little memory past the initial dataframe ingestion.
 
 ---
 
@@ -2350,63 +2404,10 @@ if __name__ == "__main__":
 
 ```
 
-##### 100% Accurate Complexity Breakdown
+##### Complexity Analysis
 
-Let's define the variables clearly:
-
-* $n$: Number of rows in `internal_fills` (individual trade fills).
-* $m$: Number of rows in `broker_positions` (broker-reported positions).
-* $U$: Number of unique `(account, sym)` pairs across both datasets ($U \le n + m$).
-
-###### 1. Time Complexity: $O(n + m + U \log U)$
-
-* **Internal Fills Groupby (`internal_fills.groupby(...)`):** Takes **$O(n)$** average time using hash-based grouping in Pandas/Cython to hash keys and accumulate sums.
-* **Broker Positions Prep (`broker_positions.rename(...)`):** Takes **$O(m)$** time to rename columns.
-* **Outer Merge (`internal_net.merge(..., how="outer")`):** Takes **$O(U)$** time using hash joins on the unique keys.
-* **Sorting Breaks (`sort_values(...)`):** Takes **$O(U \log U)$** time to sort the resulting breaks by magnitude.
-* **Overall Time Complexity:** **$O(n + m + U \log U)$**. Since $U \le n + m$, in the worst case where every fill has a unique account/symbol pair ($U = n$), it simplifies to **$O(n \log n)$**.
-
-###### 2. Space Complexity: $O(n + m)$
-
-* **Inputs:** Storing `internal_fills` ($O(n)$ space) and `broker_positions` ($O(m)$ space).
-* **Intermediates & Output:** `internal_net`, `broker_net`, `merged`, and `breaks` all scale linearly with the number of unique keys or filtered rows, bounded by $O(n + m)$.
-* **Overall Space Complexity:** **$O(n + m)$** auxiliary and total memory footprint.
-
-##### Complexity Summary
-
-> **Complexity:**
-> * **Time:** **$O(n + m + U \log U)$**, where $n$ is the number of internal fills, $m$ is the number of broker positions, and $U$ is the number of unique `(account, sym)` pairs ($U \le n + m$). It is linear $O(n + m)$ for the hash-based groupby and merge phases, bounded by **$O(n \log n)$** in the worst-case due to the final `.sort_values()` step.
-> * **Space:** **$O(n + m)$** to store the input DataFrames, intermediate aggregated structures, and final output frames.
->
-
-##### Real World Complexity
-
-When $m \ll n$ (meaning the number of broker positions, or more accurately the number of unique account/symbol pairs $U$, is much smaller than the total number of raw fills $n$), the execution profile shifts significantly.
-
-Here is what happens under the hood when $m \ll n$:
-
----
-
-###### 1. Time Complexity Simplifies to $O(n)$
-
-* **The Bottleneck Shifts:** The $O(U \log U)$ sorting cost becomes negligible because $U$ is small.
-* **The Dominant Term:** The time complexity is entirely dominated by the hash-aggregation pass over the $n$ fills ($\text{groupby}$), making the effective time complexity **$O(n)$** (strictly linear with respect to the input size).
-* **Why:** Hashing $n$ rows into a smaller hash table of size $U$ is a fast, single-pass operation in Cython. Once reduced to $U$ rows, the subsequent merge, math operations, and sorting operate on a tiny dataset.
-
-###### 2. Space Complexity is Optimized by Grouping
-
-* **Memory Compression:** While the input DataFrame still requires $O(n)$ memory, the intermediate objects (`internal_net`, `broker_net`, `merged`, and `breaks`) shrink drastically in memory footprint because they only scale with $U$ instead of $n$.
-* **Peak Memory:** Peak memory is still bounded by the initial load of the raw $n$-row fills DataFrame, but the working memory for joins and sorts drops close to $O(m)$ or $O(U)$.
-
----
-
-##### Real-World Trading Context
-
-In high-frequency or active trading environments, this $m \ll n$ scenario is the standard operating condition:
-
-* You might have **1,000,000 individual fills ($n$)** executed throughout the day.
-* However, you might only hold positions across **50 unique symbols/accounts ($m$)** at close.
-* **Result:** Because of Pandas' efficient hash-aggregation, your millions of rows are instantly compressed down to 50 rows, meaning the reconciliation script will run extremely fast and use very little memory past the initial dataframe ingestion.
+* **Time Complexity:** **$O(N \log N + M \log M)$**, where $N$ is the number of daily execution fills and $M$ is the number of active portfolio accounts/symbols. Dominated by Pandas hash-based groupbys and outer merges, executing efficiently within C structures.
+* **Space Complexity:** **$O(N + M)$** auxiliary memory to store intermediate groupby aggregations, carry-forward ledger states, and output break reporting frames.
 
 [🔝 Back to Top](#-table-of-contents)
 
