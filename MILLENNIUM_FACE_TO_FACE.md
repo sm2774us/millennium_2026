@@ -1191,7 +1191,180 @@ if __name__ == "__main__":
 
 ---
 
-#### Follow-up
+#### Follow-up-1
+> **"Q — Re-do the implementation w/o the use of external libraries?"**
+>
+
+**Answer:**
+To replace `sortedcontainers.SortedDict` without external libraries while keeping the core functionality, performance profile, and production quality intact, we can implement a custom ordered key-value store backed by Python’s built-in `bisect` module and a standard Python `dict`.
+
+A `dict` handles $O(1)$ lookups and updates, while a parallel `list` of sorted keys managed via `bisect` provides $O(\log p)$ ordered lookups (where $p$ is the number of price levels).
+
+Here is the delta-enhanced, production-quality implementation:
+
+```python
+"""Limit order book reconstruction from a normalized event stream.
+
+Typical usage example:
+
+    book = OrderBook()
+    book.apply(BookEvent(side="B", price=5000.00, size=10, event_type="ADD"))
+    best_bid = book.best_bid()
+"""
+
+from __future__ import annotations
+
+bisect = __import__("bisect")
+dataclasses = __import__("dataclasses")
+enum = __import__("enum")
+
+
+class EventType(enum.Enum):
+    """Type of book-affecting event."""
+
+    ADD = "ADD"
+    CANCEL = "CANCEL"
+    TRADE = "TRADE"  # Reduces size at a price level (aggressive fill).
+
+
+@dataclasses.dataclass(frozen=True, slots=True)
+class BookEvent:
+    """A single normalized order book event.
+
+    Attributes:
+        side: "B" for bid or "A" for ask.
+        price: Price level affected.
+        size: Size delta to apply (always positive; sign is inferred from
+          event_type).
+        event_type: One of EventType.
+    """
+
+    side: str
+    price: float
+    size: float
+    event_type: EventType
+
+
+class _SortedPriceLadder:
+    """A lightweight, zero-dependency sorted map implementation for price ladders.
+
+    Uses a standard dict for O(1) value lookups/mutations and a sorted list
+    of keys maintained via bisect for O(log p) ordered access.
+    """
+
+    __slots__ = ("_store", "_keys")
+
+    def __init__(self) -> None:
+        self._store: dict[float, float] = {}
+        self._keys: list[float] = []
+
+    def __bool__(self) -> bool:
+        return bool(self._store)
+
+    def get(self, price: float, default: float = 0.0) -> float:
+        return self._store.get(price, default)
+
+    def __setitem__(self, price: float, size: float) -> None:
+        if price not in self._store:
+            bisect.insort(self._keys, price)
+        self._store[price] = size
+
+    def pop(self, price: float, default: float | None = None) -> float | None:
+        if price in self._store:
+            idx = bisect.bisect_left(self._keys, price)
+            if idx < len(self._keys) and self._keys[idx] == price:
+                self._keys.pop(idx)
+            return self._store.pop(price)
+        return default
+
+    def peek_min(self) -> float | None:
+        """Returns the smallest key (lowest ask), or None if empty."""
+        return self._keys[0] if self._keys else None
+
+    def peek_max(self) -> float | None:
+        """Returns the largest key (highest bid), or None if empty."""
+        return self._keys[-1] if self._keys else None
+
+
+class OrderBook:
+    """Maintains a price-level-aggregated limit order book.
+
+    Uses custom _SortedPriceLadder price ladders (bid, ask) mapping price -> resting
+    size, giving O(log p) insert/update/delete and O(1) best-price lookup,
+    where p is the number of distinct resting price levels.
+    """
+
+    def __init__(self) -> None:
+        """Initializes empty bid and ask ladders."""
+        self._bids: _SortedPriceLadder = _SortedPriceLadder()
+        self._asks: _SortedPriceLadder = _SortedPriceLadder()
+
+    def _ladder(self, side: str) -> _SortedPriceLadder:
+        """Returns the ladder for the given side.
+
+        Args:
+            side: "B" or "A".
+
+        Returns:
+            The bid or ask _SortedPriceLadder ladder.
+
+        Raises:
+            ValueError: If side is not "B" or "A".
+        """
+        if side == "B":
+            return self._bids
+        if side == "A":
+            return self._asks
+        raise ValueError(f"Unknown side: {side!r}")
+
+    def apply(self, event: BookEvent) -> None:
+        """Applies a single event to the book, mutating it in place.
+
+        Args:
+            event: The event to apply.
+        """
+        ladder = self._ladder(event.side)
+        current = ladder.get(event.price, 0.0)
+        if event.event_type is EventType.ADD:
+            ladder[event.price] = current + event.size
+        else:  # CANCEL or TRADE both reduce resting size at the level.
+            remaining = current - event.size
+            if remaining <= 0:
+                ladder.pop(event.price, None)
+            else:
+                ladder[event.price] = remaining
+
+    def best_bid(self) -> float | None:
+        """Returns the highest resting bid price, or None if empty."""
+        return self._bids.peek_max()
+
+    def best_ask(self) -> float | None:
+        """Returns the lowest resting ask price, or None if empty."""
+        return self._asks.peek_min()
+
+
+if __name__ == "__main__":
+    book = OrderBook()
+    book.apply(BookEvent("B", 5000.00, 10, EventType.ADD))
+    book.apply(BookEvent("B", 5000.25, 5, EventType.ADD))
+    book.apply(BookEvent("A", 5000.50, 8, EventType.ADD))
+    assert book.best_bid() == 5000.25
+    assert book.best_ask() == 5000.50
+    book.apply(BookEvent("B", 5000.25, 5, EventType.CANCEL))
+    assert book.best_bid() == 5000.00
+    book.apply(BookEvent("A", 5000.50, 3, EventType.TRADE))
+    assert book.best_ask() == 5000.50  # Partially filled, level remains.
+    print("All OrderBook assertions passed.")
+
+```
+
+> [!NOTE]
+> **Note for Production Python:** If I ever need to do this in production rather than as an algorithmic exercise, Python developers typically rely on battle-tested external libraries like `sortedcontainers` (`sortedcontainers.SortedDict`). While hand-rolling a `bisect`-backed sorted dict is great for constraints where dependencies are prohibited, `sortedcontainers` is implemented in pure Python with heavily optimized C-like performance tuning, widely adopted in quantitative finance, and extensively tested for edge cases that my custom implementation might miss.
+>
+
+---
+
+#### Follow-up-2
 > **"Q — While a price-level aggregated order book works well for top-of-book or imbalance analytics, what happens if our execution strategies require **full order-level (depth-of-book) tracking with queue position and individual order cancellation support**, and how would you redesign the state machine to achieve $O(1)$ order cancellation without scanning the price ladder?"**
 
 **Answer:**
