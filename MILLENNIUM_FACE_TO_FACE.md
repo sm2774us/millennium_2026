@@ -947,8 +947,8 @@ if __name__ == "__main__":
 
 ---
 
-* **Time Complexity ($O(1)$ amortized per tick):** Every tick is appended once and popped at most once when it ages out of the window. This delivers $O(N)$ total time processing, which is mathematically optimal.
-* **Space Complexity ($O(W)$):** Storage is bounded strictly by the number of ticks resident in the active window ($W$), avoiding unnecessary memory accumulation.
+* **Time Complexity ( $O(1)$ amortized per tick ):** Every tick is appended once and popped at most once when it ages out of the window. This delivers $O(N)$ total time processing, which is mathematically optimal.
+* **Space Complexity ( $O(W)$ ):** Storage is bounded strictly by the number of ticks resident in the active window ($W$), avoiding unnecessary memory accumulation.
 * **Design Excellence:** Using `frozen=True` and `slots=True` on the dataclass showcases a strong awareness of CPython memory overhead and instantiation efficiency.
 
 ---
@@ -1185,8 +1185,8 @@ if __name__ == "__main__":
 
 ---
 
-* **Time Complexity ($O(\log P)$ per event):** Where $P$ is the number of active distinct price levels, inserts, updates, and deletes operate in logarithmic time. Best-bid and best-ask queries execute in **$O(1)$ constant time** using `peekitem(-1)` and `peekitem(0)`, which is crucial given that book state is queried far more frequently than events are applied.
-* **Space Complexity ($O(P)$):** Memory usage scales precisely with the active price levels rather than the total individual order count, keeping overhead minimal.
+* **Time Complexity ( $O(\log P)$ per event ):** Where $P$ is the number of active distinct price levels, inserts, updates, and deletes operate in logarithmic time. Best-bid and best-ask queries execute in **$O(1)$ constant time** using `peekitem(-1)` and `peekitem(0)`, which is crucial given that book state is queried far more frequently than events are applied.
+* **Space Complexity ( $O(P)$ ):** Memory usage scales precisely with the active price levels rather than the total individual order count, keeping overhead minimal.
 * **Architectural Pragmatism:** While Python lacks native low-level pointers for pointer-based Red-Black trees, `sortedcontainers` is implemented with highly optimized contiguous block arrays under the hood, offering incredible C-speed performance while preserving clean syntax.
 
 ---
@@ -1419,8 +1419,8 @@ if __name__ == "__main__":
 
 ---
 
-* **Time Complexity ($O(T)$):** Vectorized array generation over $T$ trading periods executes directly in C via NumPy with minimal overhead, which is mathematically and computationally optimal.
-* **Space Complexity ($O(T)$):** Memory usage scales linearly with the length of the schedule, generating the required output array of per-period child orders without excess allocation.
+* **Time Complexity ( $O(T)$ ):** Vectorized array generation over $T$ trading periods executes directly in C via NumPy with minimal overhead, which is mathematically and computationally optimal.
+* **Space Complexity ( $O(T)$ ):** Memory usage scales linearly with the length of the schedule, generating the required output array of per-period child orders without excess allocation.
 * **Numerical Stability & Quantitative Rigor:** The implementation explicitly guards against numerical instabilities by handling the risk-neutral limit ($\kappa \rightarrow 0$) analytically, avoiding catastrophic floating-point division errors (`0/0` in the `sinh` ratio).
 
 ---
@@ -1653,8 +1653,8 @@ if __name__ == "__main__":
 
 ---
 
-* **Time Complexity ($O(1)$ per print):** State tracking and condition checking execute in constant time, allowing the detector to keep pace with high-frequency market data streams without lagging.
-* **Space Complexity ($O(P)$):** Memory usage is bounded by $P$ (the number of active distinct price levels currently receiving prints), which keeps footprints small.
+* **Time Complexity ( $O(1)$ per print ):** State tracking and condition checking execute in constant time, allowing the detector to keep pace with high-frequency market data streams without lagging.
+* **Space Complexity ( $O(P)$ ):** Memory usage is bounded by $P$ (the number of active distinct price levels currently receiving prints), which keeps footprints small.
 * **Microstructural Awareness:** Triggering `True` *exclusively* on the boundary edge when crossing `min_repeats` (and resetting cleanly on size changes) prevents alert fatigue and duplicate signaling for the execution desk.
 
 ---
@@ -1794,7 +1794,7 @@ if __name__ == "__main__":
 
 ##### Complexity Analysis
 
-* **Time Complexity:** **$O(1)$ amortized** per incoming trade print. Maintaining a fixed-size deque of length `min_prints` ensures constant-time mathematical evaluations ($O(K)$ where $K = \text{min\\_prints}$ is a small constant, typically $4 \le K \le 10$).
+* **Time Complexity:** **$O(1)$ amortized** per incoming trade print. Maintaining a fixed-size deque of length `min_prints` ensures constant-time mathematical evaluations ( $O(K)$ where $K = \text{min\\_prints}$ is a small constant, typically $4 \le K \le 10$ ).
 * **Space Complexity:** **$O(P)$**, where $P$ is the max allowed active price levels (`max_price_levels`). The combination of a strict capacity cap and time-to-live (TTL) stale eviction guarantees absolute memory boundedness, preventing memory leaks during extended trading sessions.
 
 [🔝 Back to Top](#-table-of-contents)
@@ -1883,8 +1883,8 @@ if __name__ == "__main__":
 
 ---
 
-* **Time Complexity ($O(N \log K)$):** Where $N$ is total ticks and $K$ is the number of venues, each element is inserted and extracted at most once, which is theoretically optimal.
-* **Space Complexity ($O(K)$):** By yielding items lazily, memory overhead is constrained strictly to the active heap size ($K$), preventing out-of-memory errors when processing billions of daily trade prints.
+* **Time Complexity ( $O(N \log K)$ ):** Where $N$ is total ticks and $K$ is the number of venues, each element is inserted and extracted at most once, which is theoretically optimal.
+* **Space Complexity ( $O(K)$ ):** By yielding items lazily, memory overhead is constrained strictly to the active heap size ($K$), preventing out-of-memory errors when processing billions of daily trade prints.
 * **Pythonic Design Excellence:** Leveraging `@dataclass(order=True)` with `compare=False` on payload fields ensures clean, type-safe comparison without manual wrapper tuples.
 
 ---
@@ -2077,7 +2077,7 @@ if __name__ == "__main__":
 
 ---
 
-* **Time & Space Efficiency ($O(N \log N)$):** Offloading aggregations to Pandas' C-backed Cython engine avoids slow Python loops, easily processing millions of fills.
+* **Time & Space Efficiency ( $O(N \log N)$ ):** Offloading aggregations to Pandas' C-backed Cython engine avoids slow Python loops, easily processing millions of fills.
 * **Structural Rigor:** The use of an `outer join` guarantees that completely missing positions (e.g., a rogue fill present internally but dropped by the clearing broker, or vice versa) are correctly flagged rather than silently lost.
 * **Operational Design:** Sorting by absolute break magnitude descending ensures that analysts triage high-exposure breaks first.
 
@@ -2288,8 +2288,8 @@ if __name__ == "__main__":
 
 ---
 
-* **Time Complexity ($O(1)$ amortized per update):** Bypasses any need to re-scan the rolling window, ensuring that market-impact features (such as realized volatility feeding Almgren-Chriss $\kappa$) compute instantaneously on the streaming hot path.
-* **Space Complexity ($O(W)$):** Storage is bounded strictly by the window size $W$, which prevents memory leakage over long-running trading days.
+* **Time Complexity ( $O(1)$ amortized per update ):** Bypasses any need to re-scan the rolling window, ensuring that market-impact features (such as realized volatility feeding Almgren-Chriss $\kappa$) compute instantaneously on the streaming hot path.
+* **Space Complexity ( $O(W)$ ):** Storage is bounded strictly by the window size $W$, which prevents memory leakage over long-running trading days.
 * **Numerical Safeguards:** Explicitly clamping variance via `max(..., 0.0)` mitigates catastrophic cancellation errors common with floating-point math on nearly constant series.
 
 ---
@@ -2514,9 +2514,9 @@ if __name__ == "__main__":
 
 ---
 
-* **Time Complexity ($O(N \alpha(N)) \approx O(N)$):** The combination of path compression and union by rank keeps the amortized cost per operation to nearly constant time, outperforming heavy graph-traversal algorithms (BFS/DFS).
+* **Time Complexity ( $O(N \alpha(N)) \approx O(N)$ ):** The combination of path compression and union by rank keeps the amortized cost per operation to nearly constant time, outperforming heavy graph-traversal algorithms (BFS/DFS).
 * **Online Adaptability:** It handles dynamic linking of fills sequentially as execution reports stream in without requiring a full graph reconstruction.
-* **Space Complexity ($O(N)$):** Memory usage scales linearly with the number of unique fills and accounts tracked in the parent/rank maps.
+* **Space Complexity ( $O(N)$ ):** Memory usage scales linearly with the number of unique fills and accounts tracked in the parent/rank maps.
 
 ---
 
