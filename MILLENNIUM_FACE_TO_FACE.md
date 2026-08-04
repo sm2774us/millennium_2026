@@ -943,6 +943,8 @@ if __name__ == "__main__":
 
 **Complexity:** Time O(n) total for n ticks (amortized O(1) per tick); Space O(w) where w is the number of ticks resident in the window at any time (bounded, not by total ticks seen).
 
+**Improvement with more time:** for very high-frequency streams I'd replace the Python `deque` with a fixed-capacity ring buffer of NumPy arrays to avoid per-tick object allocation overhead (dataclass instantiation), trading a bit of code clarity for materially lower constant-factor latency — relevant if this ever needed to run in the hot path rather than research/monitoring.
+
 ---
 
 * **Time Complexity ($O(1)$ amortized per tick):** Every tick is appended once and popped at most once when it ages out of the window. This delivers $O(N)$ total time processing, which is mathematically optimal.
@@ -950,8 +952,6 @@ if __name__ == "__main__":
 * **Design Excellence:** Using `frozen=True` and `slots=True` on the dataclass showcases a strong awareness of CPython memory overhead and instantiation efficiency.
 
 ---
-
-**Improvement with more time:** for very high-frequency streams I'd replace the Python `deque` with a fixed-capacity ring buffer of NumPy arrays to avoid per-tick object allocation overhead (dataclass instantiation), trading a bit of code clarity for materially lower constant-factor latency — relevant if this ever needed to run in the hot path rather than research/monitoring.
 
 #### Follow-up
 > **"Q — While the Python deque implementation is clean and optimal for research or analytics tooling, what happens under high-throughput market data ingestion if we need to process millions of ticks per second, and how would you redesign this in Python to eliminate object allocation and garbage collection pressure on the hot path?"**
