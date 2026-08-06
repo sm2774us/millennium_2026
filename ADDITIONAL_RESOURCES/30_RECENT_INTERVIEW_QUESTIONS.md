@@ -350,6 +350,8 @@ Given a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ with a Brownian mo
 
 ![Radon-Nikodym derivative](./assets/Radon-Nikodym.png)
 
+$\frac{d\mathbb{Q}}{d\mathbb{P}} \Big\vert{}_{\mathcal{F}_T} = \mathcal{E}\left( -\int_0^T \theta_t dW_t^\mathbb{P} \right) = \text{exp}\biggl( -\int_0^T \theta_t dW_t^\mathbb{P} - \frac{1}{2}\int_0^T \theta_t^2 dt \biggl)$
+
 ```text
 Mathjax to render above ( can be tested and viewed on https://stackedit.io/ ) :
 
