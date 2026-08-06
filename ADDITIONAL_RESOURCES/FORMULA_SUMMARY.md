@@ -1,4 +1,51 @@
+<div align="center">
+
 # 🧮 Important Equations Cheatsheet
+Important **Quantitative Finace** formulae to keep handy during interviews.
+
+</div>
+
+---
+---
+
+[↩️ Back to ./README.md](./README.md#-additional-resources)
+
+---
+---
+
+## 📋 Table of Contents
+
+### 🧮 FIRST-PRINCIPLES MATHEMATICAL DERIVATIONS
+
+## Basic Formula
+* [A. Quantitative Finance: Probability & Statistics Equations Reference](#a-quantitative-finance-probability--statistics-equations-reference)
+* [B. Structural laws of variance, standard deviation, products, total decomposition, and the behavior of i.i.d. breakdowns](#b-structural-laws-of-variance-standard-deviation-products-total-decomposition-and-the-behavior-of-iid-breakdowns)
+* [C. Multivariate asset allocation and portfolio optimization laws using matrix and linear algebra notation](#c-multivariate-asset-allocation-and-portfolio-optimization-laws-using-matrix-and-linear-algebra-notation)
+
+## Domain-Wise Formula
+* [1. Market Structure, Pricing & Futures Mechanics](#1-market-structure-pricing--futures-mechanics)
+* [2. Transaction Cost Analysis (TCA) & Implementation Shortfall (IS)](#2-transaction-cost-analysis-tca--implementation-shortfall-is)
+* [3. Market Impact & Optimal Execution Trajectories](#3-market-impact--optimal-execution-trajectories)
+* [4. Microstructure Metrics, Aggregations & Risk Signals](#4-microstructure-metrics-aggregations--risk-signals)
+* [5. Linear Algebra & Markovian Dynamics](#5-linear-algebra--markovian-dynamics)
+* [6. Stochastic Calculus & Measure Transformations](#6-stochastic-calculus--measure-transformations)
+* [7. Asset Pricing, Option PDEs & Advanced Volatility Dynamics](#7-asset-pricing-option-pdes--advanced-volatility-dynamics)
+* [8. Signal Processing, Time Series & State Space Models](#8-signal-processing-time-series--state-space-models)
+* [9. Alpha Research, Signal Evaluation & Performance Metrics](#9-alpha-research-signal-evaluation--performance-metrics)
+* [10. Factor Modeling, Portfolio Construction & Risk Management](#10-factor-modeling-portfolio-construction--risk-management)
+* [11. Quantitative Statistics & Hypothesis Testing](#11-quantitative-statistics--hypothesis-testing)
+
+[🔝 Back to Top](#-table-of-contents)
+
+---
+---
+
+## Basic Formula
+
+[🔝 Back to Top](#-table-of-contents)
+
+---
+---
 
 ### A. Quantitative Finance: Probability & Statistics Equations Reference
 
@@ -45,6 +92,11 @@
 | **Option Valuation** | Black-Scholes $`d_2`$ Parameter | $`d_2 = d_1 - \sigma \sqrt{T-t}`$ | Probability of option expiring in-the-money under risk-neutral measure |
 | **Option Valuation** | Put-Call Parity | $`C_t - P_t = S_t - K e^{-r(T-t)}`$ | No-arbitrage relation between standard European call and put options |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
+---
+
 ### B. Structural laws of variance, standard deviation, products, total decomposition, and the behavior of i.i.d. breakdowns
 
 | Category | Concept / Metric | Equation / Formula | Key Variables & Notes |
@@ -63,6 +115,11 @@
 | i.i.d. Breakdowns | Autocorrelation | $`\text{Cov}(X_t, X_{t-k}) \neq 0`$ | Breaks "Independent" half. Serial dependency in time series (e.g., high-frequency execution). |
 | i.i.d. Breakdowns | Heteroskedasticity | $`\text{Var}(X_t \vert{} \mathcal{F}_{t-1}) = \sigma_t^2`$ | Breaks "Identically Distributed" half. Volatility changes over time based on history (handled via GARCH). |
 | i.i.d. Breakdowns | Regime-Switching | $`X_t \sim \mathcal{N}(\mu_{S_t}, \sigma_{S_t}^2)`$ | Breaks "Identically Distributed" half. Parameters depend on hidden discrete state $`S_t`$ (handled via HMM). |
+
+[🔝 Back to Top](#-table-of-contents)
+
+---
+---
 
 ### C. Multivariate asset allocation and portfolio optimization laws using matrix and linear algebra notation
 
@@ -85,6 +142,18 @@
 | Matrix Pathology | Dimensionality Breakdown | $`n \gg T \implies \det(\boldsymbol{\Sigma}) \to 0`$ | Number of assets ($n$) exceeds historical time steps ($T$). Matrix becomes uninvertible. |
 | Matrix Correction | Ledoit-Wolf Shrinkage | $`\boldsymbol{\Sigma}_{\text{shrunk}} = \delta \mathbf{F} + (1 - \delta)\boldsymbol{\Sigma}`$ | $`\mathbf{F}`$: structured target matrix; $`\delta \in [0,1]`$: shrinkage constant to stabilize inversions. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
+---
+
+## Domain-Wise Formula
+
+[🔝 Back to Top](#-table-of-contents)
+
+---
+---
+
 ### 1. Market Structure, Pricing & Futures Mechanics
 
 | Domain / Context | Final Form Equation | Validated Parameters & Definitions | Buy-Side Desk Relevance |
@@ -93,6 +162,9 @@
 | **Variation Margin (VM)**<br> | $`\text{VM}_t = (F_t - F_{t-1}) \times M \times N`$<br> | • $`\text{VM}_t`$: Daily MTM cash flow<br><br>• $`F_t, F_{t-1}`$: Futures settlement prices<br><br>• $`M`$: Contract multiplier<br><br>• $`N`$: Contract quantity | Resets contract present value to zero daily, creating intraday cash funding demands distinct from OTC forward contracts. |
 | **Annualized Futures Roll Yield**<br> | $`\text{Roll Yield} \approx -\frac{F(t,T_{\text{next}}) - F(t,T_{\text{front}})}{F(t,T_{\text{front}})} \times \frac{365}{T_{\text{next}}-T_{\text{front}}}`$<br> | • $`F(t,T)`$: Futures price at time $`t`$ for maturity $`T`$<br><br>• $`T_{\text{next}}, T_{\text{front}}`$: Expiry dates | Measures contango drag or backwardation yield when systematically rolling expiring futures positions via calendar spreads. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 2. Transaction Cost Analysis (TCA) & Implementation Shortfall (IS)
@@ -104,6 +176,9 @@
 | **Slippage Attribution Waterfall**<br> | $`\text{Slippage} = d \cdot \left[ (P_{\text{release}} - P_{\text{decision}}) + (P_{\text{fill,avg}} - P_{\text{release}}) + (P_{\text{close}} - P_{\text{fill,avg}}) \right]`$<br> | • $P_{\text{decision}}$: PM decision mark<br><br>• $`P_{\text{release}}`$: Order release timestamp<br><br>• $`P_{\text{close}}`$: Session close mark | Decomposes pre-trade routing delay, execution trading friction, and post-trade adverse price selection. |
 | **Normalized IS Components (bps)**<br> | $`\text{IS}_{\text{bps}} = \frac{Q_{\text{filled}} \cdot \text{ExecCost}_{\text{bps}} + Q_{\text{unfilled}} \cdot \text{OppCost}_{\text{bps}}}{Q_{\text{parent}}}`$<br><br>$`\text{ExecCost}_{\text{bps}} = d \cdot 10^4 \cdot \frac{P_{\text{fill,avg}} - P_{\text{arrival}}}{P_{\text{arrival}}}`$<br> | • $`\text{IS}_{\text{bps}}`$: Total shortfall in basis points<br><br>• $`Q_{\text{parent}}`$: Total parent order quantity | Standardizes relative execution cost metrics across multi-asset portfolios and varying contract scales. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 3. Market Impact & Optimal Execution Trajectories
@@ -116,6 +191,9 @@
 | **Almgren-Chriss Optimal Trajectory (Single Asset)**<br> | $`x(t) = X \cdot \frac{\sinh\left(\kappa(T-t)\right)}{\sinh(\kappa T)}`$<br><br>$`\kappa = \sqrt{\frac{\lambda \sigma^2}{\eta}}`$<br> | • $`X`$: Initial inventory $`x(0)`$<br><br>• $`T`$: Execution horizon<br><br>• $`\kappa`$: Urgency parameter | Analytical solution for continuous inventory liquidation. Higher urgency $`\kappa`$ accelerates liquidation to avoid volatility risk. |
 | **Almgren-Chriss Trajectory (Multi-Asset Matrix System)**<br> | $`\mathbf{x}(t) = \sinh\left(\boldsymbol{\Gamma}(T-t)\right) \left[\sinh(\boldsymbol{\Gamma} T)\right]^{-1} \mathbf{x}(0)`$<br><br>$`\boldsymbol{\Gamma} = \sqrt{\lambda \boldsymbol{\eta}^{-1} \boldsymbol{\Sigma}}`$<br> | • $`\mathbf{x}(t)`$: Inventory vector<br><br>• $`\boldsymbol{\Sigma}`$: Covariance matrix<br><br>• $`\boldsymbol{\eta}`$: Temporary impact matrix | Generalizes optimal execution to multi-asset portfolios, incorporating asset correlations and cross-asset market impact dynamics. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 4. Microstructure Metrics, Aggregations & Risk Signals
@@ -127,6 +205,9 @@
 | **Time-Weighted Average Price (TWAP)**<br> | $`P_{\text{TWAP}} = \frac{\sum_{i=1}^N P_i \cdot \Delta t_i}{\sum_{i=1}^N \Delta t_i}`$<br> | • $`P_i`$: Prevailing price<br><br>• $`\Delta t_i`$: Duration interval | Measures time-uniform execution quality across designated market windows. |
 | **Peak-to-Trough Running Drawdown**<br> | $`\text{Drawdown}_t = \frac{P_t - \max_{\tau \le t} P_\tau}{\max_{\tau \le t} P_\tau} \times 100\%`$<br> | • $P_t$: Equity / asset value at time $t$<br><br>• $`\max_{\tau \le t} P_\tau`$: Historical peak value | Real-time risk management metric tracking peak-to-trough capital erosion. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 5. Linear Algebra & Markovian Dynamics
@@ -138,6 +219,9 @@
 | **Markov Transition Dynamics** | $`\mathbf{\pi}_{t+1} = \mathbf{\pi}_t \mathbf{P}, \quad \text{subject to } \sum_{j} P_{ij} = 1`$ | • $`\mathbf{\pi}_t`$: State distribution vector<br><br>• $\mathbf{P}$: Stochastic transition matrix | Models order book imbalance transitions, regime changes, and credit rating migrations. |
 | **Gram-Schmidt Orthogonalization** | $`\mathbf{u}_k = \mathbf{v}_k - \sum_{j=1}^{k-1} \frac{\langle \mathbf{v}_k, \mathbf{u}_j \rangle}{\Vert{}\mathbf{u}_j\Vert{}^2} \mathbf{u}_j, \quad \mathbf{e}_k = \frac{\mathbf{u}_k}{\Vert{}\mathbf{u}_k\Vert{}}`$ | • $`\mathbf{v}_k`$: Raw signal vector<br><br>• $`\mathbf{u}_k, \mathbf{e}_k`$: Orthogonal / Orthonormal signal vectors | Removes collinearity across quantitative alpha signals to isolate incremental predictive power. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 6. Stochastic Calculus & Measure Transformations
@@ -149,6 +233,9 @@
 | **Driftless Local Martingale Process** | $`dX_t = \sigma(t, X_t) dW_t`$ | • $X_t$: Driftless price or spread process<br><br>• $`W_t`$: Standard Wiener process | Models risk-neutral derivative dynamics and statistical arbitrage spreads stripped of structural trend drifts. |
 | **Girsanov’s Theorem (Change of Measure)** | $`\frac{d\mathbb{Q}}{d\mathbb{P}} \Big\vert{}_{\mathcal{F}_T} = \mathcal{E}\left( -\int_0^T \theta_t dW_t^\mathbb{P} \right) = \text{exp}\biggl( -\int_0^T \theta_t dW_t^\mathbb{P} - \frac{1}{2}\int_0^T \theta_t^2 dt \biggl)`$ | • $`\mathbb{P}, \mathbb{Q}`$: Physical & Risk-Neutral measures<br><br>• $`\theta_t = \frac{\mu_t - r_t}{\sigma_t}`$: Market price of risk | Converts physical asset dynamics (with drift) into risk-neutral measure processes for derivative pricing. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 7. Asset Pricing, Option PDEs & Advanced Volatility Dynamics
@@ -168,6 +255,9 @@
 | **Rough Fractional Brownian Motion** | $`dv_t = \kappa(\theta - v_t) dt + \xi v_t^\alpha dW_t^H`$<br><br>$`\mathbb{E}\left[(W_t^H - W_s^H)^2\right] = \vert{}t - s\vert{}^{2H}`$ | • $`W_t^H`$: Fractional Brownian motion<br><br>• $`H \in (0, 1/2)`$: Hurst parameter | Models rough volatility paths to reproduce steep short-dated option smiles with few parameters. |
 | **SVJD (Stochastic Volatility Jump-Diffusion)** | $`dS_t = (\mu - \lambda k) S_t dt + \sqrt{v_t} S_t dW_t^S + (Y - 1) S_t dN_t`$<br><br>$`dv_t = \kappa(\theta - v_t) dt + \xi \sqrt{v_t} dW_t^v`$ | • Integrates Heston stochastic variance with Merton discrete jumps | Institutional framework for option books: jumps handle short-term option crashes, while stochastic vol models long-term smiles. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 8. Signal Processing, Time Series & State Space Models
@@ -182,6 +272,9 @@
 | **Hidden Markov Model (MS-AR)** | $`y_t = c_{S_t} + \sum_{i=1}^p \phi_{i, S_t} y_{t-i} + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma_{S_t}^2)`$ | • $`S_t \in \{1, \dots, K\}`$: Unobserved discrete state<br><br>• $`c_{S_t}, \phi_{S_t}`$: State-dependent parameters | Identifies market regime shifts (e.g., low-vol trend vs high-vol mean-reversion) to dynamically reweight alpha models. |
 | **Dynamic Linear Model (DLM)** | $`\mathbf{y}_t = \mathbf{F}_t^\top \boldsymbol{\theta}_t + \mathbf{v}_t, \quad \mathbf{v}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{V}_t)`$<br><br>$`\boldsymbol{\theta}_t = \mathbf{G}_t \boldsymbol{\theta}_{t-1} + \mathbf{w}_t, \quad \mathbf{w}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{W}_t)`$ | • $`\boldsymbol{\theta}_t`$: Time-varying parameter vector<br><br>• $`\mathbf{F}_t, \mathbf{G}_t`$: Measurement & System matrices | Bayesian state-space framework for modeling time-varying asset betas, factor loadings, and macro relationships. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 9. Alpha Research, Signal Evaluation & Performance Metrics
@@ -199,6 +292,9 @@
 | **Strategy Capital Capacity** | $`\text{Capacity} \approx V_{\text{ADV}} \cdot \left( \frac{\alpha_{\text{gross}}}{\gamma_{\text{impact}}} \right)^{\frac{1}{\beta}}`$ | • $`V_{\text{ADV}}`$: Average daily volume<br><br>• $`\alpha_{\text{gross}}`$: Unconstrained gross return edge<br><br>• $`\gamma_{\text{impact}}`$: Market impact scale coefficient | Determines maximum AUM scaling before transaction costs erode strategy alpha edge. |
 | **Breakeven Transaction Cost** | $`\text{Cost}_{\text{breakeven}} = \frac{\mathbb{E}[R_{\text{gross}}]}{\text{Turnover Rate}}`$ | • $`\mathbb{E}[R_{\text{gross}}]`$: Annualized gross return | Maximum allowable trading cost per trade before net strategy return drops to zero. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 10. Factor Modeling, Portfolio Construction & Risk Management
@@ -213,6 +309,9 @@
 | **Value at Risk (VaR)** | $`\mathbb{P}\left( L > \text{VaR}_\alpha \right) = 1 - \alpha`$ | • $`L`$: Portfolio loss random variable<br><br>• $`\alpha`$: Confidence level (e.g., 99%) | Standard risk metric estimating maximum expected portfolio loss over a specified time horizon at a given confidence level. |
 | **Conditional VaR (CVaR) / Expected Shortfall** | $`\text{CVaR}_\alpha = \mathbb{E}\left[ L \mid L \ge \text{VaR}_\alpha \right] = \frac{1}{1-\alpha} \int_\alpha^1 \text{VaR}_u du`$ | • Coherent risk metric measuring tail loss severity | Measures expected loss in tail risk scenarios exceeding the VaR threshold; accounts for fat-tailed return distributions. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---
 
 ### 11. Quantitative Statistics & Hypothesis Testing
@@ -221,4 +320,7 @@
 | --- | --- | --- | --- |
 | **TCA Slippage Significance Test**<br> | $`t = \frac{\bar{X} - \mu_0}{s / \sqrt{n}} \sim t_{n-1}`$<br> | • $`\bar{X}`$: Sample mean realized slippage<br><br>• $`\mu_0 = 0`$: Null baseline<br><br>• $`s`$: Sample standard deviation; $n$: Order count | Determines whether observed execution slippage reflects structural broker/algo underperformance versus statistical noise. |
 
+[🔝 Back to Top](#-table-of-contents)
+
+---
 ---

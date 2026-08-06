@@ -27,6 +27,7 @@
 ## Cheatsheets
 
 * [Calculus Reference](./CALCULUS_REFERENCE.md)
+* [Formula Summary](./FORMULA_SUMMARY.md)
 * [Mathematical Derivations](./MATHEMATICAL_DERIVATIONS.md)
 * [Quant Researcher Field Manual](./QUANT_RESEARCHER_FIELD_MANUAL.md)
 * **🏦 Quant Research Compendium**
