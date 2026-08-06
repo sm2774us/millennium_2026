@@ -27,6 +27,7 @@
 ## Cheatsheets
 
 * [Calculus Reference](./CALCULUS_REFERENCE.md)
+* [Mathematical Derivations](./MATHEMATICAL_DERIVATIONS.md)
 * [Quant Researcher Field Manual](./QUANT_RESEARCHER_FIELD_MANUAL.md)
 * **🏦 Quant Research Compendium**
   * [Volume A: `NumPy` · `Pandas` · `Polars`](./PYTHON_LIBRARIES_COMPENDIUM/quant_doc_A_numpy_pandas_polars.md)
