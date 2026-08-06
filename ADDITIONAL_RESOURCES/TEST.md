@@ -1,0 +1,32 @@
+| Domain / Context | Final Form Equation | Validated Parameters & Definitions | Buy-Side Desk Relevance |
+| --- | --- | --- | --- |
+| **TAS Contract Pricing**<br> | $P_{\text{TAS}} = S_{\text{settle}} + \delta$<br> | • $P_{\text{TAS}}$: Execution fill price
+
+<br>
+
+<br>• $S_{\text{settle}}$: Official closing settlement price
+
+<br>
+
+<br>• $\delta$: Agreed basis differential
+
+ | Locks execution price relative to the exchange settlement, eliminating intraday price volatility while introducing benchmark settlement risk.
+
+ |
+| **Variation Margin (VM)**<br> | $\text{VM}_t = (F_t - F_{t-1}) \times M \times N$<br> | • $\text{VM}_t$: Daily MTM cash flow
+
+<br>
+
+<br>• $F_t, F_{t-1}$: Futures settlement prices
+
+<br>
+
+<br>• $M$: Contract multiplier
+
+<br>
+
+<br>• $N$: Contract quantity
+
+ | Resets contract present value to zero daily, creating intraday cash funding demands distinct from OTC forward contracts.
+
+ |
