@@ -404,6 +404,25 @@ $$
 x(t) = X \cdot \frac{\sinh\big(\kappa (T-t)\big)}{\sinh(\kappa T)}, \qquad \kappa = \sqrt{\frac{\lambda \sigma^2}{\eta}}
 $$
 
+---
+
+### Variable & Parameter Reference Table
+
+| Symbol | Parameter / Term Name | Financial & Mathematical Definition | Dimensional Units | Impact on Trajectory Shape |
+| :--- | :--- | :--- | :--- | :--- |
+| **$x(t)$** | **Remaining Inventory** | Unexecuted parent order balance sitting in portfolio/book at time $t$. | Shares / Contracts / Nominal | Monotonically decreases from $X$ down to $0$ over $t \in [0, T]$. |
+| **$X$** | **Initial Parent Order Size** | Total starting position size to be executed over the window ($x(0) = X$). | Shares / Contracts / Nominal | Direct linear scale factor for overall inventory magnitude. |
+| **$t$** | **Current Execution Time** | Instantaneous time elapsed since order entry ($0 \le t \le T$). | Time (e.g., hours, days) | Independent trajectory variable. |
+| **$T$** | **Total Execution Horizon** | Upper time boundary allocated to complete the trade ($x(T) = 0$). | Time (e.g., hours, days) | Sets the hard time window constraint. |
+| **$T - t$** | **Remaining Time Horizon** | Time remaining to complete the execution at instant $t$. | Time | Drives the numerator hyperbolic argument $\kappa(T-t)$. |
+| **$\kappa$** | **Urgency / Curvature Parameter** | Composite parameter measuring trade urgency: $\kappa = \sqrt{\frac{\lambda \sigma^2}{\eta}}$. | Inverse Time ($\text{time}^{-1}$) | High $\kappa \implies$ heavy front-loading (convex curve).<br>Low $\kappa \implies$ linear trajectory (TWAP). |
+| **$\lambda$** | **Trader Risk Aversion** | Relative weight placed on variance risk vs. expected impact cost. | Currency$^{-1}$ ($\$^{-1}$) | Higher $\lambda \implies$ higher urgency $\kappa \implies$ trade faster now. |
+| **$\sigma^2$** | **Asset Price Variance Rate** | Instantaneous variance of underlying asset price returns per unit time. | Price$^2 / \text{Time}$ | Higher $\sigma^2 \implies$ higher price risk $\implies$ higher urgency $\kappa$. |
+| **$\eta$** | **Temporary Impact Parameter** | Market illiquidity coefficient penalizing squared trading velocity ($\eta \dot{x}^2$). | Currency $\cdot \text{Time} / \text{Shares}^2$ | Higher $\eta \implies$ illiquid market $\implies$ lowers $\kappa$, forcing smoother/slower trading. |
+| **$\sinh(\cdot)$** | **Hyperbolic Sine Function** | $\sinh(z) = \frac{e^z - e^{-z}}{2}$. Mathematical solution to 2nd-order ODE $\ddot{x} = \kappa^2 x$. | Dimensionless | Enforces boundary conditions smoothly while modeling non-linear decay. |
+
+---
+
 **Say it out loud:** *"Kappa is a single number that captures the tension between risk aversion and impact cost — big lambda or big sigma (you're scared of price risk) pushes kappa up, which makes the trajectory front-load more aggressively, trading fast now to reduce exposure time. Big eta (impact is expensive) pushes kappa down toward zero, which flattens the trajectory toward straight-line — that is, toward plain TWAP. In the risk-neutral limit, λ→0, kappa→0, and sinh(κ(T−t))/sinh(κT) → (T−t)/T, exactly linear — which is a nice sanity check: Almgren-Chriss collapses to naive TWAP when you stop caring about risk."*
 
 **Whiteboard proof sketch I'd give:** set up the Hamilton-Jacobi-Bellman / Euler-Lagrange for the quadratic cost functional above; the Euler-Lagrange equation is $\ddot{x}(t) = \kappa^2 x(t)$, whose general solution with the two boundary conditions $x(0)=X, x(T)=0$ is exactly the sinh form; I'd derive this live if asked, it's a 2nd-order linear ODE with hyperbolic boundary-value solution — standard undergrad ODE technique applied to a finance cost functional.
