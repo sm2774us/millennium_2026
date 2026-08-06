@@ -1,5 +1,90 @@
 # 🧮 Important Equations Cheatsheet
 
+### A. Quantitative Finance: Probability & Statistics Equations Reference
+
+| Category | Concept / Metric | Equation / Formula | Key Variables & Notes |
+| --- | --- | --- | --- |
+| **Probability Basics** | Expected Value (Discrete) | $`E[X] = \sum_{i} x_i P(X = x_i)`$ | $`x_i`$: outcomes, $`P(X=x_i)`$: probability mass function |
+| **Probability Basics** | Expected Value (Continuous) | $`E[X] = \int_{-\infty}^{\infty} x f(x) dx`$ | $`f(x)`$: probability density function (PDF) |
+| **Probability Basics** | Bayes' Theorem | $`P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)}`$ | $`P(A \mid B)`$: posterior probability, $`P(A)`$: prior probability |
+| **Descriptive Stats** | Variance | $`Var(X) = \sigma^2 = E[(X - \mu)^2] = E[X^2] - (E[X])^2`$ | Measure of spread; $`\mu = E[X]`$ |
+| **Descriptive Stats** | Sample Variance | $`s^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2`$ | Unbiased estimator of population variance ($n-1`$ degrees of freedom) |
+| **Descriptive Stats** | Covariance | $`Cov(X,Y) = \sigma_{XY} = E[(X - \mu_X)(Y - \mu_Y)]`$ | Direction of joint linear association between two random variables |
+| **Descriptive Stats** | Pearson Correlation | $`\rho_{XY} = \frac{Cov(X,Y)}{\sigma_X \sigma_Y}`$ | Scale-free linear dependency metric bounded in $`[-1, 1]`$ |
+| **Descriptive Stats** | Skewness (3rd Moment) | $`S = E\left[\left(\frac{X-\mu}{\sigma}\right)^3\right]`$ | Asymmetry metric ($S > 0`$: right-tailed, fat right tail) |
+| **Descriptive Stats** | Excess Kurtosis | $`K_{ex} = E\left[\left(\frac{X-\mu}{\sigma}\right)^4\right] - 3`$ | Fat-tail risk metric ($K_{ex} > 0`$: leptokurtic / fat-tailed vs Gaussian) |
+| **Return Modeling** | Arithmetic Return | $`R_t = \frac{P_t - P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}} - 1`$ | One-period percentage price change |
+| **Return Modeling** | Continuous Log Return | $`r_t = \ln\left(\frac{P_t}{P_{t-1}}\right) = \ln(1 + R_t)`$ | Additive across time periods: $`r_{0,T} = \sum_{t=1}^T r_t`$ |
+| **Distributions** | Bernoulli PMF | $`P(X = x) = p^x (1 - p)^{1-x}, \quad x \in \{0, 1\}`$ | Modeling binary events (e.g., single-period default vs non-default) |
+| **Distributions** | Binomial PMF | $`P(X = k) = \binom{n}{k} p^k (1 - p)^{n-k}`$ | Number of defaults in portfolio of $`n`$ independent assets; Binomial tree options |
+| **Distributions** | Poisson PMF | $`P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}`$ | Discrete jump arrival process; frequency of rare loss / credit events |
+| **Distributions** | Exponential PDF | $`f(x) = \lambda e^{-\lambda x}, \quad x \ge 0`$ | Continuous time-to-default model with constant hazard rate $`\lambda`$ |
+| **Distributions** | Continuous Uniform PDF | $`f(x) = \frac{1}{b - a}, \quad a \le x \le b`$ | Foundation for Inverse Transform Sampling in Monte Carlo simulations |
+| **Distributions** | Gaussian (Normal) PDF | $`f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)`$ | Standard benchmark distribution for log returns |
+| **Distributions** | Lognormal Stock Price | $`P_t = P_0 \exp\left(\left(\mu - \frac{1}{2}\sigma^2\right)t + \sigma W_t\right)`$ | Price distribution under Geometric Brownian Motion ($P_t > 0$) |
+| **Distributions** | Student's t PDF | $`f(x) = \frac{\Gamma(\frac{\nu+1}{2})}{\sqrt{\nu\pi}\,\Gamma(\frac{\nu}{2})} \left(1 + \frac{x^2}{\nu}\right)^{-\frac{\nu+1}{2}}`$ | Models fat-tailed return distributions; $`\nu`$: degrees of freedom |
+| **Stochastic Calculus** | Geometric Brownian Motion | $`dS_t = \mu S_t dt + \sigma S_t dW_t`$ | Standard SDE for asset prices; $`dW_t \sim \mathcal{N}(0, dt)`$ |
+| **Stochastic Calculus** | Itô's Lemma (1D) | $`df(t,S_t) = \left(\frac{\partial f}{\partial t} + \mu S_t \frac{\partial f}{\partial S} + \frac{1}{2}\sigma^2 S_t^2 \frac{\partial^2 f}{\partial S^2}\right)dt + \sigma S_t \frac{\partial f}{\partial S} dW_t`$ | Fundamental rule of stochastic differentiation for option pricing |
+| **Stochastic Calculus** | Ornstein-Uhlenbeck | $`dX_t = \theta(\mu - X_t)dt + \sigma dW_t`$ | Mean-reverting stochastic process (used for interest rates, volatility) |
+| **Time Series** | AR(1) Process | $`X_t = c + \phi X_{t-1} + \epsilon_t`$ | Autoregressive process of order 1; $`\epsilon_t \sim \mathcal{N}(0, \sigma^2)`$ |
+| **Time Series** | MA(1) Process | $`X_t = \mu + \epsilon_t + \theta \epsilon_{t-1}`$ | Moving average process of order 1 |
+| **Time Series** | GARCH(1,1) Volatility | $`\sigma_t^2 = \omega + \alpha \epsilon_{t-1}^2 + \beta \sigma_{t-1}^2`$ | Time-varying volatility clustering model ($\omega > 0, \alpha+\beta < 1$) |
+| **Portfolio Theory** | Expected Return | $`E[R_p] = \mathbf{w}^T \mathbf{\mu} = \sum_{i=1}^N w_i E[R_i]`$ | Weighted sum of individual asset expected returns |
+| **Portfolio Theory** | Portfolio Variance | $`\sigma_p^2 = \mathbf{w}^T \mathbf{\Sigma} \mathbf{w} = \sum_{i}\sum_{j} w_i w_j \sigma_{ij}`$ | Asset covariance matrix $`\mathbf{\Sigma}`$ and weight vector $`\mathbf{w}`$ |
+| **Portfolio Theory** | Sharpe Ratio | $`SR = \frac{E[R_p] - R_f}{\sigma_p}`$ | Risk-adjusted return metric relative to total volatility |
+| **Portfolio Theory** | Sortino Ratio | $`Sortino = \frac{E[R_p] - R_f}{\sigma_d}`$ | Risk-adjusted return using downside deviation $`\sigma_d`$ |
+| **Risk Metrics** | Parametric Value at Risk | $`VaR_{\alpha} = -(\mu + z_{\alpha} \sigma) \cdot V`$ | Maximum expected loss at confidence level $`\alpha`$ over horizon; $`V`$: portfolio value |
+| **Risk Metrics** | Expected Shortfall (CVaR) | $`ES_{\alpha} = E[-R \mid -R \ge VaR_{\alpha}]`$ | Average loss conditional on exceeding VaR threshold (coherent risk measure) |
+| **Asset Pricing** | CAPM Beta | $`\beta_i = \frac{Cov(R_i, R_m)}{Var(R_m)} = \frac{\sigma_{im}}{\sigma_m^2}`$ | Systematic market risk exposure metric |
+| **Asset Pricing** | CAPM Expected Return | $`E[R_i] = R_f + \beta_i \left(E[R_m] - R_f\right)`$ | Capital Asset Pricing Model formula |
+| **Regression Modeling** | OLS Estimator | $`\hat{\mathbf{\beta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}`$ | Vector of estimated coefficients in multiple linear regression |
+| **Regression Modeling** | Coefficient of Determination | $`R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2} = 1 - \frac{SS_{res}}{SS_{tot}}`$ | Proportion of variance explained by the statistical model |
+| **Option Valuation** | Black-Scholes PDE | $`\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 V}{\partial S^2} + r S \frac{\partial V}{\partial S} - r V = 0`$ | Fundamental partial differential equation for continuous derivative pricing |
+| **Option Valuation** | Black-Scholes Call Price | $`C(S,t) = S_t N(d_1) - K e^{-r(T-t)} N(d_2)`$ | Analytical price for European call option ($N(\cdot)`$: cumulative standard normal CDF) |
+| **Option Valuation** | Black-Scholes $`d_1`$ Parameter | $`d_1 = \frac{\ln(S_t/K) + \left(r + \frac{1}{2}\sigma^2\right)(T-t)}{\sigma \sqrt{T-t}}`$ | Normalized distance parameter for stock price path expectation |
+| **Option Valuation** | Black-Scholes $`d_2`$ Parameter | $`d_2 = d_1 - \sigma \sqrt{T-t}`$ | Probability of option expiring in-the-money under risk-neutral measure |
+| **Option Valuation** | Put-Call Parity | $`C_t - P_t = S_t - K e^{-r(T-t)}`$ | No-arbitrage relation between standard European call and put options |
+
+### B. Structural laws of variance, standard deviation, products, total decomposition, and the behavior of i.i.d. breakdowns
+
+| Category | Concept / Metric | Equation / Formula | Key Variables & Notes |
+|---|---|---|---|
+| Linear Transforms | Variance Scaling | $`\text{Var}(cX + b) = c^2\text{Var}(X)`$ | $`c, b`$: constants. Variance scales quadratically; shifts do not alter spread. |
+| Linear Transforms | Std Dev Scaling | $`\sigma_{cX+b} = \vert{}c\vert{}\sigma_X`$ | $`\sigma_X`$: standard deviation. Scales linearly; always absolute value (positive). |
+| Linear Transforms | Covariance Scaling | $`\text{Cov}(aX, bY) = ab\,\text{Cov}(X,Y)`$ | $`a, b`$: constants scaling respective variables. |
+| Joint Operations | General Sum Variance | $`\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y) + 2\text{Cov}(X,Y)`$ | Dependent variables. Covariance handles joint directional variation. |
+| Joint Operations | General Difference Var | $`\text{Var}(X - Y) = \text{Var}(X) + \text{Var}(Y) - 2\text{Cov}(X,Y)`$ | Dependent variables. Negative sign applies strictly to the covariance term. |
+| Joint Operations | Independent Sum / Diff | $`\text{Var}(X \pm Y) = \text{Var}(X) + \text{Var}(Y)`$ | Independent or i.i.d. variables. Covariance term collapses to $`0`$. Variances always add. |
+| Joint Operations | General Sum Std Dev | $`\sigma_{X \pm Y} = \sqrt{\text{Var}(X) + \text{Var}(Y) \pm 2\text{Cov}(X,Y)}`$ | Standard deviations cannot be added linearly ($\sigma_{X+Y} \neq \sigma_X + \sigma_Y$). |
+| Joint Operations | Independent Product Var | $`\text{Var}(XY) = \mathbb{E}[X]^2\text{Var}(Y) + \mathbb{E}[Y]^2\text{Var}(X) + \text{Var}(X)\text{Var}(Y)`$ | Goodman's formula for independent variables. Fails if variables are dependent. |
+| Decomposition | Law of Total Variance | $`\text{Var}(Y) = \mathbb{E}[\text{Var}(Y\vert{}X)] + \text{Var}(\mathbb{E}[Y\vert{}X])`$ | Direct analogue to Law of Total Probability. Breaks total risk into intra-regime noise and inter-regime variance. |
+| Portfolio / i.i.d. | i.i.d. Portfolio Variance | $`\text{Var}(R_p) = \frac{\sigma^2}{n}`$ | Equally weighted asset returns. Variance drops to $`0`$ as asset count $`n \to \infty`$. |
+| Portfolio / i.i.d. | Non-i.i.d. Portfolio Var | $`\text{Var}(R_p) = \frac{\sigma^2}{n} + \frac{n-1}{n}\bar{\rho}\sigma^2`$ | $`\bar{\rho}`$: average correlation. As $`n \to \infty$, variance converges to $`\bar{\rho}\sigma^2`$ (systemic risk floor). |
+| i.i.d. Breakdowns | Autocorrelation | $`\text{Cov}(X_t, X_{t-k}) \neq 0`$ | Breaks "Independent" half. Serial dependency in time series (e.g., high-frequency execution). |
+| i.i.d. Breakdowns | Heteroskedasticity | $`\text{Var}(X_t \vert{} \mathcal{F}_{t-1}) = \sigma_t^2`$ | Breaks "Identically Distributed" half. Volatility changes over time based on history (handled via GARCH). |
+| i.i.d. Breakdowns | Regime-Switching | $`X_t \sim \mathcal{N}(\mu_{S_t}, \sigma_{S_t}^2)`$ | Breaks "Identically Distributed" half. Parameters depend on hidden discrete state $`S_t`$ (handled via HMM). |
+
+### C. Multivariate asset allocation and portfolio optimization laws using matrix and linear algebra notation
+
+| Category | Concept / Metric | Equation / Formula | Key Variables & Notes |
+|---|---|---|---|
+| Portfolio Layout | Weights Vector | $`\mathbf{w} = \begin{bmatrix} w_1 & w_2 & \dots & w_n \end{bmatrix}^T`$ | $`n \times 1`$ column vector representing capital allocation percentages. |
+| Portfolio Layout | Return Vector | $`\mathbf{R} = \begin{bmatrix} R_1 & R_2 & \dots & R_n \end{bmatrix}^T`$ | $`n \times 1`$ column vector of asset-level random returns. |
+| Portfolio Layout | Expected Returns Vector | $`\boldsymbol{\mu} = \mathbb{E}[\mathbf{R}] = \begin{bmatrix} \mu_1 & \mu_2 & \dots & \mu_n \end{bmatrix}^T`$ | $`n \times 1`$ column vector containing historical or predicted asset means. |
+| Risk Infrastructure | Covariance Matrix | $`\boldsymbol{\Sigma} = \mathbb{E}[(\mathbf{R} - \boldsymbol{\mu})(\mathbf{R} - \boldsymbol{\mu})^T]`$ | $`n \times n`$ symmetric, positive semi-definite matrix of asset covariances. |
+| Risk Infrastructure | Correlation Matrix Relationship | $`\boldsymbol{\Sigma} = \mathbf{D} \mathbf{C} \mathbf{D}`$ | $`\mathbf{D}`$: diagonal matrix of standard deviations; $`\mathbf{C}`$: $`n \times n`$ asset correlation matrix. |
+| Aggregation Laws | Expected Portfolio Return | $`\mu_p = \mathbb{E}[R_p] = \mathbf{w}^T \boldsymbol{\mu}`$ | Dot product reducing vector distributions to a single scalar expected return. |
+| Aggregation Laws | Total Portfolio Variance | $`\sigma_p^2 = \text{Var}(R_p) = \mathbf{w}^T \boldsymbol{\Sigma} \mathbf{w}`$ | Quadratic form mapping asset-level interactions into a single total risk scalar. |
+| Aggregation Laws | Portfolio Volatility | $`\sigma_p = \sqrt{\mathbf{w}^T \boldsymbol{\Sigma} \mathbf{w}}`$ | Standard deviation of the managed portfolio. Square root of the quadratic form. |
+| Risk Attribution | Marginal Contribution to Risk | $`\text{MCR} = \frac{\boldsymbol{\Sigma} \mathbf{w}}{\sqrt{\mathbf{w}^T \boldsymbol{\Sigma} \mathbf{w}}}`$ | $`n \times 1`$ vector indicating the rate of risk change per unit increase in asset weight. |
+| Risk Attribution | Component Contribution to Risk | $`\text{CCR} = \mathbf{w} \odot \left( \frac{\boldsymbol{\Sigma} \mathbf{w}}{\sqrt{\mathbf{w}^T \boldsymbol{\Sigma} \mathbf{w}}} \right)`$ | $`n \times 1`$ risk breakdown vector; uses Hadamard element-wise product ($\odot$). |
+| Optimization Metrics | Mean-Variance Objective (Markowitz) | $`\max_{\mathbf{w}} \left( \mathbf{w}^T \boldsymbol{\mu} - \frac{\lambda}{2} \mathbf{w}^T \boldsymbol{\Sigma} \mathbf{w} \right)`$ | $`\lambda`$: risk aversion coefficient balancing return maximization and variance minimization. |
+| Optimization Metrics | Fully Invested Constraint | $`\mathbf{w}^T \mathbf{1} = 1`$ | $`\mathbf{1}`$: $`n \times 1`$ column vector of ones. Forces weights to sum exactly to 100%. |
+| Optimization Metrics | Global Minimum Variance (GMV) Weights | $`\mathbf{w}_{\text{GMV}} = \frac{\boldsymbol{\Sigma}^{-1} \mathbf{1}}{\mathbf{1}^T \boldsymbol{\Sigma}^{-1} \mathbf{1}}`$ | Left-tail optimization targeting the single lowest risk portfolio without regarding returns. |
+| Optimization Metrics | Maximum Sharpe Ratio Weights | $`\mathbf{w}_{\text{MSR}} \propto \boldsymbol{\Sigma}^{-1}(\boldsymbol{\mu} - R_f \mathbf{1})`$ | Tangency portfolio calculation; $`R_f`$: risk-free scalar rate. Requires normalization. |
+| Matrix Pathology | Dimensionality Breakdown | $`n \gg T \implies \det(\boldsymbol{\Sigma}) \to 0`$ | Number of assets ($n$) exceeds historical time steps ($T$). Matrix becomes uninvertible. |
+| Matrix Correction | Ledoit-Wolf Shrinkage | $`\boldsymbol{\Sigma}_{\text{shrunk}} = \delta \mathbf{F} + (1 - \delta)\boldsymbol{\Sigma}`$ | $`\mathbf{F}`$: structured target matrix; $`\delta \in [0,1]`$: shrinkage constant to stabilize inversions. |
+
 ### 1. Market Structure, Pricing & Futures Mechanics
 
 | Domain / Context | Final Form Equation | Validated Parameters & Definitions | Buy-Side Desk Relevance |
