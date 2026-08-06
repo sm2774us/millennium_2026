@@ -348,17 +348,9 @@ if __name__ == "__main__":
 
 Given a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ with a Brownian motion $W_t^{\mathbb{P}}$, and a square-integrable process $\theta_t$ (the **market price of risk**), define the Radon-Nikodym derivative:
 
-![Radon-Nikodym derivative](./assets/Radon-Nikodym.png)
-
-$\frac{d\mathbb{Q}}{d\mathbb{P}} \Big\vert{}_{\mathcal{F}_T} = \mathcal{E}\left( -\int_0^T \theta_t dW_t^\mathbb{P} \right) = \text{exp}\biggl( -\int_0^T \theta_t dW_t^\mathbb{P} - \frac{1}{2}\int_0^T \theta_t^2 dt \biggl)$
-
-```text
-Mathjax to render above ( can be tested and viewed on https://stackedit.io/ ) :
-
 $$
-\left. \frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mathbb{P}} \right\vert{}_{\mathcal{F}_T} = \mathcal{E}(-\theta \cdot W)_T = \exp\Bigl\{ -\int_0^T \theta_s \mathrm{d}W_s^{\mathbb{P}} - \frac{1}{2}\int_0^T \theta_s^2 \mathrm{d}s \Bigr\}
+\frac{d\mathbb{Q}}{d\mathbb{P}} \Big\vert{}_{\mathcal{F}_T} = \mathcal{E}\left( -\int_0^T \theta_t dW_t^\mathbb{P} \right) = \text{exp}\biggl( -\int_0^T \theta_t dW_t^\mathbb{P} - \frac{1}{2}\int_0^T \theta_t^2 dt \biggl)
 $$
-```
 
 Then under $\mathbb{Q}$, the process $W_t^{\mathbb{Q}} = W_t^{\mathbb{P}} + \int_0^t \theta_s \mathrm{d}s$ is a standard Brownian motion.
 
