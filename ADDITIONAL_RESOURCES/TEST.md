@@ -1,4 +1,4 @@
-## 🧮 Comprehensive Quantitative Finance Equation Engine
+# 🧮 Important Equations Cheatsheet
 
 ### 1. Market Structure, Pricing & Futures Mechanics
 
