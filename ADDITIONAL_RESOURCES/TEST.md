@@ -63,7 +63,6 @@
 | **Martingale Property** | $`\mathbb{E}^{\mathbb{P}}[M_t \mid \mathcal{F}_s] = M_s, \quad \forall s \le t`$ | • $`M_t`$: Stochastic process<br><br>• $`\mathcal{F}_s`$: Information filtration up to time $`s`$<br><br>• $`\mathbb{P}`$: Probability measure | Foundation for arbitrage-free derivative pricing, where discounted asset prices form martingales under risk-neutral measures. |
 | **Driftless Local Martingale Process** | $`dX_t = \sigma(t, X_t) dW_t`$ | • $X_t$: Driftless price or spread process<br><br>• $`W_t`$: Standard Wiener process | Models risk-neutral derivative dynamics and statistical arbitrage spreads stripped of structural trend drifts. |
 | **Girsanov’s Theorem (Change of Measure)** | $`\frac{d\mathbb{Q}}{d\mathbb{P}} \Big\vert{}_{\mathcal{F}_T} = \mathcal{E}\left( -\int_0^T \theta_t dW_t^\mathbb{P} \right) = \text{exp}\biggl( -\int_0^T \theta_t dW_t^\mathbb{P} - \frac{1}{2}\int_0^T \theta_t^2 dt \biggl)`$ | • $`\mathbb{P}, \mathbb{Q}`$: Physical & Risk-Neutral measures<br><br>• $`\theta_t = \frac{\mu_t - r_t}{\sigma_t}`$: Market price of risk | Converts physical asset dynamics (with drift) into risk-neutral measure processes for derivative pricing. |
-| **Girsanov’s Theorem (Change of Measure)** | ![Girsanov’s Theorem](./assets/Radon-Nikodym.png) | • $`\mathbb{P}, \mathbb{Q}`$: Physical & Risk-Neutral measures<br><br>• $`\theta_t = \frac{\mu_t - r_t}{\sigma_t}`$: Market price of risk<br><br>• Compact differential notation 𝓔$`(-\theta \cdot W)_T = \mathcal{E}\left( -\int_0^T \theta_t dW_t^\mathbb{P} \right)`$ | Converts physical asset dynamics (with drift) into risk-neutral measure processes for derivative pricing. |
 
 ---
 
@@ -97,5 +96,44 @@
 | **Kalman Filter (State-Space Updating)** | $`\hat{\mathbf{x}}_{k \mid k} = \hat{\mathbf{x}}_{k \mid k-1} + \mathbf{K}_k \left( \mathbf{z}_k - \mathbf{H}_k \hat{\mathbf{x}}_{k \mid k-1} \right)`$<br><br>$`\mathbf{K}_k = \mathbf{P}_{k \mid k-1} \mathbf{H}_k^\top \left( \mathbf{H}_k \mathbf{P}_{k \mid k-1} \mathbf{H}_k^\top + \mathbf{R}_k \right)^{-1}`$ | • $`\hat{\mathbf{x}}`$: State estimate vector<br><br>• $`\mathbf{K}_k`$: Kalman Gain matrix<br><br>• $`\mathbf{H}_k`$: Observation matrix; $`\mathbf{R}_k`$: Noise covariance | Real-time parameter estimation for hedge ratios, dynamic beta tracking, and high-frequency signal filtration. |
 | **Hidden Markov Model (MS-AR)** | $`y_t = c_{S_t} + \sum_{i=1}^p \phi_{i, S_t} y_{t-i} + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma_{S_t}^2)`$ | • $`S_t \in \{1, \dots, K\}`$: Unobserved discrete state<br><br>• $`c_{S_t}, \phi_{S_t}`$: State-dependent parameters | Identifies market regime shifts (e.g., low-vol trend vs high-vol mean-reversion) to dynamically reweight alpha models. |
 | **Dynamic Linear Model (DLM)** | $`\mathbf{y}_t = \mathbf{F}_t^\top \boldsymbol{\theta}_t + \mathbf{v}_t, \quad \mathbf{v}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{V}_t)`$<br><br>$`\boldsymbol{\theta}_t = \mathbf{G}_t \boldsymbol{\theta}_{t-1} + \mathbf{w}_t, \quad \mathbf{w}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{W}_t)`$ | • $`\boldsymbol{\theta}_t`$: Time-varying parameter vector<br><br>• $`\mathbf{F}_t, \mathbf{G}_t`$: Measurement & System matrices | Bayesian state-space framework for modeling time-varying asset betas, factor loadings, and macro relationships. |
+
+---
+
+### 9. Alpha Research, Signal Evaluation & Performance Metrics
+
+| Domain / Context | Final Form Equation | Validated Parameters & Definitions | Buy-Side Desk Relevance |
+| --- | --- | --- | --- |
+| **Information Coefficient (IC) & Rank IC** | $`\text{IC} = \rho(\mathbf{s}, \mathbf{r})`$<br><br>$`\text{Rank IC} = 1 - \frac{6 \sum_{i=1}^N d_i^2}{N(N^2 - 1)}`$ | • $`\mathbf{s}`$: Forecast signal vector<br><br>• $`\mathbf{r}`$: Forward asset return vector<br><br>• $`d_i`$: Rank difference for asset $i$ | Evaluates signal cross-sectional predictive power; Rank IC provides robustness against return outliers. |
+| **IC Information Ratio (ICIR)** | $`\text{ICIR} = \frac{\mathbb{E}[\text{IC}]}{\sigma_{\text{IC}}} \cdot \sqrt{N_{\text{periods}}}`$ | • $`\mathbb{E}[\text{IC}]`$: Mean IC; $`\sigma_{\text{IC}}`$: Volatility of IC<br><br>• $`N_{\text{periods}}`$: Annualized rebalance periods | Measures signal forecast consistency over time, standardizing alpha efficacy prior to portfolio construction. |
+| **Annualized Sharpe Ratio** | $`\text{SR} = \frac{\mathbb{E}[R_p - R_f]}{\sigma_p} \cdot \sqrt{N_{\text{annual}}}`$ | • $`R_p, R_f`$: Strategy return vs risk-free rate<br><br>• $`\sigma_p`$: Strategy return standard deviation | Standard metric evaluating excess return per unit of total return volatility. |
+| **Sortino Ratio** | $`\text{Sortino} = \frac{\mathbb{E}[R_p - R_f]}{\sigma_{\text{down}}} \cdot \sqrt{N_{\text{annual}}}`$<br><br>$`\sigma_{\text{down}} = \sqrt{\frac{1}{T}\sum_{t=1}^T \min(0, R_{p,t} - R_f)^2}`$ | • $`\sigma_{\text{down}}`$: Downside semi-variance | Measures risk-adjusted returns while penalizing only downside volatility. |
+| **Calmar Ratio** | $`\text{Calmar} = \frac{\text{CAGR}}{\vert{}\text{Max Drawdown}\vert{}}`$ | • $`\text{CAGR}`$: Annual compound growth rate<br><br>• $`\text{Max Drawdown}`$: Maximum peak-to-trough drop | Measures return generation relative to maximum peak-to-trough drawdowns, popular in CTA/systematic macro strategies. |
+| **Compound Annual Growth Rate (CAGR)** | $`\text{CAGR} = \left( \frac{V_{\text{end}}}{V_{\text{start}}} \right)^{\frac{1}{T}} - 1`$ | • $`V_{\text{start}}, V_{\text{end}}`$: Initial and final portfolio value<br><br>• $`T`$: Strategy duration in years | Measures the annualized geometric growth rate of investment capital over time. |
+| **Hit Ratio (Win Rate)** | $`\text{Hit Ratio} = \frac{\sum_{k=1}^N \mathbb{I}(R_k > 0)}{N}`$ | • $`\mathbb{I}(\cdot)`$: Indicator function<br><br>• $`N`$: Total trade trades executed | Core trade distribution metric evaluating the proportion of positive-yielding executions. |
+| **Portfolio Turnover Rate** | $`\text{Turnover} = \frac{1}{2} \sum_{i=1}^N \vert{}w_{i, t} - w_{i, t^-}\vert{}`$ | • $`w_{i,t}`$: Target weight of asset $`i`$<br><br>• $`w_{i,t^-}`$: Pre-rebalance portfolio weight | Quantifies portfolio rebalancing frequency to calculate expected transaction cost drag. |
+| **Strategy Capital Capacity** | $`\text{Capacity} \approx V_{\text{ADV}} \cdot \left( \frac{\alpha_{\text{gross}}}{\gamma_{\text{impact}}} \right)^{\frac{1}{\beta}}`$ | • $`V_{\text{ADV}}`$: Average daily volume<br><br>• $`\alpha_{\text{gross}}`$: Unconstrained gross return edge<br><br>• $`\gamma_{\text{impact}}`$: Market impact scale coefficient | Determines maximum AUM scaling before transaction costs erode strategy alpha edge. |
+| **Breakeven Transaction Cost** | $`\text{Cost}_{\text{breakeven}} = \frac{\mathbb{E}[R_{\text{gross}}]}{\text{Turnover Rate}}`$ | • $`\mathbb{E}[R_{\text{gross}}]`$: Annualized gross return | Maximum allowable trading cost per trade before net strategy return drops to zero. |
+
+---
+
+### 10. Factor Modeling, Portfolio Construction & Risk Management
+
+| Domain / Context | Final Form Equation | Validated Parameters & Definitions | Buy-Side Desk Relevance |
+| --- | --- | --- | --- |
+| **Markowitz Mean-Variance Optimization** | $`\max_{\mathbf{w}} \mathbf{w}^\top \boldsymbol{\mu} - \frac{\gamma}{2} \mathbf{w}^\top \boldsymbol{\Sigma} \mathbf{w}, \quad \text{s.t. } \mathbf{1}^\top \mathbf{w} = 1`$ | • $`\mathbf{w}`$: Asset weight vector<br><br>• $`\boldsymbol{\mu}`$: Expected return vector<br><br>• $`\boldsymbol{\Sigma}`$: Return covariance matrix | Classical framework optimizing trade-offs between portfolio expected return and variance. |
+| **Efficient Frontier Solution** | $`\mathbf{w}^* = \lambda \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu} + \gamma \boldsymbol{\Sigma}^{-1} \mathbf{1}`$ | • $`\lambda, \gamma`$: Analytical Lagrange multipliers | Traces the set of optimal portfolios offering the highest expected return for a defined risk level. |
+| **Fama-French 5-Factor Model** | $`R_{it} - R_{ft} = \alpha_i + \beta_{i1}\text{MKT}_t + \beta_{i2}\text{SMB}_t + \beta_{i3}\text{HML}_t + \beta_{i4}\text{RMW}_t + \beta_{i5}\text{CMA}_t + \epsilon_{it}`$ | • $`\text{SMB}`$: Size; $`\text{HML}`$: Value<br><br>• $\text{RMW}$: Profitability; $\text{CMA}$: Investment | Isolates systematic factor risk exposures to extract true idiosyncratic manager alpha ($\alpha_i$). |
+| **Multi-Signal Strategy Aggregation** | $`\alpha_{\text{composite}} = w_c Z(\text{Carry}) + w_t Z(\text{Trend}) + w_v Z(\text{Value}) + w_m Z(\text{Mom})`$ | • $`Z(\cdot)`$: Standardized Z-score of signal<br><br>• $`w_i`$: Signal combination weights | Combines orthogonal style factors to build systematic multi-asset strategies. |
+| **Kelly Criterion (Fractional Kelly)** | $`f^* = c \cdot \frac{\boldsymbol{\mu} - r}{\sigma^2}, \quad c \in (0, 1]`$ | • $`f^*`$: Target leverage fraction<br><br>• $`c`$: Fractional Kelly scaling factor (e.g., $`c = 0.5`$) | Determines optimal leverage allocation to maximize long-term log-capital growth while controlling drawdown risk. |
+| **Value at Risk (VaR)** | $`\mathbb{P}\left( L > \text{VaR}_\alpha \right) = 1 - \alpha`$ | • $`L`$: Portfolio loss random variable<br><br>• $`\alpha`$: Confidence level (e.g., 99%) | Standard risk metric estimating maximum expected portfolio loss over a specified time horizon at a given confidence level. |
+| **Conditional VaR (CVaR) / Expected Shortfall** | $`\text{CVaR}_\alpha = \mathbb{E}\left[ L \mid L \ge \text{VaR}_\alpha \right] = \frac{1}{1-\alpha} \int_\alpha^1 \text{VaR}_u du`$ | • Coherent risk metric measuring tail loss severity | Measures expected loss in tail risk scenarios exceeding the VaR threshold; accounts for fat-tailed return distributions. |
+
+---
+
+### 11. Quantitative Statistics & Hypothesis Testing
+
+| Domain / Context | Final Form Equation | Validated Parameters & Definitions | Buy-Side Desk Relevance |
+| --- | --- | --- | --- |
+| **TCA Slippage Significance Test**<br> | $`t = \frac{\bar{X} - \mu_0}{s / \sqrt{n}} \sim t_{n-1}`$<br> | • $`\bar{X}`$: Sample mean realized slippage<br><br>• $`\mu_0 = 0`$: Null baseline<br><br>• $`s`$: Sample standard deviation; $n$: Order count | Determines whether observed execution slippage reflects structural broker/algo underperformance versus statistical noise. |
 
 ---
