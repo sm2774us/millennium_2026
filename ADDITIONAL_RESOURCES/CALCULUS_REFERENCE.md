@@ -10,7 +10,7 @@
 ---
 ---
 
-[↩️ Back to ../README.md](../README.md#-additional-resources)
+[↩️ Back to ./README.md](./README.md#-additional-resources)
 
 ---
 ---
