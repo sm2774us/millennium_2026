@@ -276,19 +276,45 @@ $$
 
 **Definition (Perold, 1988):**
 
-$$
-\text{IS} = \underbrace{(P_{\text{fill,avg}} - P_{\text{arrival}})}_{\text{execution cost}} \times Q_{\text{filled}} + \underbrace{(P_{\text{final}} - P_{\text{arrival}}) \times Q_{\text{unfilled}}}_{\text{opportunity cost}}
-$$
+$$\text{IS} = \underbrace{(P_{\text{fill,avg}} - P_{\text{arrival}}) \times Q_{\text{filled}}}_{\text{Term 1: Execution Cost (Realized Slippage)}} + \underbrace{(P_{\text{final}} - P_{\text{arrival}}) \times Q_{\text{unfilled}}}_{\text{Term 2: Opportunity Cost (Unexecuted Risk)}}$$
 
 **Say it out loud:** *"Implementation shortfall is the total cost of turning a decision into a position: how much I paid above the price that existed the moment the PM decided to trade, for the shares I actually filled, plus the cost of the shares I never got to, valued at how far price moved away from me by the time I gave up. It's the only benchmark that can't be gamed by trading slowly — VWAP can look great while opportunity cost silently destroys the PM's alpha."*
 
+**Say it out loud:** *"Implementation Shortfall measures the total dollar difference between a theoretical paper portfolio that executed instantaneously at the decision price and our actual real-world portfolio. It breaks down trading friction into two strict components: the execution cost paid on the shares we filled, and the opportunity cost lost on the shares we failed to execute if the market moved away."*
+
+### Variable & Parameter Reference Table
+
+| Symbol | Parameter Name | Financial Definition | Mathematical / Operational Definition | Units / Scale |
+| --- | --- | --- | --- | --- |
+| **$`\text{IS}`$** | **Implementation Shortfall** | Total dollar cost / friction of executing an investment decision. | Paper Return $\minus$ Realized Return (adjusted for commissions/fees). | Currency ($\$$) or Basis Points ($\text{bps}$) of order value. |
+| **$`P_{\text{arrival}}`$** | **Arrival / Decision Price** | Benchmark mid-price at the exact moment the trade decision is made / sent to desk ($t=0$). | $P(0)$ or $P_{\text{mid}}(t_0)$. The unperturbed benchmark price. | Price per share ($\$/\text{share}$). |
+| **$`P_{\text{fill,avg}}`$** | **Average Execution Price** | Volume-weighted average price (VWAP) achieved across all filled child orders. | $\frac{\sum_{i=1}^{N} P_i \cdot q_i}{\sum_{i=1}^{N} q_i} = \frac{\sum P_i \cdot q_i}{Q_{\text{filled}}}$. | Price per share ($\$/\text{share}$). |
+| **$`Q_{\text{filled}}`$** | **Executed Quantity** | Total number of shares/contracts successfully filled during the execution window. | $\sum_{i=1}^{N} q_i$ where $q_i$ are individual fill sizes. | Shares / Contracts. |
+| **$`P_{\text{final}}`$** | **End-of-Horizon Price** | Benchmark price at the end of the evaluation window (e.g., market close on day $T$). | $P(T)$ or $P_{\text{close}}$. Represents uncaptured market move. | Price per share ($\$/\text{share}$). |
+| **$`Q_{\text{unfilled}}`$** | **Unexecuted Quantity** | Remaining parent order volume left unfilled at time $T$. | $Q_{\text{parent}} - Q_{\text{filled}}$. | Shares / Contracts. |
+
+*Note on Sign Convention: The formula above assumes a **Buy** order ($d = +1$). For a **Sell** order ($d = -1$), multiply the price differences by $-1$, i.e., $(P_{\text{arrival}} - P_{\text{fill,avg}})$ and $(P_{\text{arrival}} - P_{\text{final}})$.*
+
+### The Synthesis & Internal Trade-off
+
+> **"Implementation Shortfall exposes the fundamental dilemma of execution algorithms. Term 1 punishes you for trading too aggressively by penalizing market impact ($P_{\text{fill,avg}} \gg P_{\text{arrival}}$). Term 2 punishes you for being too passive or hesitant by penalizing missed opportunity ($P_{\text{final}} \gg P_{\text{arrival}}$ on unfilled shares $Q_{\text{unfilled}}$). An optimal execution policy minimizes total $\text{IS}$ by finding the exact execution horizon $T^*$ where the marginal decrease in market impact equals the marginal increase in opportunity cost."**
+
+### Interview & Whiteboard Nuance
+
 **Decomposition I'd report:**
 
-$$
-\text{IS} = \text{Delay Cost} + \text{Trading Cost} + \text{Opportunity Cost} + \text{Fees}
-$$
+* **Four-Way Expanded Breakdown:** In advanced microstructure derivations, $\text{IS}$ is often decomposed into four explicit buckets:
 
-where Delay Cost = drift from decision time to first order release, Trading Cost = drift from release to each fill (market impact + spread), Opportunity Cost = as above for unfilled residual.
+$$\text{IS} = \text{Delay Cost} + \text{Explicit Fees} + \text{Realized Market Impact} + \text{Opportunity Cost}$$
+
+* **Delay Cost:** $(P_{\text{release}} - P_{\text{decision}}) \times Q_{\text{parent}}$ (slippage before the order reaches the market).
+* **Explicit Fees:** Commissions, exchange fees, taxes.
+* **Realized Impact:** Spread paid + market impact during active execution.
+* **Opportunity Cost:** Unfilled paper loss at horizon $T$.
+
+---
+
+* **IS vs. VWAP Benchmark:** Unlike VWAP (which measures performance relative to other market participants during the trade window), **Implementation Shortfall measures absolute performance relative to decision time**, making it immune to "gaming" via slow, passive execution in trending markets.
 
 **Feynman tie-back:** *"IS is the only benchmark aligned with the PM's actual economic outcome, because it's anchored to their decision price, not a market-average price they had no claim to. Everything else (VWAP, TWAP, arrival) is a proxy; IS is closer to ground truth for 'did the desk destroy or add value.'"* — this is squarely the "design and maintain the transaction cost analysis framework for futures" bullet.
 
@@ -299,7 +325,7 @@ where Delay Cost = drift from decision time to first order release, Trading Cost
 
 ## B2 · Market Impact Models — Square-Root Law & Almgren-Chriss
 
-**The Empirical Square-Root Law:**
+### 1. The Empirical Square-Root Law
 
 $$
 \Delta P = \sigma \cdot Y \cdot \sqrt{\frac{Q}{V}}
@@ -307,7 +333,18 @@ $$
 
 **Say it out loud: "Price impact scales with volatility times the square root of your participation rate ( $\frac{Q}{V}$ ) — it is strictly sub-linear. Doubling your order size only increases impact by about 41%, not 100%. That concave, square-root shape is one of the most robust empirical facts in market microstructure."**
 
-**Almgren-Chriss Cost Function (The Mathematical Tug-of-War):**
+#### Variable & Parameter Breakdown
+
+* **$\Delta P$ (Price Impact / Expected Slippage):** The expected percentage (or bps) price shift caused by executing parent order $Q$. Represents the distance between the unperturbed pre-trade price $P_0$ and the final execution benchmark price.
+* **$\sigma$ (Daily Volatility):** The standard deviation of the asset's daily returns. It serves as a baseline proxy for asset-specific uncertainty and order book width/spread dynamics.
+* **$Y$ (Dimensionless Universal Constant):** An empirical scaling factor (often called the *Y-factor*). Across global equities and futures, $Y$ typically calibrates to a narrow band around **$0.5 \text{ to } 0.7$**.
+* **$Q$ (Parent Order Size):** Total quantity of shares, contracts, or nominal value to be executed.
+* **$V$ (Consolidated Market Volume):** Total baseline market volume over the same trading window (typically Average Daily Volume, ADV).
+* **$\frac{Q}{V}$ (Relative Order Size / Fraction of ADV):** The normalized participation ratio. Taking the square root ($\sqrt{Q/V}$) is what enforces the concave, sub-linear scaling behavior.
+
+---
+
+### 2. Almgren-Chriss Cost Function (The Mathematical Tug-of-War)
 
 $$
 \text{Total Cost} = \underbrace{\int_0^T \Big[\eta \dot{x}(t)^2 \Big] dt}_{\text{Term 1: Temporary Impact}} + \underbrace{\frac{1}{2}\gamma X^2}_{\text{Term 2: Permanent Impact}} + \underbrace{\lambda \int_0^T \sigma^2 x(t)^2 dt}_{\text{Term 3: Risk Penalty}}
@@ -316,6 +353,21 @@ $$
 **Say it out loud, plainly:** *"This equation is a mechanical tug-of-war, and breaking down the three terms reveals exactly how an execution algorithm makes decisions."*
 
 **Say it out loud, plainly:** *"There are three terms. Temporary impact is the cost you pay for trading fast right now — it scales with the square of your trading rate, so trading twice as fast costs four times as much in impact per unit time. Permanent impact is a one-time cost proportional to total size regardless of speed — the market permanently reprices to reflect your information. Risk penalty is how much you're paying for the privilege of taking longer, because your remaining unexecuted position sits exposed to price volatility the whole time. The optimal trajectory is whatever balances 'faster costs more in impact' against 'slower costs more in risk,' weighted by the trader's risk aversion λ."*
+
+#### Symbol & Notation Reference Table
+
+| Symbol | Parameter Name | Financial & Mathematical Definition |
+| --- | --- | --- |
+| **$`T`$** | **Execution Horizon** | Total time allocated to complete the trade (e.g., $T = 1$ day, or 2 hours). |
+| **$`X`$** | **Initial Parent Order Size** | Total inventory to execute at $t = 0$. Boundary conditions: $x(0) = X$ and $x(T) = 0$. |
+| **$`x(t)`$** | **Unexecuted Inventory** | Remaining parent position held at time $t$. |
+| **$`\dot{x}(t)`$** | **Trading Velocity** | Instantaneous rate of trading ($\frac{dx}{dt}$). Velocity of inventory reduction. |
+| **$`\eta`$** | **Temporary Impact Parameter** | Market illiquidity coefficient. Measures temporary price displacement per unit trading speed. |
+| **$`\gamma`$** | **Permanent Impact Parameter** | Fundamental market resistance parameter. Measures permanent price shift per unit total quantity. |
+| **$`\sigma^2`$** | **Asset Price Variance** | Volatility of the underlying asset per unit time (variance rate). |
+| **$`\lambda`$** | **Trader Risk Aversion** | Relative weight placed on portfolio risk versus expected execution cost. |
+
+#### Detailed Breakdown of Terms
 
 * **Term 1 (Temporary Impact): $\int_0^T [\eta \dot{x}(t)^2] dt$**
   * **The Math:** $\dot{x}(t)$ is the derivative of your inventory—your instantaneous speed of trading. Because this term squares your speed ($\dot{x}^2$), liquidity costs are strictly convex.
@@ -330,7 +382,7 @@ $$
   * **The Math:** $x(t)$ is your unexecuted inventory sitting on the book at time $t$. We integrate the square of this remaining exposure against market variance ($\sigma^2$) and the PM's risk aversion parameter ($\lambda$).
   * **How it Dominates:** This term punishes time. It dominates when the asset is highly volatile (high $\sigma$) or the alpha decays instantly (high $\lambda$). When this term takes over, it violently overpowers Term 1, forcing the algorithm to front-load the trade and aggressively cross the spread, gladly paying the convex temporary impact just to burn down $x(t)$ and escape the variance exposure.
 
-**The Internal Relationship (The Synthesis):**
+### The Internal Relationship (The Synthesis)
 
 > **"Term 2 is just a spectator. The actual execution trajectory is a ruthless, localized negotiation strictly between Term 1 and Term 3. Term 1 wants us to stretch the trade over the entire day to minimize the $\dot{x}^2$ speed penalty. Term 3 is terrified of volatility and wants us to execute the entire block right now to crush the $x^2$ variance exposure. The mathematical solution to this exact tension is what produces the optimal trading curve."**
 > 

@@ -12,7 +12,7 @@
 ---
 ---
 
-[↩️ Back to README.md](./README.md)
+[↩️ Back to ../README.md](../README.md#-additional-resources)
 
 ---
 ---
