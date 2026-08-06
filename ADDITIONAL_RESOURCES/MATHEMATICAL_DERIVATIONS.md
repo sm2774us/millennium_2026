@@ -513,6 +513,10 @@ $$
 | :-- |
 | $`x(t) = X_0 \frac{\sinh(\kappa(T - t))}{\sinh(\kappa T)}`$ |
 
+**Say it out loud:** *"Kappa is a single number that captures the tension between risk aversion and impact cost — big lambda or big sigma (you're scared of price risk) pushes kappa up, which makes the trajectory front-load more aggressively, trading fast now to reduce exposure time. Big eta (impact is expensive) pushes kappa down toward zero, which flattens the trajectory toward straight-line — that is, toward plain TWAP. In the risk-neutral limit, λ→0, kappa→0, and sinh(κ(T−t))/sinh(κT) → (T−t)/T, exactly linear — which is a nice sanity check: Almgren-Chriss collapses to naive TWAP when you stop caring about risk."*
+
+**Feynman:** "Think of it as a dial: turn risk-aversion $\lambda$ to zero and $\kappa \to 0$, sinh becomes linear, and you get a plain **TWAP** — trade evenly, don't worry about price risk. Crank $\lambda$ way up and the trajectory front-loads almost everything immediately — you're saying 'I'd rather eat the impact now than risk the price wandering away from me.' The whole model is just a formal way of picking a point on the impact-versus-risk dial instead of guessing."
+
 [🔝 Back to Top](#-table-of-contents)
 
 ---
@@ -594,6 +598,10 @@ $$x_j = X_0 \frac{\sinh(\kappa (T - t_j))}{\sinh(\kappa T)} \quad \blacksquare$$
 |  |
 | --- |
 | $`x_j = X_0 \frac{\sinh(\kappa (T - t_j))}{\sinh(\kappa T)}`$ |
+
+**Say it out loud:** *"Kappa is a single number that captures the tension between risk aversion and impact cost — big lambda or big sigma (you're scared of price risk) pushes kappa up, which makes the trajectory front-load more aggressively, trading fast now to reduce exposure time. Big eta (impact is expensive) pushes kappa down toward zero, which flattens the trajectory toward straight-line — that is, toward plain TWAP. In the risk-neutral limit, λ→0, kappa→0, and sinh(κ(T−t))/sinh(κT) → (T−t)/T, exactly linear — which is a nice sanity check: Almgren-Chriss collapses to naive TWAP when you stop caring about risk."*
+
+**Feynman:** "Think of it as a dial: turn risk-aversion $\lambda$ to zero and $\kappa \to 0$, sinh becomes linear, and you get a plain **TWAP** — trade evenly, don't worry about price risk. Crank $\lambda$ way up and the trajectory front-loads almost everything immediately — you're saying 'I'd rather eat the impact now than risk the price wandering away from me.' The whole model is just a formal way of picking a point on the impact-versus-risk dial instead of guessing."
 
 [🔝 Back to Top](#-table-of-contents)
 
